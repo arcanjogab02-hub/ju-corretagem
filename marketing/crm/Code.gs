@@ -395,10 +395,10 @@ function baixarCSV(){
   var csv=linhas.map(function(row){
     return row.map(function(c){
       c=(c==null?'':String(c));
-      if(/[";\n\r]/.test(c)) c='"'+c.replace(/"/g,'""')+'"';
+      if(/[";\\n\\r]/.test(c)) c='"'+c.replace(/"/g,'""')+'"';
       return c;
     }).join(sep);
-  }).join('\r\n');
+  }).join('\\r\\n');
   var blob=new Blob(['﻿'+csv],{type:'text/csv;charset=utf-8;'});  // BOM = acento certo no Excel
   var hoje=new Date(); function p(n){return ('0'+n).slice(-2);}
   var nome='leads-'+hoje.getFullYear()+'-'+p(hoje.getMonth()+1)+'-'+p(hoje.getDate())+'.csv';
