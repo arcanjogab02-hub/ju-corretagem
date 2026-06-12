@@ -113,7 +113,7 @@
   td .nao{color:#666}
 
   /* PLANOS */
-  .planos{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;align-items:stretch}
+  .planos{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;align-items:stretch;max-width:760px;margin:0 auto}
   .plano{background:var(--card);border:1px solid var(--linha);border-radius:18px;padding:30px 26px;display:flex;flex-direction:column}
   .plano.pro{border-color:#f5f5f5;position:relative}
   .plano.pro::before{content:"MAIS ESCOLHIDO";position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:#fff;color:#000;font-size:9.5px;font-weight:700;letter-spacing:1.5px;padding:5px 14px;border-radius:50px}
@@ -127,7 +127,9 @@
   .plano a{display:block;text-align:center;padding:14px;border-radius:50px;font-weight:600;font-size:14px;background:#1d1d1d;color:var(--branco);border:1px solid #2e2e2e;transition:.2s}
   .plano.pro a{background:#fff;color:#0a0a0a;border-color:#fff}
   .plano a:hover{filter:brightness(1.15)}
-  .fundador{text-align:center;margin-top:22px;font-size:13px;color:var(--cinza)}
+  .carencia{text-align:center;margin-top:22px;font-size:12.5px;color:#8f8f8f;max-width:560px;margin-left:auto;margin-right:auto;font-weight:300}
+  .carencia b{color:#cfcfcf;font-weight:600}
+  .fundador{text-align:center;margin-top:14px;font-size:13px;color:var(--cinza);max-width:600px;margin-left:auto;margin-right:auto}
   .fundador b{color:#fff}
 
   /* CTA FINAL */
@@ -205,7 +207,7 @@
           <div class="nota-v">o resto vaza: lead não respondido, sem dado, sem remarketing</div>
         </div>
         <div class="barra">
-          <div class="lb"><span>Com o sistema (+ R$ 297/mês)</span><b>quase 100% capturado</b></div>
+          <div class="lb"><span>Com o sistema (+ R$ 297,90/mês)</span><b>quase 100% capturado</b></div>
           <div class="track"><span class="fill ganha"></span></div>
           <div class="nota-v">cada clique vira lead salvo, com aviso e follow-up</div>
         </div>
@@ -264,7 +266,7 @@
             <tr><td>CRM incluso (base é sua)</td><td><span class="nao">✕</span></td><td><span class="nao">parcial, preso à plataforma</span></td><td><span class="nao">✕</span></td><td class="dest"><span class="sim">✓ de 1 toque, no celular</span></td></tr>
             <tr><td>Aviso de lead + resumo diário</td><td><span class="nao">✕</span></td><td><span class="nao">✕</span></td><td><span class="nao">✕</span></td><td class="dest"><span class="sim">✓ automático</span></td></tr>
             <tr><td>Sai do ar se você cancelar?</td><td>sim</td><td>sim — e leva seus dados</td><td>não</td><td class="dest">não — o sistema é seu</td></tr>
-            <tr><td>Custo típico</td><td>R$ 25/mês</td><td>R$ 100–250/mês</td><td>R$ 2–5 mil avulso</td><td class="dest">a partir de R$ 147/mês</td></tr>
+            <tr><td>Custo típico</td><td>R$ 25/mês</td><td>R$ 100–250/mês</td><td>R$ 2–5 mil avulso</td><td class="dest">R$ 297,90/mês + implantação</td></tr>
           </tbody>
         </table>
       </div>
@@ -280,45 +282,35 @@
       </div>
       <div class="planos">
         <div class="plano">
-          <h3>Essencial</h3>
-          <div class="preco"><b>R$ 147</b>/mês</div>
-          <div class="setup">+ R$ 800 de implantação</div>
+          <h3>Captação</h3>
+          <div class="preco"><b>R$ 297,90</b>/mês</div>
+          <div class="setup">+ R$ 1.200 de implantação · você toca o orgânico</div>
           <ul>
             <li>Bio premium com sua identidade</li>
-            <li>Página de captura no WhatsApp</li>
-            <li>CRM de 1 toque + avisos de lead</li>
-            <li>Hospedagem e manutenção</li>
-            <li>Suporte por WhatsApp</li>
+            <li>Página de captura direto no WhatsApp</li>
+            <li>Catálogo com seus <b>imóveis em destaque editáveis por você</b></li>
+            <li>CRM de 1 toque + avisos de lead no celular</li>
+            <li>Painel de dados: visitas, leads e conversão</li>
+            <li>Google Analytics + Pixel da Meta — <b>o dado é seu</b></li>
+            <li>Hospedagem, manutenção e suporte no WhatsApp</li>
           </ul>
-          <a href="https://wa.me/5563981493039?text=Quero%20o%20plano%20Essencial" target="_blank">Começar</a>
+          <a href="https://wa.me/5563981493039?text=Quero%20o%20plano%20Capta%C3%A7%C3%A3o" target="_blank">Começar</a>
         </div>
         <div class="plano pro">
-          <h3>Pro</h3>
-          <div class="preco"><b>R$ 297</b>/mês</div>
-          <div class="setup">+ R$ 1.500 de implantação</div>
+          <h3>Performance</h3>
+          <div class="preco"><b>R$ 497,90</b>/mês</div>
+          <div class="setup">+ R$ 1.200 de implantação · tudo no automático, sem reunião</div>
           <ul>
-            <li>Tudo do Essencial</li>
-            <li>Catálogo de imóveis atualizado por nós</li>
-            <li>Resumo diário no seu WhatsApp</li>
-            <li>Relatório mensal de leads e funil</li>
-            <li>Ajustes e melhorias contínuas</li>
+            <li>Tudo do Captação</li>
+            <li><b>Relatório automático todo dia 1</b>: visitas, leads, conversão e o que melhorar — com leitura feita por IA</li>
+            <li><b>Pacote mensal de conteúdo pronto pra postar</b>: 8 ideias de story, 4 roteiros de reels e 4 legendas de post, focados em imóvel</li>
+            <li>Sem reunião obrigatória e sem você mexer em tráfego</li>
           </ul>
-          <a href="https://wa.me/5563981493039?text=Quero%20o%20plano%20Pro" target="_blank">Quero o Pro</a>
-        </div>
-        <div class="plano">
-          <h3>Gestão</h3>
-          <div class="preco"><b>sob consulta</b></div>
-          <div class="setup">para quem quer escalar</div>
-          <ul>
-            <li>Tudo do Pro</li>
-            <li>Tráfego pago (Google/Meta) apontando pra captura</li>
-            <li>Conteúdo e identidade visual</li>
-            <li>Reunião mensal de estratégia</li>
-          </ul>
-          <a href="https://wa.me/5563981493039?text=Quero%20saber%20do%20plano%20Gest%C3%A3o" target="_blank">Conversar</a>
+          <a href="https://wa.me/5563981493039?text=Quero%20o%20plano%20Performance" target="_blank">Quero o Performance</a>
         </div>
       </div>
-      <div class="fundador">🎁 <b>Condição de fundador:</b> os 3 primeiros corretores têm 50% off na implantação e preço travado por 12 meses.</div>
+      <div class="carencia">Sem fidelidade de longo prazo: <b>compromisso de 90 dias</b> — o tempo que o sistema leva pra juntar dado suficiente e o relatório começar a apontar o que de fato funciona pra você.</div>
+      <div class="fundador">🎁 <b>Condição de fundador (3 vagas por região):</b> 30% off na implantação (R$&nbsp;1.200 → <b>R$&nbsp;840</b>), preço travado por 12 meses, acesso beta às novidades e suporte prioritário.</div>
     </div>
   </section>
 

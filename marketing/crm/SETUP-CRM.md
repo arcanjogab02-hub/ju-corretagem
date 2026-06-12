@@ -22,6 +22,13 @@ feed de cards, muda etapa tocando, "Responder" abre o WhatsApp e já marca "Conv
 3. Salva, roda **`ativarLembreteDiario`** (autoriza quando pedir). Pronto — todo dia 8h a Ju recebe o resumo.
    *(Sem CallMeBot, o resumo cai por e-mail automaticamente.)*
 
+### Ligar o relatório mensal automático (entregável do plano Performance)
+Fecha o mês anterior todo **dia 1 às 8h**: visitas, leads, conversão, melhor canal, funil + uma **leitura do mês**.
+1. *(Opcional)* Pra leitura escrita por **IA**, pegue uma chave em **console.anthropic.com → API Keys** e preencha
+   `ANTHROPIC_APIKEY = 'sk-ant-...'` no `Code.gs`. **Sem chave, a leitura sai automática por código** (heurística) — funciona igual, de graça.
+2. Roda **`ativarRelatorioMensal`** uma vez (autoriza). Sai por e-mail (e WhatsApp, se o CallMeBot estiver ligado).
+3. Quer ver agora sem esperar o dia 1? Roda **`testarRelatorioMensal`** — manda o relatório do mês anterior na hora.
+
 ### Como a Ju usa o painel (zero planilha)
 - **Card novo** aparece no topo, marcado 🔴 se está esfriando.
 - Toca **"Responder no WhatsApp"** → abre a conversa **e** marca "Conversando" sozinho.

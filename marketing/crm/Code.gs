@@ -38,6 +38,13 @@ var EMAIL_NOTIFICACAO = '';   // ex: 'juliana@gmail.com'
 var CALLMEBOT_PHONE   = '';   // ex: '5563992226998'  (quem recebe os avisos)
 var CALLMEBOT_APIKEY  = '';   // apikey do CallMeBot
 
+/* RELATÓRIO MENSAL (dia 1) — leitura por IA é OPCIONAL.
+ * Vazio = relatório com leitura automática por código (heurística). Funciona sem custo.
+ * Preenchido = leitura escrita pela IA da Anthropic (análise mais rica). Pegue a chave em
+ * console.anthropic.com → API Keys. Modelo barato (Haiku) dá conta. */
+var ANTHROPIC_APIKEY  = '';   // ex: 'sk-ant-...'  (deixe vazio pra usar a leitura automática)
+var ANTHROPIC_MODELO  = 'claude-haiku-4-5-20251001';
+
 /* ============================ ENTRADA DE LEAD ============================ */
 function doPost(e){
   var lock = LockService.getScriptLock();
@@ -471,6 +478,140 @@ function ativarLembreteDiario(){
   ScriptApp.getProjectTriggers().forEach(function(t){ if(t.getHandlerFunction()==='resumoDiario') ScriptApp.deleteTrigger(t); });
   ScriptApp.newTrigger('resumoDiario').timeBased().atHour(8).everyDays(1).create();
   SpreadsheetApp.getUi().alert('✅ Lembrete diário ligado!\nTodo dia às 8h a Ju recebe o resumo dos leads.');
+}
+
+/* ====================== RELATÓRIO MENSAL (entregável dia 1) ======================
+ * Roda automático todo dia 1 às 8h (ver ativarRelatorioMensal). Fecha o mês anterior,
+ * compara com o mês retrasado e manda um relatório com NÚMEROS (código) + LEITURA
+ * (IA, se a chave estiver configurada; senão, leitura automática por heurística).
+ * É o entregável do plano Performance. */
+
+var MESES_PT = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+
+/** Métricas de um mês específico (ano, mes 0-11). */
+function metricasMes(leads, visitas, ano, mes, tz){
+  function noMes(ms){ if(!ms) return false; var d=new Date(ms); return d.getFullYear()===ano && d.getMonth()===mes; }
+  var L = leads.filter(function(l){ return noMes(l.data); });
+  var V = visitas.filter(function(v){ return noMes(v.data); });
+  var totalV=V.length, totalL=L.length;
+  var conv = totalV ? Math.round((totalL/totalV)*1000)/10 : 0;
+
+  var porOrigem = {};
+  L.forEach(function(l){ var o=l.origem||'direto'; porOrigem[o]=(porOrigem[o]||0)+1; });
+  var melhorCanal='—', melhorN=0;
+  for (var o in porOrigem){ if(porOrigem[o]>melhorN){ melhorN=porOrigem[o]; melhorCanal=o; } }
+
+  var funil={Novo:0,Conversando:0,Visita:0,Fechado:0,Perdido:0};
+  L.forEach(function(l){ if(funil[l.status]!==undefined) funil[l.status]++; });
+
+  return {
+    ano:ano, mes:mes, nomeMes:MESES_PT[mes], rotulo:MESES_PT[mes]+'/'+ano,
+    totalV:totalV, totalL:totalL, conv:conv,
+    porOrigem:porOrigem, melhorCanal:melhorCanal, melhorN:melhorN,
+    funil:funil, fechados:funil.Fechado, visitasAgendadas:funil.Visita
+  };
+}
+
+/** Leitura automática por código (sem IA). Sempre funciona. */
+function leituraHeuristica(a, b){
+  var f=[];
+  // tendência de leads
+  if (b.totalL>0){
+    var dl=a.totalL-b.totalL, pct=Math.round((dl/b.totalL)*100);
+    if (dl>0) f.push('Você captou '+a.totalL+' leads — '+pct+'% a mais que em '+b.nomeMes+'. Tá crescendo, mantenha o ritmo de conteúdo.');
+    else if (dl<0) f.push('Foram '+a.totalL+' leads, '+Math.abs(pct)+'% a menos que em '+b.nomeMes+'. Vale reforçar a chamada pro link de captura nos stories.');
+    else f.push('Você captou '+a.totalL+' leads, mesmo patamar de '+b.nomeMes+'.');
+  } else {
+    f.push('Você captou '+a.totalL+' leads no mês.');
+  }
+  // canal
+  if (a.melhorN>0) f.push('Seu melhor canal foi o '+a.melhorCanal+' ('+a.melhorN+' leads). Onde converte, invista mais — poste e marque o link com mais frequência por aí.');
+  // conversão da página
+  if (a.totalV>0) f.push('A página recebeu '+a.totalV+' visitas e converteu '+a.conv+'% em lead'+(a.conv<10?' — abaixo de 10%, vale revisar a primeira dobra e a oferta da página.':'.'));
+  // funil / fechamento
+  if (a.visitasAgendadas>0) f.push(a.visitasAgendadas+' lead(s) chegaram a marcar visita e '+a.fechados+' fechou(aram). Foco do mês: puxar quem visitou e ainda não decidiu.');
+  else if (a.fechados>0) f.push(a.fechados+' negócio(s) fechado(s) no mês 🎉');
+  // alerta de leads parados
+  var parados=a.funil.Novo+a.funil.Conversando;
+  if (parados>3) f.push('Atenção: '+parados+' leads ainda estão em aberto (Novo/Conversando). Responder rápido é o que mais move o ponteiro.');
+  return f.join('\n\n');
+}
+
+/** Leitura escrita pela IA (Anthropic). Retorna null se não houver chave ou der erro. */
+function leituraIA(a, b){
+  if (!ANTHROPIC_APIKEY) return null;
+  try {
+    var ctx = 'Você é analista de captação de leads de um corretor de imóveis em Palmas-TO. '+
+      'Escreva uma análise curta (máx 140 palavras), em português do Brasil, tom direto e prático, '+
+      'sem clichê e sem emoji em excesso (no máximo 1). Foque no que melhorar no próximo mês.\n\n'+
+      'MÊS ANALISADO ('+a.rotulo+'): '+a.totalV+' visitas na página, '+a.totalL+' leads, '+a.conv+'% de conversão. '+
+      'Melhor canal: '+a.melhorCanal+' ('+a.melhorN+' leads). '+
+      'Funil — Novo:'+a.funil.Novo+', Conversando:'+a.funil.Conversando+', Visita:'+a.funil.Visita+', Fechado:'+a.fechados+', Perdido:'+a.funil.Perdido+'.\n'+
+      'MÊS ANTERIOR ('+b.rotulo+'): '+b.totalL+' leads, '+b.conv+'% de conversão.';
+    var resp = UrlFetchApp.fetch('https://api.anthropic.com/v1/messages', {
+      method:'post', contentType:'application/json', muteHttpExceptions:true,
+      headers:{ 'x-api-key':ANTHROPIC_APIKEY, 'anthropic-version':'2023-06-01' },
+      payload: JSON.stringify({ model:ANTHROPIC_MODELO, max_tokens:400, messages:[{role:'user', content:ctx}] })
+    });
+    if (resp.getResponseCode()!==200) return null;
+    var j = JSON.parse(resp.getContentText());
+    return (j.content && j.content[0] && j.content[0].text) ? j.content[0].text.trim() : null;
+  } catch(e){ return null; }
+}
+
+function relatorioMensal(){
+  var tz = Session.getScriptTimeZone();
+  var hoje = new Date();
+  // mês de referência = mês anterior (o que acabou de fechar)
+  var refAno=hoje.getFullYear(), refMes=hoje.getMonth()-1; if(refMes<0){refMes=11;refAno--;}
+  // mês retrasado, pra comparar
+  var pAno=refAno, pMes=refMes-1; if(pMes<0){pMes=11;pAno--;}
+
+  var leads=lerLeads(), visitas=lerVisitas();
+  var a = metricasMes(leads, visitas, refAno, refMes, tz);
+  var b = metricasMes(leads, visitas, pAno, pMes, tz);
+  var leitura = leituraIA(a, b) || leituraHeuristica(a, b);
+  var viaIA = !!ANTHROPIC_APIKEY;
+
+  // ---- E-MAIL (HTML) ----
+  var dest = EMAIL_NOTIFICACAO || Session.getEffectiveUser().getEmail();
+  var url=''; try{url=ScriptApp.getService().getUrl()||'';}catch(e){}
+  if (dest){
+    function kpi(v,l){ return '<td style="padding:10px 6px;text-align:center;border:1px solid #eee;border-radius:8px"><div style="font-size:24px;font-weight:bold">'+v+'</div><div style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:.5px">'+l+'</div></td>'; }
+    var html =
+      '<div style="font-family:Arial,sans-serif;max-width:520px;border:1px solid #eee;border-radius:12px;overflow:hidden">'+
+      '<div style="background:#0c0c0c;color:#fff;padding:20px 24px"><div style="font-size:11px;letter-spacing:2px;color:#aaa;text-transform:uppercase">Relatório mensal</div><h2 style="margin:4px 0 0;font-size:22px;text-transform:capitalize">'+a.rotulo+'</h2></div>'+
+      '<table style="width:100%;border-collapse:separate;border-spacing:8px;padding:14px 16px 4px">'+
+        '<tr>'+kpi(a.totalV,'Visitas')+kpi(a.totalL,'Leads')+kpi(a.conv+'%','Conversão')+'</tr>'+
+        '<tr>'+kpi(a.visitasAgendadas,'Visitas agend.')+kpi(a.fechados,'Fechados')+kpi(a.melhorCanal,'Melhor canal')+'</tr>'+
+      '</table>'+
+      '<div style="padding:8px 24px 4px"><div style="font-size:11px;letter-spacing:1.5px;color:#888;text-transform:uppercase;margin-bottom:8px">Leitura do mês '+(viaIA?'(por IA)':'')+'</div>'+
+        '<div style="font-size:14px;line-height:1.7;color:#333;white-space:pre-line">'+leitura+'</div></div>'+
+      (url?'<div style="padding:18px 24px 24px"><a href="'+url+'" style="display:inline-block;background:#0c0c0c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:bold">Abrir o painel completo →</a></div>':'<div style="height:16px"></div>')+
+      '</div>';
+    MailApp.sendEmail({ to:dest, subject:'📊 Relatório de '+a.rotulo+' — '+a.totalL+' leads', htmlBody:html });
+  }
+
+  // ---- WHATSAPP (resumo curto) ----
+  if (CALLMEBOT_PHONE && CALLMEBOT_APIKEY){
+    var msg='📊 Relatório de '+a.rotulo+'\n\n'+
+      a.totalV+' visitas · '+a.totalL+' leads · '+a.conv+'% conversão\n'+
+      'Melhor canal: '+a.melhorCanal+'\nFechados: '+a.fechados+'\n\n'+leitura+(url?'\n\nPainel: '+url:'');
+    UrlFetchApp.fetch('https://api.callmebot.com/whatsapp.php?phone='+CALLMEBOT_PHONE+'&text='+encodeURIComponent(msg)+'&apikey='+CALLMEBOT_APIKEY, {muteHttpExceptions:true});
+  }
+}
+
+/** Rode 1x pra ligar o relatório automático (todo dia 1, 8h). */
+function ativarRelatorioMensal(){
+  ScriptApp.getProjectTriggers().forEach(function(t){ if(t.getHandlerFunction()==='relatorioMensal') ScriptApp.deleteTrigger(t); });
+  ScriptApp.newTrigger('relatorioMensal').timeBased().onMonthDay(1).atHour(8).create();
+  SpreadsheetApp.getUi().alert('✅ Relatório mensal ligado!\nTodo dia 1 às 8h sai o fechamento do mês anterior por e-mail'+(CALLMEBOT_APIKEY?' e WhatsApp':'')+'.');
+}
+
+/** Rode pra ver o relatório agora (do mês anterior), sem esperar o dia 1. */
+function testarRelatorioMensal(){
+  relatorioMensal();
+  SpreadsheetApp.getUi().alert('✅ Relatório de teste enviado!\nConfira o e-mail'+(CALLMEBOT_APIKEY?' e o WhatsApp':'')+'.');
 }
 
 /** Rode 1x pra testar a notificação (e autorizar o e-mail). */
