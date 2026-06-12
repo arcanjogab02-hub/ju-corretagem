@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="CRM Juliana">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0c0c0c">
+<link rel="manifest" href="crm-manifest.json">
+<link rel="apple-touch-icon" href="crm-icon.png">
+<title>CRM · Juliana</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%;background:#0c0c0c;font-family:-apple-system,Segoe UI,Roboto,sans-serif;color:#f5f5f5;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px}
+  .logo{width:72px;height:72px;background:#161616;border:1px solid #262626;border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:32px;margin-bottom:20px}
+  h1{font-size:22px;font-weight:600;margin-bottom:6px}
+  p{font-size:14px;color:#8f8f8f;font-weight:300;margin-bottom:32px}
+  .spin{width:36px;height:36px;border:2px solid #262626;border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .inst{position:fixed;bottom:0;left:0;right:0;background:#161616;border-top:1px solid #262626;padding:20px 24px 32px;text-align:left;transform:translateY(100%);transition:.3s;border-radius:20px 20px 0 0}
+  .inst.show{transform:translateY(0)}
+  .inst h3{font-size:15px;margin-bottom:14px;display:flex;align-items:center;gap:9px}
+  .inst ol{padding-left:20px;font-size:13px;color:#cfcfcf;line-height:2}
+  .inst ol li b{color:#fff}
+  .inst .close{float:right;background:none;border:none;color:#8f8f8f;font-size:20px;cursor:pointer;line-height:1}
+  .add-btn{display:none;background:#fff;color:#0c0c0c;font-weight:700;font-size:15px;padding:14px 32px;border-radius:50px;border:none;cursor:pointer;margin-top:16px}
+  .ios-tip{display:none;font-size:12px;color:#6a6a6a;margin-top:12px}
+</style>
+</head>
+<body>
+<div class="logo">📊</div>
+<h1>CRM · Juliana</h1>
+<p id="msg">Carregando painel de leads…</p>
+<div class="spin" id="spin"></div>
+<button class="add-btn" id="addBtn">Adicionar à tela inicial</button>
+<div class="ios-tip" id="iosTip">No Safari: toque em <b>⎙ Compartilhar</b> → <b>"Adicionar à Tela Inicial"</b></div>
+
+<div class="inst" id="inst">
+  <button class="close" onclick="document.getElementById('inst').classList.remove('show')">×</button>
+  <h3>📱 Instalar como app</h3>
+  <ol id="instOl"></ol>
+</div>
+
+<script>
+  var CRM_URL = 'https://script.google.com/macros/s/AKfycbxPjat7C66mU5GDRjHTMBuymxNilBvQ1pv0Jn31LXtdxwHlnI7pyPuuSqYjkS5EJwZg/exec';
+
+  // detecta se já está rodando como PWA instalada
+  var isPWA = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+
+  if (isPWA) {
+    // já é app — redireciona direto pro CRM
+    window.location.replace(CRM_URL);
+  } else {
+    // não está instalado — mostra instruções depois de 1s
+    setTimeout(function(){
+      document.getElementById('spin').style.display = 'none';
+      document.getElementById('msg').textContent = 'Adicione à tela inicial para abrir como app.';
+
+      var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+      var isAndroid = /Android/.test(navigator.userAgent);
+
+      if (isIOS) {
+        document.getElementById('iosTip').style.display = 'block';
+        // tenta abrir o CRM depois de 2.5s mesmo assim
+        setTimeout(function(){ window.location.href = CRM_URL; }, 2500);
+      } else if (isAndroid) {
+        document.getElementById('instOl').innerHTML =
+          '<li>Toque nos <b>⋮ três pontinhos</b> do Chrome</li>' +
+          '<li>Toque em <b>"Adicionar à tela inicial"</b></li>' +
+          '<li>Confirme — vira um ícone no celular</li>';
+        document.getElementById('inst').classList.add('show');
+        setTimeout(function(){ window.location.href = CRM_URL; }, 2500);
+      } else {
+        // desktop — vai direto
+        window.location.replace(CRM_URL);
+      }
+    }, 900);
+  }
+
+  // captura o evento de instalação Android (antes do Chrome suprimir)
+  window.addEventListener('beforeinstallprompt', function(e){
+    e.preventDefault();
+    var btn = document.getElementById('addBtn');
+    btn.style.display = 'block';
+    btn.addEventListener('click', function(){ e.prompt(); });
+  });
+</script>
+</body>
+</html>

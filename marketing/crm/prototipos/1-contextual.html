@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Protótipo · Ação Contextual</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,Segoe UI,Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
+body{background:#0c0c0c;color:#f5f5f5;padding:14px 12px 60px}
+.wrap{max-width:480px;margin:0 auto}
+.banner{background:#fff;color:#000;border-radius:10px;padding:10px 14px;font-size:12px;margin-bottom:14px;text-align:center}
+.banner b{font-size:13px}
+h1{font-size:18px;font-weight:600;margin-bottom:3px}
+h1 small{display:block;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#8f8f8f;font-weight:400;margin-top:2px}
+.kpis{display:flex;gap:8px;margin:13px 0}
+.kpi{flex:1;background:#161616;border:1px solid #262626;border-radius:11px;padding:11px}
+.kpi b{font-size:20px;display:block}.kpi span{font-size:9px;text-transform:uppercase;color:#8f8f8f;letter-spacing:.5px}
+.card{background:#161616;border:1px solid #262626;border-radius:15px;padding:15px;margin-bottom:11px}
+.card.frio{border-color:#5a2d2d}
+.top{display:flex;align-items:center;gap:9px}
+.dot{width:9px;height:9px;border-radius:50%}
+.nome{font-size:16px;font-weight:600;flex:1}
+.idade{font-size:11px;color:#8f8f8f}
+.sub{font-size:12.5px;color:#bdbdbd;margin:3px 0 0 18px}
+.sub .est{color:#8f8f8f}
+.acao{margin-top:13px}
+.btnp{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;border:none;border-radius:11px;padding:13px;font-size:14.5px;font-weight:600;cursor:pointer}
+.wa{background:#25D366;color:#06310f}
+.prim{background:#fff;color:#0a0a0a}
+.sec{display:flex;gap:8px;margin-top:8px}
+.sec button{flex:1;background:#1c1c1c;border:1px solid #2a2a2a;color:#cfcfcf;border-radius:9px;padding:10px;font-size:12.5px;cursor:pointer}
+.sec button.ok{color:#7fd4a8}.sec button.no{color:#cf8a8a}
+.badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:#8f8f8f;margin-top:10px;background:#1a1a1a;border:1px solid #262626;padding:7px 12px;border-radius:50px}
+.toast{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);background:#fff;color:#000;padding:10px 18px;border-radius:50px;font-size:13px;font-weight:600;opacity:0;transition:.3s;pointer-events:none}
+.toast.show{opacity:1}
+.hint{font-size:11px;color:#6a6a6a;margin:2px 0 0 18px;font-style:italic}
+</style></head><body>
+<div class="wrap">
+  <div class="banner"><b>PROTÓTIPO 1 — AÇÃO CONTEXTUAL</b><br>o card mostra só o próximo passo. Clique e veja o lead andar no funil.</div>
+  <h1>CRM · Juliana<small>Toque no próximo passo</small></h1>
+  <div class="kpis" id="kpis"></div>
+  <div id="lista"></div>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+var WA='💬';
+var LEADS=[
+  {id:1,nome:'Marina Costa',int:'Imóvel para investir / renda',st:'Novo',h:0.25},
+  {id:2,nome:'Rafael Andrade',int:'Apartamento para morar',st:'Novo',h:1},
+  {id:3,nome:'Vanessa Lopes',int:'Lançamento na planta',st:'Novo',h:5},
+  {id:4,nome:'Patrícia Souza',int:'Imóvel para investir / renda',st:'Conversando',h:8},
+  {id:5,nome:'Bruno Tavares',int:'Apartamento para morar',st:'Conversando',h:31},
+  {id:6,nome:'Anderson Pires',int:'Lançamento na planta',st:'Visita',h:49},
+  {id:7,nome:'Camila Nogueira',int:'Apartamento para morar',st:'Visita',h:73},
+  {id:8,nome:'Diego Martins',int:'Imóvel para investir / renda',st:'Fechado',h:122}
+];
+var COR={Novo:'#fff',Conversando:'#cfe0ff',Visita:'#ffe9bf',Fechado:'#c8f7d8',Perdido:'#888'};
+function idade(h){if(h<1)return 'há '+Math.round(h*60)+' min';if(h<24)return 'há '+Math.round(h)+'h';var d=Math.round(h/24);return d===1?'ontem':'há '+d+' dias';}
+function frio(l){return (l.st==='Novo'&&l.h>20)||(l.st==='Conversando'&&l.h>72);}
+function toast(t){var e=document.getElementById('toast');e.textContent=t;e.className='toast show';setTimeout(function(){e.className='toast';},1500);}
+function set(id,st,msg){for(var i=0;i<LEADS.length;i++)if(LEADS[i].id===id){LEADS[i].st=st;LEADS[i].h=0.05;}toast(msg);render();}
+function render(){
+  var nv=0,cv=0,vs=0;LEADS.forEach(function(l){if(l.st==='Novo')nv++;else if(l.st==='Conversando')cv++;else if(l.st==='Visita')vs++;});
+  document.getElementById('kpis').innerHTML='<div class="kpi"><b>'+nv+'</b><span>Novos</span></div><div class="kpi"><b>'+cv+'</b><span>Conversando</span></div><div class="kpi"><b>'+vs+'</b><span>Visita</span></div>';
+  var ativos=LEADS.filter(function(l){return l.st!=='Fechado'&&l.st!=='Perdido';});
+  var ord={Novo:0,Conversando:1,Visita:2};ativos.sort(function(a,b){var p=ord[a.st]-ord[b.st];return p||b.h-a.h;});
+  var h='';
+  ativos.forEach(function(l){
+    var fr=frio(l);var acao='';
+    if(l.st==='Novo'){
+      acao='<div class="acao"><button class="btnp wa" onclick="set('+l.id+',\'Conversando\',\'Em conversa ✓\')">'+WA+' Responder no WhatsApp</button>'+
+           '<div class="hint">ao responder, ele vira \'Conversando\' sozinho</div></div>';
+    } else if(l.st==='Conversando'){
+      acao='<div class="acao"><button class="btnp prim" onclick="set('+l.id+',\'Visita\',\'Visita marcada 📅\')">📅 Marcou visita</button>'+
+           '<div class="sec"><button class="ok" onclick="set('+l.id+',\'Fechado\',\'Fechou! 🎉\')">✓ Fechou</button><button class="no" onclick="set('+l.id+',\'Perdido\',\'Marcado perdido\')">✕ Não rolou</button></div></div>';
+    } else if(l.st==='Visita'){
+      acao='<div class="acao"><button class="btnp ok" style="background:#25D366;color:#06310f" onclick="set('+l.id+',\'Fechado\',\'Fechou! 🎉\')">✓ Fechou o negócio</button>'+
+           '<div class="sec"><button class="no" onclick="set('+l.id+',\'Perdido\',\'Marcado perdido\')">✕ Não rolou</button></div></div>';
+    }
+    h+='<div class="card'+(fr?' frio':'')+'"><div class="top"><span class="dot" style="background:'+COR[l.st]+'"></span><span class="nome">'+l.nome+'</span><span class="idade">'+(fr?'🔴 ':'')+idade(l.h)+'</span></div>'+
+       '<div class="sub">'+l.int+' · <span class="est">'+l.st+'</span></div>'+acao+'</div>';
+  });
+  document.getElementById('lista').innerHTML=h||'<div style="text-align:center;color:#5a5a5a;padding:40px">Tudo trabalhado! 🎯</div>';
+}
+render();
+</script></body></html>

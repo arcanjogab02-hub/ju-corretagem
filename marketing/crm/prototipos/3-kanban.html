@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Protótipo · Kanban</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,Segoe UI,Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
+body{background:#0c0c0c;color:#f5f5f5;padding:14px 0 60px}
+.wrap{max-width:900px;margin:0 auto;padding:0 12px}
+.banner{background:#fff;color:#000;border-radius:10px;padding:10px 14px;font-size:12px;margin-bottom:14px;text-align:center}
+.banner b{font-size:13px}
+h1{font-size:18px;font-weight:600}h1 small{display:block;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#8f8f8f;font-weight:400;margin-top:2px;margin-bottom:14px}
+.board{display:flex;gap:10px;overflow-x:auto;padding-bottom:10px}
+.col{flex:0 0 230px;background:#111;border:1px solid #1f1f1f;border-radius:14px;padding:10px}
+.colh{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;padding:0 4px}
+.colh b{font-size:12px;letter-spacing:.5px}.colh .ct{font-size:11px;color:#8f8f8f;background:#1c1c1c;border-radius:50px;padding:2px 9px}
+.col.novo .bar{background:#fff}.col.conversa .bar{background:#7ba0e0}.col.visita .bar{background:#e0c074}.col.fechado .bar{background:#25D366}.col.perdido .bar{background:#777}
+.bar{height:3px;border-radius:50px;margin:-4px 4px 10px}
+.kc{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:11px;padding:11px;margin-bottom:9px}
+.kc .n{font-size:13.5px;font-weight:600}
+.kc .i{font-size:11px;color:#9a9a9a;margin:2px 0 9px}
+.kc .idade{font-size:10px;color:#7a7a7a}
+.kc .mv{display:flex;gap:6px;margin-top:9px}
+.kc .mv button{flex:1;background:#262626;border:none;color:#cfcfcf;border-radius:8px;padding:7px;font-size:14px;cursor:pointer}
+.kc .mv button:disabled{opacity:.3}
+.kc.frio{border-color:#5a2d2d}
+.empty{font-size:11px;color:#5a5a5a;text-align:center;padding:14px 0}
+.dica{font-size:11px;color:#6a6a6a;text-align:center;margin-top:12px}
+.toast{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);background:#fff;color:#000;padding:10px 18px;border-radius:50px;font-size:13px;font-weight:600;opacity:0;transition:.3s;pointer-events:none}
+.toast.show{opacity:1}
+</style></head><body>
+<div class="wrap">
+  <div class="banner"><b>PROTÓTIPO 3 — KANBAN (PIPELINE)</b><br>visão do funil em colunas. Use ‹ › pra mover o lead. (no celular: arraste a faixa pro lado)</div>
+  <h1>CRM · Juliana<small>Pipeline de vendas</small></h1>
+  <div class="board" id="board"></div>
+  <div class="dica">↔ deslize a faixa pra ver todas as colunas · use ‹ › nos cards pra mover</div>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+var COLS=[['novo','Novo'],['conversa','Conversando'],['visita','Visita'],['fechado','Fechado'],['perdido','Perdido']];
+var ETAPAS=['Novo','Conversando','Visita','Fechado','Perdido'];
+var LEADS=[
+  {id:1,nome:'Marina Costa',int:'Investir / renda',st:'Novo',h:0.25},
+  {id:2,nome:'Rafael Andrade',int:'Apto p/ morar',st:'Novo',h:1},
+  {id:3,nome:'Vanessa Lopes',int:'Lançamento',st:'Novo',h:5},
+  {id:9,nome:'Carlos E. Lima',int:'Casa / condomínio',st:'Novo',h:27},
+  {id:4,nome:'Patrícia Souza',int:'Investir / renda',st:'Conversando',h:8},
+  {id:5,nome:'Bruno Tavares',int:'Apto p/ morar',st:'Conversando',h:31},
+  {id:6,nome:'Anderson Pires',int:'Lançamento',st:'Visita',h:49},
+  {id:7,nome:'Camila Nogueira',int:'Apto p/ morar',st:'Visita',h:73},
+  {id:8,nome:'Diego Martins',int:'Investir / renda',st:'Fechado',h:122}
+];
+function idade(h){if(h<1)return Math.round(h*60)+'min';if(h<24)return Math.round(h)+'h';var d=Math.round(h/24);return d+'d';}
+function frio(l){return (l.st==='Novo'&&l.h>20)||(l.st==='Conversando'&&l.h>72);}
+function toast(t){var e=document.getElementById('toast');e.textContent=t;e.className='toast show';setTimeout(function(){e.className='toast';},1400);}
+function mover(id,dir){for(var i=0;i<LEADS.length;i++)if(LEADS[i].id===id){var idx=ETAPAS.indexOf(LEADS[i].st);var n=idx+dir;if(n>=0&&n<ETAPAS.length){LEADS[i].st=ETAPAS[n];LEADS[i].h=0.05;toast('→ '+ETAPAS[n]);}}render();}
+function render(){
+  var h='';
+  COLS.forEach(function(c){
+    var arr=LEADS.filter(function(l){return l.st===c[1];});
+    var cards='';
+    arr.forEach(function(l){
+      var idx=ETAPAS.indexOf(l.st);
+      cards+='<div class="kc'+(frio(l)?' frio':'')+'"><div class="n">'+(frio(l)?'🔴 ':'')+l.nome+'</div><div class="i">'+l.int+'</div><div class="idade">há '+idade(l.h)+'</div>'+
+        '<div class="mv"><button onclick="mover('+l.id+',-1)" '+(idx===0?'disabled':'')+'>‹</button><button onclick="mover('+l.id+',1)" '+(idx===ETAPAS.length-1?'disabled':'')+'>›</button></div></div>';
+    });
+    h+='<div class="col '+c[0]+'"><div class="bar"></div><div class="colh"><b>'+c[1]+'</b><span class="ct">'+arr.length+'</span></div>'+(cards||'<div class="empty">vazio</div>')+'</div>';
+  });
+  document.getElementById('board').innerHTML=h;
+}
+render();
+</script></body></html>

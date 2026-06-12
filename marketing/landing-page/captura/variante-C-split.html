@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Juliana Alves · Seu imóvel em Palmas</title>
+<meta name="description" content="Conte o que procura e receba imóveis selecionados em Palmas. Juliana Alves, CRECI 5377.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* SPLIT 50/50 — foco total no formulário. Zero distração. */
+  :root{--preto:#0c0c0c;--branco:#f5f5f5;--cinza:#8f8f8f;--linha:#262626;--wa:#25D366}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Inter',sans-serif;background:var(--preto);color:var(--branco);line-height:1.6}
+  a{text-decoration:none}
+
+  .split{display:grid;grid-template-columns:1fr 1fr;min-height:100vh;min-height:100dvh}
+
+  /* ESQUERDA — a Juliana */
+  .lado-foto{position:relative;overflow:hidden;background:#161616}
+  .lado-foto img.ju{position:relative;z-index:2;width:100%;height:100%;object-fit:cover;object-position:top center}
+  .lado-foto::after{content:"";position:absolute;inset:0;z-index:3;background:linear-gradient(180deg,rgba(0,0,0,.18) 0%,transparent 35%,rgba(0,0,0,.88) 100%)}
+  .lado-foto .info{position:absolute;bottom:0;left:0;right:0;z-index:4;padding:34px}
+  .lado-foto .info h2{font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:600;line-height:1.05}
+  .lado-foto .info .sub{font-size:10.5px;letter-spacing:3px;text-transform:uppercase;color:#d6d6d6;margin-top:7px}
+  .lado-foto .info .frase{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:17px;color:#e2e2e2;margin-top:14px;max-width:330px}
+  .lado-foto .stats{display:flex;gap:0;margin-top:20px;border-top:1px solid rgba(255,255,255,.22)}
+  .lado-foto .stat{flex:1;padding:14px 4px 0;text-align:center}
+  .lado-foto .stat + .stat{border-left:1px solid rgba(255,255,255,.22)}
+  .lado-foto .stat b{font-family:'Cormorant Garamond',serif;font-size:21px;display:block;line-height:1}
+  .lado-foto .stat span{font-size:8.5px;letter-spacing:1.5px;text-transform:uppercase;color:#cfcfcf}
+  .lado-foto .selo{position:absolute;top:22px;left:24px;z-index:4;font-size:10px;letter-spacing:2.5px;color:#fff;border:1px solid rgba(255,255,255,.4);padding:7px 13px;border-radius:50px;backdrop-filter:blur(6px)}
+  .lado-foto .urbs{position:absolute;top:16px;right:18px;z-index:4;height:44px}
+
+  /* DIREITA — o formulário */
+  .lado-form{display:flex;flex-direction:column;justify-content:center;padding:60px 8%;background:var(--preto)}
+  .lado-form .tag{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--cinza);margin-bottom:14px}
+  .lado-form h1{font-family:'Cormorant Garamond',serif;font-size:40px;line-height:1.08;font-weight:600;margin-bottom:12px}
+  .lado-form h1 em{font-style:italic}
+  .lado-form .desc{color:#cfcfcf;font-weight:300;font-size:15px;margin-bottom:30px;max-width:400px}
+
+  form label{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--cinza);display:block;margin-bottom:7px}
+  form input,form select{
+    width:100%;padding:15px 16px;margin-bottom:18px;border-radius:0;
+    background:transparent;border:none;border-bottom:1px solid #3a3a3a;
+    color:var(--branco);font-size:15px;font-family:inherit;transition:.2s;
+  }
+  form input:focus,form select:focus{outline:none;border-bottom-color:#fff}
+  form select option{background:#111}
+  form button{
+    width:100%;padding:18px;border:none;background:var(--branco);color:#0a0a0a;
+    font-weight:600;font-size:15px;cursor:pointer;font-family:inherit;letter-spacing:.3px;
+    margin-top:8px;transition:.2s;
+  }
+  form button:hover{background:#ddd}
+  .seguro{font-size:11px;color:#666;margin-top:14px}
+  .ou{display:flex;align-items:center;gap:14px;margin:26px 0 0;color:#555;font-size:11px;letter-spacing:2px}
+  .ou::before,.ou::after{content:"";flex:1;height:1px;background:#262626}
+  .wa-direto{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:18px;padding:15px;border:1px solid #2e2e2e;border-radius:50px;color:var(--branco);font-size:13.5px;font-weight:500;transition:.2s}
+  .wa-direto:hover{border-color:var(--wa)}
+  .wa-direto svg{width:17px;height:17px;fill:var(--wa)}
+  .rodape{margin-top:34px;font-size:10px;color:#555;letter-spacing:1.5px;line-height:1.9}
+
+  .vtag{position:fixed;top:8px;right:8px;background:#fff;color:#000;font-size:10px;padding:4px 8px;border-radius:6px;font-family:monospace;z-index:99}
+
+  @media(max-width:860px){
+    .split{grid-template-columns:1fr}
+    .lado-foto{min-height:62vh}
+    .lado-form{padding:44px 26px 60px}
+    .lado-form h1{font-size:32px}
+  }
+</style>
+</head>
+<body>
+  <div class="vtag">CAPTURA · C SPLIT</div>
+
+  <div class="split">
+
+    <div class="lado-foto">
+      <span class="selo">CRECI 5377</span>
+      <img class="urbs" src="logo-urbs.png" alt="URBS Cerrado" onerror="this.style.display='none'">
+      <img class="ju" src="juliana.jpg" alt="Juliana Alves" onerror="this.style.display='none'">
+      <div class="info">
+        <h2>Juliana Alves</h2>
+        <div class="sub">Corretora de Imóveis · Palmas — TO</div>
+        <p class="frase">"Não vendo sonho. Mostro o negócio — e te coloco do lado certo da valorização."</p>
+        <div class="stats">
+          <div class="stat"><b>+50</b><span>imóveis</span></div>
+          <div class="stat"><b>18,8k</b><span>seguidores</span></div>
+          <div class="stat"><b>5★</b><span>atendimento</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lado-form">
+      <div class="tag">Seleção gratuita · resposta hoje</div>
+      <h1>O que você <em>procura</em> em Palmas?</h1>
+      <p class="desc">Responde essas 3 perguntas e eu te mando uma seleção de imóveis no WhatsApp — com fotos, valores e minha análise honesta.</p>
+
+      <form onsubmit="enviar(event)">
+        <label>Seu nome</label>
+        <input type="text" id="nome" placeholder="Como posso te chamar?" required>
+        <label>Seu WhatsApp</label>
+        <input type="tel" id="zap" placeholder="(63) 9____-____" required>
+        <label>O que procura</label>
+        <select id="interesse">
+          <option>Apartamento para morar</option>
+          <option>Imóvel para investir / renda</option>
+          <option>Lançamento na planta</option>
+          <option>Casa / condomínio</option>
+          <option>Lote / terreno</option>
+        </select>
+        <button type="submit">Receber minha seleção →</button>
+      </form>
+      <div class="seguro">🔒 Seus dados ficam só com a Juliana. Sem spam, sem ligação chata.</div>
+
+      <div class="rodape">JULIANA ALVES · CRECI 5377 · PALMAS — TOCANTINS · PARCEIRA URBS CERRADO</div>
+    </div>
+  </div>
+
+  <script>
+    function enviar(e){
+      e.preventDefault();
+      var msg='Oi Juliana! Sou '+document.getElementById('nome').value+'. Procuro: '+document.getElementById('interesse').value+'. Meu WhatsApp: '+document.getElementById('zap').value+' [Página C]';
+      window.open('https://wa.me/55639XXXXXXXX?text='+encodeURIComponent(msg),'_blank');
+    }
+  </script>
+</body>
+</html>

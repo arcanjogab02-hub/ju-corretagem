@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Manual do Consultor de Captação · GA Business Insights</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--preto:#0c0c0c;--tinta:#16161a;--cinza:#6b6b72;--linha:#e6e6ea;--acento:#0a7d4f;--ouro:#b9912f}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  body{font-family:'Inter',sans-serif;color:var(--tinta);line-height:1.6;background:#3a3a3a}
+  .serif{font-family:'Cormorant Garamond',serif}
+
+  /* PÁGINA A4 */
+  .page{width:210mm;min-height:297mm;background:#fff;margin:10mm auto;padding:22mm 19mm;box-sizing:border-box;position:relative;box-shadow:0 4px 30px rgba(0,0,0,.35)}
+  .page.dark{background:var(--preto);color:#f5f5f5}
+
+  /* tipografia base */
+  h2.mod{font-family:'Cormorant Garamond',serif;font-size:30pt;font-weight:600;line-height:1.05;margin-bottom:4mm}
+  h3{font-family:'Cormorant Garamond',serif;font-size:17pt;font-weight:600;margin:7mm 0 3mm}
+  h4{font-size:11pt;font-weight:700;letter-spacing:.3px;margin:5mm 0 2mm}
+  p{font-size:10.5pt;margin-bottom:3mm;font-weight:300}
+  strong{font-weight:600}
+  .lead{font-size:12pt;color:#333;font-weight:300}
+  .eyebrow{font-size:8.5pt;letter-spacing:3px;text-transform:uppercase;color:var(--cinza);font-weight:600}
+
+  /* CAPA */
+  .cover{display:flex;flex-direction:column;justify-content:space-between;background:radial-gradient(circle at 20% 12%,#1c1c1c,#0a0a0a 60%)}
+  .cover .brand{font-size:9pt;letter-spacing:4px;text-transform:uppercase;color:#9a9a9a;font-weight:600}
+  .cover .mid h1{font-family:'Cormorant Garamond',serif;font-size:46pt;line-height:1.02;font-weight:700}
+  .cover .mid h1 em{font-style:normal;color:transparent;-webkit-text-stroke:1.2px #fff}
+  .cover .mid .sub{margin-top:6mm;font-size:12pt;color:#cfcfcf;font-weight:300;max-width:120mm}
+  .cover .net{display:flex;gap:3px;margin:10mm 0 4mm}
+  .cover .net i{height:3px;flex:1;background:linear-gradient(90deg,#fff,transparent)}
+  .cover .foot{font-size:9pt;color:#8a8a8a;letter-spacing:1px}
+  .cover .selo{display:inline-block;border:1px solid #333;border-radius:50px;padding:7px 16px;font-size:8.5pt;letter-spacing:2px;text-transform:uppercase;color:#cfcfcf;margin-bottom:8mm}
+
+  /* MANIFESTO */
+  .manifesto{background:var(--preto);color:#fff;display:flex;flex-direction:column;justify-content:center}
+  .manifesto .q{font-family:'Cormorant Garamond',serif;font-size:27pt;line-height:1.25;font-weight:500}
+  .manifesto .q em{font-style:italic;color:transparent;-webkit-text-stroke:1px #fff}
+  .manifesto .q .ok{color:#fff;border-bottom:2px solid #fff}
+  .manifesto ul{list-style:none;margin:9mm 0}
+  .manifesto li{font-size:11pt;padding:3mm 0;border-bottom:1px solid #232323;display:flex;gap:10px;font-weight:300}
+  .manifesto li b{color:#fff;font-weight:600}
+  .manifesto .ass{margin-top:8mm;font-size:9pt;letter-spacing:2px;text-transform:uppercase;color:#7a7a7a}
+
+  /* ÍNDICE */
+  .idx{display:flex;flex-direction:column;gap:0}
+  .idx .row{display:flex;align-items:baseline;gap:5mm;padding:5mm 0;border-bottom:1px solid var(--linha)}
+  .idx .num{font-family:'Cormorant Garamond',serif;font-size:22pt;color:var(--cinza);width:16mm}
+  .idx .ti{flex:1}
+  .idx .ti b{font-size:13pt;font-family:'Cormorant Garamond',serif;font-weight:600}
+  .idx .ti span{display:block;font-size:9pt;color:var(--cinza);margin-top:1mm}
+
+  /* cabeçalho de módulo */
+  .modhead{border-bottom:2px solid var(--preto);padding-bottom:4mm;margin-bottom:6mm}
+  .modhead .n{font-family:'Cormorant Garamond',serif;font-size:60pt;line-height:.8;color:var(--linha);font-weight:700;float:right;margin-top:-4mm}
+
+  /* BOXES */
+  .box{border:1px solid var(--linha);border-radius:4mm;padding:5mm;margin:4mm 0;break-inside:avoid}
+  .box.escuro{background:#f7f7f8}
+  .callout{border-left:3px solid var(--preto);background:#f7f7f8;padding:4mm 5mm;margin:4mm 0;font-size:10pt;break-inside:avoid}
+  .callout.dica{border-color:var(--acento)}
+  .callout.alerta{border-color:var(--ouro)}
+  .callout .lbl{font-weight:700;font-size:8.5pt;letter-spacing:1px;text-transform:uppercase;margin-bottom:1.5mm;display:block}
+  .callout.dica .lbl{color:var(--acento)}
+  .callout.alerta .lbl{color:var(--ouro)}
+
+  .frase{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:15pt;line-height:1.4;color:#222;border-top:1px solid var(--linha);border-bottom:1px solid var(--linha);padding:5mm 0;margin:5mm 0;break-inside:avoid}
+
+  /* TABELAS */
+  table{width:100%;border-collapse:collapse;margin:4mm 0;font-size:9.5pt;break-inside:avoid}
+  th{background:var(--preto);color:#fff;text-align:left;padding:3mm;font-size:8pt;letter-spacing:.5px;text-transform:uppercase;font-weight:600}
+  td{padding:2.6mm 3mm;border-bottom:1px solid var(--linha);vertical-align:top}
+  tr:nth-child(even) td{background:#fafafa}
+  td.k{font-weight:600}
+
+  /* fórmula */
+  .formula{background:var(--preto);color:#fff;border-radius:3mm;padding:4mm 5mm;font-family:'Courier New',monospace;font-size:10pt;margin:3mm 0;break-inside:avoid}
+  .formula .r{color:#7fd4a8}
+
+  /* funil */
+  .funil{margin:4mm auto;max-width:120mm}
+  .funil .et{margin:0 auto 2px;background:#1a1a1a;color:#fff;text-align:center;padding:2.6mm;font-size:9pt;font-weight:500;border-radius:1mm}
+  .funil .et small{display:block;font-weight:300;color:#9a9a9a;font-size:7.5pt}
+  .funil .et.hl{background:var(--acento)}
+  .funil .seta{text-align:center;color:var(--cinza);font-size:8pt;margin:1px 0}
+
+  /* balde / barras */
+  .barra{margin:3mm 0}
+  .barra .lb{display:flex;justify-content:space-between;font-size:9pt;margin-bottom:1.5mm;font-weight:500}
+  .barra .track{height:6mm;background:#eee;border-radius:50px;overflow:hidden}
+  .barra .fill{height:100%;border-radius:50px;display:flex;align-items:center;padding-left:3mm;color:#fff;font-size:7.5pt;font-weight:700}
+  .fill.perde{width:38%;background:#b14a4a}
+  .fill.ganha{width:96%;background:var(--acento)}
+
+  /* peças grid */
+  .pecas{display:grid;grid-template-columns:1fr 1fr;gap:3mm;margin:4mm 0}
+  .peca{border:1px solid var(--linha);border-radius:3mm;padding:4mm;break-inside:avoid}
+  .peca .pn{font-family:'Cormorant Garamond',serif;font-size:16pt;color:var(--cinza)}
+  .peca h5{font-size:10.5pt;font-weight:700;margin:1mm 0 2mm}
+  .peca .frase-p{font-style:italic;font-size:9pt;color:#444;font-family:'Cormorant Garamond',serif}
+
+  /* QUESTÕES */
+  .quiz{background:#f7f7f8;border:1px solid var(--linha);border-radius:4mm;padding:6mm;margin:6mm 0;break-inside:avoid}
+  .quiz .qh{display:flex;align-items:center;gap:3mm;margin-bottom:4mm}
+  .quiz .qh .ic{width:9mm;height:9mm;border-radius:50%;background:var(--preto);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11pt;flex-shrink:0}
+  .quiz .qh b{font-family:'Cormorant Garamond',serif;font-size:15pt;font-weight:600}
+  .q{margin:4mm 0;break-inside:avoid}
+  .q .pergunta{font-size:10pt;font-weight:600;margin-bottom:2mm}
+  .q .alts{list-style:none;font-size:9.5pt}
+  .q .alts li{padding:1.4mm 0 1.4mm 8mm;position:relative;font-weight:300}
+  .q .alts li::before{content:attr(data-l);position:absolute;left:0;width:5mm;height:5mm;border:1px solid #bbb;border-radius:50%;text-align:center;font-size:7.5pt;line-height:5mm;font-weight:600}
+  .q .aberta{border:1px dashed #c5c5c5;border-radius:2mm;height:14mm;margin-top:2mm}
+
+  /* gabarito */
+  .gab{font-size:9.5pt}
+  .gab .g{padding:3mm 0;border-bottom:1px solid var(--linha);break-inside:avoid}
+  .gab .g b{color:var(--acento)}
+
+  .footer-pg{position:absolute;bottom:12mm;left:19mm;right:19mm;display:flex;justify-content:space-between;font-size:7.5pt;color:#aaa;letter-spacing:1px;border-top:1px solid var(--linha);padding-top:2mm}
+
+  /* barra de impressão (some no PDF) */
+  .printbar{position:fixed;top:0;left:0;right:0;background:#0c0c0c;color:#fff;padding:10px;text-align:center;font-size:13px;z-index:99}
+  .printbar button{background:#fff;color:#000;border:none;padding:8px 18px;border-radius:50px;font-weight:600;cursor:pointer;margin-left:10px}
+
+  @media print{
+    body{background:#fff}
+    .page{margin:0;box-shadow:none;width:auto;min-height:auto}
+    .printbar{display:none}
+    @page{size:A4;margin:0}
+  }
+</style>
+</head>
+<body>
+
+  <div class="printbar">
+    📄 Para gerar o PDF: <b>Ctrl+P</b> → Destino "Salvar como PDF" → Margens "Nenhuma" → Salvar
+    <button onclick="window.print()">Gerar PDF agora</button>
+  </div>
+
+  <!-- ============ CAPA ============ -->
+  <section class="page dark cover">
+    <div class="brand">GA Business Insights · Palmas — TO</div>
+    <div class="mid">
+      <span class="selo">Documento interno · v1</span>
+      <h1>Manual do<br>Consultor de<br><em>Captação</em></h1>
+      <div class="net"><i></i><i></i><i></i></div>
+      <p class="sub">Mercado imobiliário, indicadores e o sistema que transforma atenção em lead. O que você precisa dominar pra vender como consultor — não como prestador de serviço.</p>
+    </div>
+    <div class="foot">Estudo · Marketing imobiliário de performance · Uso interno</div>
+  </section>
+
+  <!-- ============ MANIFESTO / POSICIONAMENTO ============ -->
+  <section class="page manifesto">
+    <div class="eyebrow" style="color:#888">Antes de tudo — quem você é</div>
+    <p class="q">Você <em>não</em> vende sites.<br>Você vende <span class="ok">captação</span> e <span class="ok">dados</span>.</p>
+    <ul>
+      <li><b>O designer</b> entrega um arquivo bonito e some. Cobra uma vez, compete por preço, é facilmente trocável.</li>
+      <li><b>O consultor de captação</b> entrega leads, organização e previsibilidade. Cobra todo mês, vira indispensável, fala de ROI.</li>
+      <li><b>Você é o segundo.</b> O site é só uma das 6 peças. O que você vende é o sistema que faz o corretor parar de perder dinheiro.</li>
+    </ul>
+    <p style="color:#cfcfcf;font-weight:300;font-size:11pt">Toda vez que alguém perguntar "quanto custa o site?", sua cabeça corrige na hora: <strong style="color:#fff">"não é site — é o sistema de captação que impede seu tráfego de vazar."</strong> O preço muda quando a percepção muda. Esse manual existe pra você sustentar essa postura com conhecimento de verdade.</p>
+    <div class="ass">GA Business Insights — Inteligência de captação</div>
+  </section>
+
+  <!-- ============ ÍNDICE ============ -->
+  <section class="page">
+    <div class="eyebrow">Conteúdo</div>
+    <h2 class="mod">O que você vai dominar</h2>
+    <div class="idx">
+      <div class="row"><div class="num">01</div><div class="ti"><b>O mercado imobiliário</b><span>Como o corretor ganha, tipos de imóvel, players, o funil de venda e o cenário de Palmas. Pra você falar de igual pra igual.</span></div></div>
+      <div class="row"><div class="num">02</div><div class="ti"><b>Indicadores</b><span>Do mercado (cap rate, m², liquidez) e da captação (CPL, conversão, ROAS, CAC, LTV). A sua língua de consultor.</span></div></div>
+      <div class="row"><div class="num">03</div><div class="ti"><b>A ferramenta na ponta da língua</b><span>A tese, as 6 peças, o argumento do balde furado, a stack, o land &amp; expand e o pitch de 30 segundos.</span></div></div>
+      <div class="row"><div class="num">★</div><div class="ti"><b>Questões de fixação + Gabarito</b><span>Ao fim de cada módulo e um quiz final. Responda sem consultar — é assim que vira reflexo.</span></div></div>
+    </div>
+    <div class="callout dica"><span class="lbl">Como estudar</span>Leia um módulo, feche o manual e responda as questões de memória. O objetivo não é "saber" — é ter na ponta da língua numa conversa de venda, sem gaguejar.</div>
+    <div class="footer-pg"><span>GA Business Insights</span><span>Manual do Consultor de Captação</span></div>
+  </section>
+
+  <!-- ============ MÓDULO 1 ============ -->
+  <section class="page">
+    <div class="modhead"><span class="n">01</span><div class="eyebrow">Módulo 1</div><h2 class="mod">O mercado imobiliário</h2></div>
+
+    <h3>Como o corretor ganha dinheiro</h3>
+    <p>O corretor vive de <strong>comissão</strong> — um % sobre o imóvel vendido. Ele não tem salário fixo: vive de fechar. <strong>Tudo que aumenta a chance de fechar é dinheiro direto no bolso dele</strong> — e é aí que seu sistema entra.</p>
+    <table>
+      <tr><th>Tipo de negócio</th><th>Comissão típica</th><th>Quem paga</th></tr>
+      <tr><td class="k">Revenda (usado)</td><td>5% – 6%</td><td>Vendedor</td></tr>
+      <tr><td class="k">Lançamento (na planta)</td><td>4% – 6%</td><td>Construtora (estoque pronto, sem captar)</td></tr>
+      <tr><td class="k">Locação</td><td>≈ 1 aluguel</td><td>Inquilino / proprietário</td></tr>
+    </table>
+    <p>A comissão quase nunca é inteira do corretor: divide com a imobiliária (≈50/50) e às vezes com outro corretor. Mesmo assim, <strong>uma venda de um apê de R$ 700 mil põe R$ 10–20 mil no bolso dele.</strong> Uma venda paga seu sistema por anos — é esse o argumento.</p>
+
+    <h3>O funil de venda (decore este diagrama)</h3>
+    <p>É o caminho do contato até a comissão. <strong>Seu sistema atua exatamente no topo e meio</strong>, onde mais se perde dinheiro:</p>
+    <div class="funil">
+      <div class="et">ATENÇÃO <small>conteúdo no Instagram — o corretor já faz</small></div>
+      <div class="seta">▼</div>
+      <div class="et hl">LEAD <small>◄ SUA BIO + CAPTURA capturam aqui</small></div>
+      <div class="seta">▼</div>
+      <div class="et hl">ATENDIMENTO <small>◄ SEU CRM organiza aqui</small></div>
+      <div class="seta">▼</div>
+      <div class="et">VISITA → PROPOSTA → FECHAMENTO <small>com o corretor</small></div>
+      <div class="seta">▼</div>
+      <div class="et">COMISSÃO <small>o corretor recebe</small></div>
+    </div>
+    <div class="callout alerta"><span class="lbl">A dor que você ataca</span>O corretor médio <strong>perde 30–40% dos leads</strong> entre "lead" e "atendimento" — por não registrar e não fazer follow-up. Seu sistema tampa esse vazamento.</div>
+
+    <div class="footer-pg"><span>Módulo 1 · Mercado imobiliário</span><span>GA Business Insights</span></div>
+  </section>
+
+  <section class="page">
+    <h3>Quem é quem (os players)</h3>
+    <table>
+      <tr><th>Player</th><th>O que é</th></tr>
+      <tr><td class="k">Corretor autônomo</td><td>Pessoa física com CRECI. Seu cliente principal.</td></tr>
+      <tr><td class="k">Imobiliária</td><td>Reúne corretores, carteira e marca. Ex: URBS, Invistta, Estilo.</td></tr>
+      <tr><td class="k">Construtora / Incorporadora</td><td>Constrói e lança. Paga comissão. Ex: Luman.</td></tr>
+      <tr><td class="k">CRECI-TO</td><td>Conselho que registra corretores. Aparece na bio = credibilidade legal.</td></tr>
+      <tr><td class="k">Portais (VivaReal, ZAP…)</td><td>Onde anunciam. Você NÃO compete — é a marca pessoal dele, fora do portal.</td></tr>
+    </table>
+
+    <h3>O cenário de Palmas (cite com propriedade)</h3>
+    <div class="box escuro">
+      <table style="margin:0">
+        <tr><th>Indicador</th><th>Palmas</th><th>Leitura</th></tr>
+        <tr><td class="k">Querem comprar em 2 anos</td><td>66%</td><td>vs 46% nacional — demanda altíssima</td></tr>
+        <tr><td class="k">Valorização 2024</td><td>9–14%</td><td>acima da média BR (6,2%)</td></tr>
+        <tr><td class="k">Ranking de aluguel</td><td>1º do país</td><td>mercado de renda forte</td></tr>
+        <tr><td class="k">Corretores novos no TO</td><td>+50 recentes</td><td>sua base de clientes cresce sozinha</td></tr>
+      </table>
+    </div>
+    <div class="frase">"Palmas é um dos mercados mais quentes do Brasil. Tem comprador sobrando. Quem captar melhor, vende mais — e seu concorrente ainda manda lead pro WhatsApp solto."</div>
+
+    <!-- QUIZ MÓDULO 1 -->
+    <div class="quiz">
+      <div class="qh"><span class="ic">?</span><b>Fixação — Módulo 1</b></div>
+      <div class="q"><div class="pergunta">1. Por que o lançamento "na planta" é atrativo pro corretor trabalhar?</div>
+        <ul class="alts">
+          <li data-l="A">A comissão é maior que a de revenda</li>
+          <li data-l="B">A construtora paga a comissão e o estoque já vem pronto, sem captar imóvel</li>
+          <li data-l="C">Não precisa de CRECI</li>
+        </ul></div>
+      <div class="q"><div class="pergunta">2. Em qual ponto do funil o seu sistema atua principalmente?</div>
+        <ul class="alts">
+          <li data-l="A">No fechamento e na comissão</li>
+          <li data-l="B">Entre atenção → lead → atendimento (topo e meio)</li>
+          <li data-l="C">Na visita ao imóvel</li>
+        </ul></div>
+      <div class="q"><div class="pergunta">3. (Aberta) Qual % de leads o corretor médio perde, e por quê? Como seu sistema resolve?</div>
+        <div class="aberta"></div></div>
+    </div>
+    <div class="footer-pg"><span>Módulo 1 · Mercado imobiliário</span><span>GA Business Insights</span></div>
+  </section>
+
+  <!-- ============ MÓDULO 2 ============ -->
+  <section class="page">
+    <div class="modhead"><span class="n">02</span><div class="eyebrow">Módulo 2</div><h2 class="mod">Indicadores</h2></div>
+    <p class="lead">Dois blocos: os do <strong>mercado</strong> (pra conversar com o corretor) e os de <strong>captação</strong> (que vendem o seu produto). O segundo é a sua língua de consultor.</p>
+
+    <h3>Bloco A — Mercado (o essencial)</h3>
+    <table>
+      <tr><th>Indicador</th><th>O que é</th><th>Referência</th></tr>
+      <tr><td class="k">Valorização (% a.a.)</td><td>Quanto o preço subiu no ano</td><td>Palmas 9–14%</td></tr>
+      <tr><td class="k">Preço do m²</td><td>O "preço por kg" do imóvel</td><td>compara bairros</td></tr>
+      <tr><td class="k">Liquidez</td><td>Velocidade de venda</td><td>alta = bom</td></tr>
+      <tr><td class="k">Cap rate / Yield</td><td>Rendimento do aluguel ao ano</td><td>0,4–0,6%/mês</td></tr>
+    </table>
+    <div class="formula">Cap Rate = (aluguel anual <span class="r">÷</span> valor do imóvel) × 100 &nbsp;→&nbsp; R$ 2.500/mês num imóvel de R$ 500 mil = <span class="r">6% a.a.</span></div>
+
+    <h3>Bloco B — Captação (A SUA LÍNGUA) ⭐</h3>
+    <div class="callout dica"><span class="lbl">Decore estes 6</span>Lead · CPL · Conversão · ROAS · CAC · LTV. São o coração de todo argumento de venda e de todo relatório mensal.</div>
+    <table>
+      <tr><th>Sigla</th><th>É</th><th>Fórmula</th><th>Bom número</th></tr>
+      <tr><td class="k">CPL</td><td>Custo por lead</td><td>tráfego ÷ leads</td><td>R$ 20–80</td></tr>
+      <tr><td class="k">Conversão</td><td>visitante → lead</td><td>leads ÷ visitantes</td><td>5–12%</td></tr>
+      <tr><td class="k">ROAS</td><td>retorno do anúncio</td><td>receita ÷ gasto</td><td>&gt; 3x</td></tr>
+      <tr><td class="k">CAC</td><td>custo por cliente</td><td>investido ÷ clientes</td><td>menor = melhor</td></tr>
+      <tr><td class="k">LTV</td><td>receita por cliente (SEU)</td><td>mensalidade × meses</td><td>maior = melhor</td></tr>
+      <tr><td class="k">Tempo resposta</td><td>velocidade ao lead</td><td>—</td><td>&lt; 5 min (até 9x mais conversão)</td></tr>
+    </table>
+    <div class="frase">"Você paga ~R$ 50 por lead. Se 40% vazam por falta de captura, você jogou R$ 1.200 fora esse mês. Meu sistema custa R$ 297 e salva todos."</div>
+
+    <div class="quiz">
+      <div class="qh"><span class="ic">?</span><b>Fixação — Módulo 2</b></div>
+      <div class="q"><div class="pergunta">1. CPL significa:</div>
+        <ul class="alts"><li data-l="A">Custo por lançamento</li><li data-l="B">Custo por lead (tráfego ÷ leads)</li><li data-l="C">Conversão por link</li></ul></div>
+      <div class="q"><div class="pergunta">2. Responder um lead em até 5 minutos pode aumentar a conversão em até:</div>
+        <ul class="alts"><li data-l="A">9x</li><li data-l="B">1,2x</li><li data-l="C">não muda nada</li></ul></div>
+      <div class="q"><div class="pergunta">3. (Aberta) Por que o LTV e o MRR são os números que importam pro SEU negócio (e não a venda avulsa)?</div>
+        <div class="aberta"></div></div>
+    </div>
+    <div class="footer-pg"><span>Módulo 2 · Indicadores</span><span>GA Business Insights</span></div>
+  </section>
+
+  <!-- ============ MÓDULO 3 ============ -->
+  <section class="page">
+    <div class="modhead"><span class="n">03</span><div class="eyebrow">Módulo 3</div><h2 class="mod">A ferramenta na ponta da língua</h2></div>
+    <div class="frase" style="margin-top:0">"Corretor não tem problema de atenção. Tem problema de <strong>captação</strong>."</div>
+    <p>Eles já têm seguidor, já postam, alguns já pagam tráfego. O gargalo não é aparecer — é transformar quem aparece em <strong>lead organizado que vira venda</strong>. É o buraco que você preenche.</p>
+
+    <h3>As 6 peças (com a frase de elevador de cada)</h3>
+    <div class="pecas">
+      <div class="peca"><div class="pn">01</div><h5>Bio Premium</h5><p class="frase-p">"Seu link de bio vira um cartão de visita de luxo, não um Linktree igual ao de todo mundo."</p></div>
+      <div class="peca"><div class="pn">02</div><h5>Página de Captura</h5><p class="frase-p">"O interessado preenche 3 campos e você já sabe o que ele quer antes do 'oi'."</p></div>
+      <div class="peca"><div class="pn">03</div><h5>CRM de 1 toque</h5><p class="frase-p">"Cada lead salvo numa base sua, gerenciada do celular com um toque. Sem planilha."</p></div>
+      <div class="peca"><div class="pn">04</div><h5>Avisos automáticos</h5><p class="frase-p">"Lead novo te cutuca na hora. E de manhã você sabe quem está esfriando."</p></div>
+      <div class="peca"><div class="pn">05</div><h5>Catálogo</h5><p class="frase-p">"Seus destaques numa vitrine; quem clica já chega dizendo qual imóvel quer."</p></div>
+      <div class="peca"><div class="pn">06</div><h5>Identidade própria</h5><p class="frase-p">"Tudo com a sua cara, num nível visual que passa autoridade."</p></div>
+    </div>
+
+    <h3>O argumento central: o balde furado 🪣</h3>
+    <div class="barra"><div class="lb"><span>R$ 3.000/mês de tráfego SEM sistema de captação</span><span>~38%</span></div><div class="track"><div class="fill perde">vaza o resto</div></div></div>
+    <div class="barra"><div class="lb"><span>Mesmo tráfego COM o sistema (+ R$ 297/mês)</span><span>~100%</span></div><div class="track"><div class="fill ganha">capturado</div></div></div>
+    <p style="font-size:9.5pt;margin-top:3mm"><strong>Roteiro (5 passos):</strong> 1) "Você gasta R$ 2-4 mil/mês em tráfego." → 2) "Esse lead cai onde?" → 3) "Sem captura, 30-40% vazam — você pagou por cada um." → 4) "Meu sistema é o balde sem furo, custa 1/10 do que você já gasta." → 5) "Não é gasto a mais. É impedir o que você já gasta de vazar."</p>
+
+    <div class="footer-pg"><span>Módulo 3 · A ferramenta</span><span>GA Business Insights</span></div>
+  </section>
+
+  <section class="page">
+    <h3>A stack (explicada pra leigo)</h3>
+    <table>
+      <tr><th>Camada</th><th>Ferramenta</th><th>Como você explica</th></tr>
+      <tr><td class="k">Site</td><td>Netlify</td><td>"Servidor grátis, rápido e seguro."</td></tr>
+      <tr><td class="k">Banco</td><td>Google Sheets</td><td>"Seus leads na SUA conta Google."</td></tr>
+      <tr><td class="k">Cérebro</td><td>Apps Script</td><td>"Recebe o lead, salva e te avisa."</td></tr>
+      <tr><td class="k">Painel</td><td>Web App</td><td>"Seu CRM no celular, abre como app."</td></tr>
+    </table>
+    <div class="callout dica"><span class="lbl">Custo de infra por cliente</span><strong>R$ 0.</strong> Você cobra recorrência sobre custo zero — margem quase 100%. É por isso que o negócio escala.</div>
+
+    <h3>Land &amp; Expand (sua estratégia de crescimento)</h3>
+    <div class="box">
+      <p style="margin:0"><strong>PORTA</strong> (fácil de vender) → Sistema de captação · R$ 147–297/mês</p>
+      <p style="text-align:center;color:#999;margin:2mm 0">▼ cliente vê os leads caindo organizados, confia ▼</p>
+      <p style="margin:0"><strong>LUCRO</strong> (onde o mercado JÁ gasta) → Gestão de tráfego + sistema · R$ 1.500–3.000/mês</p>
+    </div>
+    <p>Você entra barato, prova valor, e faz upsell pra gestão de tráfego — onde está o dinheiro grande e onde o corretor <strong>já tem o hábito de pagar</strong>. Não educa ninguém a investir; só oferece fazer melhor.</p>
+
+    <h3>Pitch de elevador (30s — decore)</h3>
+    <div class="frase">"Sabe quando você posta, a galera curte, manda DM… e some? Montei um sistema que transforma esse movimento em lead salvo. O cara clica no seu link, preenche 3 campos, cai no seu WhatsApp já dizendo o que procura — e fica gravado numa base sua, com aviso na hora. É um balde sem furo pra tudo que seu Instagram e seu tráfego já trazem. A Juliana Alves já usa. Quer ver?"</div>
+
+    <div class="callout alerta"><span class="lbl">Postura — leia antes de cada reunião</span>Você é <strong>consultor de captação e dados</strong>, não designer. Não fale de "fazer site", "deixar bonito", "cores". Fale de <strong>lead, vazamento, conversão, ROI, funil</strong>. Quando perguntarem "quanto custa o site?", responda: <em>"não é site — é o sistema que impede seu tráfego de vazar."</em> O preço acompanha a percepção. Designer compete por R$; consultor cobra por resultado.</div>
+
+    <div class="footer-pg"><span>Módulo 3 · A ferramenta</span><span>GA Business Insights</span></div>
+  </section>
+
+  <!-- ============ QUIZ FINAL ============ -->
+  <section class="page">
+    <div class="eyebrow">Avaliação final</div>
+    <h2 class="mod">Quiz do Consultor</h2>
+    <p class="lead">Responda sem consultar. Se travar em alguma, releia o módulo — é exatamente onde você gaguejaria numa venda.</p>
+    <div class="quiz">
+      <div class="q"><div class="pergunta">1. Complete o posicionamento: "Eu não vendo ______. Vendo ______ e ______."</div><div class="aberta"></div></div>
+      <div class="q"><div class="pergunta">2. O tráfego pago é seu concorrente ou seu aliado? Justifique em 1 frase.</div>
+        <ul class="alts"><li data-l="A">Concorrente — disputo o mesmo orçamento</li><li data-l="B">Aliado — meu sistema impede o tráfego dele de vazar, e viro upsell</li></ul></div>
+      <div class="q"><div class="pergunta">3. Cite 3 das 6 peças do sistema e a frase de elevador de uma delas.</div><div class="aberta"></div></div>
+      <div class="q"><div class="pergunta">4. Um corretor diz "já tenho o site da imobiliária". Qual sua resposta?</div><div class="aberta"></div></div>
+      <div class="q"><div class="pergunta">5. Por que o custo de infra por cliente ser R$ 0 é estratégico pro SEU negócio?</div>
+        <ul class="alts"><li data-l="A">Porque posso cobrar mais caro</li><li data-l="B">Porque a margem é quase 100% e o negócio escala sem custo crescente</li><li data-l="C">Porque o cliente não percebe valor</li></ul></div>
+    </div>
+    <div class="footer-pg"><span>Quiz do Consultor</span><span>GA Business Insights</span></div>
+  </section>
+
+  <!-- ============ GABARITO ============ -->
+  <section class="page">
+    <div class="eyebrow">Gabarito comentado</div>
+    <h2 class="mod">Respostas</h2>
+    <div class="gab">
+      <h4>Módulo 1</h4>
+      <div class="g"><b>1 → B.</b> A construtora paga a comissão e o estoque vem pronto — o corretor não precisa captar imóvel, só vender.</div>
+      <div class="g"><b>2 → B.</b> Topo e meio: atenção → lead → atendimento. É onde mais se perde dinheiro e onde seu sistema atua.</div>
+      <div class="g"><b>3 →</b> Perde <b>30–40%</b>, por não registrar o lead e não fazer follow-up. O sistema captura automaticamente, avisa na hora e mostra quem está esfriando — fechando o vazamento.</div>
+      <h4>Módulo 2</h4>
+      <div class="g"><b>1 → B.</b> Custo Por Lead = investimento em tráfego ÷ nº de leads.</div>
+      <div class="g"><b>2 → A.</b> Até <b>9x</b> mais conversão respondendo em ≤ 5 min. Por isso o aviso instantâneo é decisivo.</div>
+      <div class="g"><b>3 →</b> Porque você não vende uma vez (venda avulsa), vende <b>todo mês</b> (recorrência). LTV alto + MRR previsível = negócio que cresce e vale mais. Custo de infra zero amplifica isso.</div>
+      <h4>Quiz final</h4>
+      <div class="g"><b>1 →</b> "Não vendo <b>sites</b>. Vendo <b>captação</b> e <b>dados</b>."</div>
+      <div class="g"><b>2 → B.</b> Aliado. O tráfego traz o lead; seu sistema impede que ele vaze — e o plano Gestão ainda vira upsell.</div>
+      <div class="g"><b>3 →</b> Qualquer 3: Bio Premium, Captura, CRM de 1 toque, Avisos, Catálogo, Identidade. (frases no Módulo 3)</div>
+      <div class="g"><b>4 →</b> "Perfeito, continua usando — aquele é da imobiliária e trabalha pra ela. Esse é a SUA marca pessoal e a base de leads fica com você, mesmo se trocar de imobiliária."</div>
+      <div class="g"><b>5 → B.</b> Margem quase 100% sobre custo zero = escala sem custo crescente. Cada cliente novo é quase lucro puro.</div>
+    </div>
+    <div class="frase" style="margin-top:8mm">Acertou tudo sem consultar? Você está pronto pra sentar na frente de qualquer corretor — não como quem faz site, mas como quem entende do negócio dele melhor que ele.</div>
+    <div class="footer-pg"><span>Gabarito</span><span>GA Business Insights</span></div>
+  </section>
+
+  <!-- ============ CONTRACAPA ============ -->
+  <section class="page dark cover">
+    <div class="brand">GA Business Insights</div>
+    <div class="mid">
+      <p class="sub" style="font-size:9pt;color:#888;letter-spacing:2px;text-transform:uppercase">Lembre-se sempre</p>
+      <h1 style="font-size:34pt">Like não vira<br>comissão.<br><em>Lead</em> vira.</h1>
+      <p class="sub">E quem captura lead com método não é designer. É consultor.</p>
+    </div>
+    <div class="foot">Gabriel Arcanjo · GA Business Insights · Palmas — TO · Inteligência de captação</div>
+  </section>
+
+</body>
+</html>

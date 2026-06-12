@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Juliana Alves · Seu imóvel em Palmas</title>
+<meta name="description" content="Encontre seu imóvel em Palmas com a Juliana Alves. Lançamentos e revenda de alto padrão. CRECI 5377.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--preto:#0c0c0c;--branco:#f5f5f5;--cinza:#9a9a9a;--linha:rgba(255,255,255,.16);--wa:#25D366}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Inter',sans-serif;background:var(--preto);color:var(--branco);line-height:1.6}
+  a{text-decoration:none}
+
+  /* HERO IMERSIVO — foto do imóvel fullscreen + form de vidro */
+  .hero{position:relative;min-height:100vh;min-height:100dvh;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:80px 20px 50px}
+  .hero .bg{position:absolute;inset:0}
+  .hero .bg img{position:relative;z-index:1;width:100%;height:100%;object-fit:cover}
+  .hero .bg::after{content:"";position:absolute;inset:0;z-index:2;background:linear-gradient(105deg,rgba(0,0,0,.9) 0%,rgba(0,0,0,.72) 38%,rgba(0,0,0,.5) 62%,rgba(0,0,0,.72) 100%)}
+
+  .topo{position:absolute;top:0;left:0;right:0;z-index:10;display:flex;justify-content:space-between;align-items:center;padding:18px 24px}
+  .topo .brand{font-family:'Cormorant Garamond',serif;font-size:20px;color:#fff}
+  .topo .brand small{display:block;font-family:'Inter';font-size:8.5px;letter-spacing:3px;color:#cfcfcf;text-transform:uppercase;margin-top:-1px}
+  .topo img{height:48px;mix-blend-mode:screen}
+
+  .hero-inner{position:relative;z-index:5;width:100%;max-width:920px;display:grid;grid-template-columns:1.05fr .95fr;gap:44px;align-items:center}
+  .hero-txt h1{font-family:'Cormorant Garamond',serif;font-size:46px;line-height:1.06;font-weight:600;margin-bottom:16px;text-shadow:0 2px 24px rgba(0,0,0,.7)}
+  .hero-txt h1 em{font-style:italic}
+  .hero-txt p{color:#f0f0f0;font-weight:400;font-size:16px;max-width:400px;margin-bottom:22px;text-shadow:0 1px 16px rgba(0,0,0,.85)}
+  .hero-txt .ju{display:flex;align-items:center;gap:13px;margin-top:6px}
+  .hero-txt .ju img{width:52px;height:52px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,.5)}
+  .hero-txt .ju b{font-size:14px;display:block}
+  .hero-txt .ju span{font-size:11px;color:#cfcfcf;letter-spacing:1px}
+
+  /* FORM DE VIDRO */
+  .glass{
+    background:rgba(15,15,15,.55);border:1px solid var(--linha);border-radius:22px;
+    padding:30px 26px;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+    box-shadow:0 30px 80px rgba(0,0,0,.45);
+  }
+  .glass h3{font-family:'Cormorant Garamond',serif;font-size:24px;margin-bottom:4px}
+  .glass .sub{color:#bdbdbd;font-size:12.5px;margin-bottom:20px}
+  .glass input,.glass select{
+    width:100%;padding:14px;margin-bottom:12px;border-radius:12px;
+    background:rgba(0,0,0,.45);border:1px solid var(--linha);color:#fff;font-size:14px;font-family:inherit;
+  }
+  .glass input::placeholder{color:#999}
+  .glass input:focus,.glass select:focus{outline:none;border-color:rgba(255,255,255,.5)}
+  .glass select option{background:#111}
+  .glass button{
+    width:100%;padding:17px;border:none;border-radius:12px;background:#fff;color:#0a0a0a;
+    font-weight:600;font-size:15px;cursor:pointer;font-family:inherit;transition:.2s;
+  }
+  .glass button:hover{background:#ddd}
+  .glass .seguro{font-size:11px;color:#999;text-align:center;margin-top:12px}
+
+  .scroll-hint{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);z-index:5;color:#bbb;font-size:10px;letter-spacing:2.5px}
+
+  /* FAIXA PROVA */
+  .prova{display:flex;justify-content:space-around;flex-wrap:wrap;gap:18px;padding:34px 22px;border-bottom:1px solid #242424;max-width:1020px;margin:0 auto}
+  .prova .item{text-align:center}
+  .prova .item b{font-family:'Cormorant Garamond',serif;font-size:32px;display:block;line-height:1}
+  .prova .item span{font-size:10px;color:var(--cinza);letter-spacing:1.5px;text-transform:uppercase}
+
+  /* DEPOIMENTO único centrado */
+  .dep{max-width:660px;margin:0 auto;text-align:center;padding:64px 24px}
+  .dep .stars{letter-spacing:3px;margin-bottom:16px}
+  .dep p{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:26px;line-height:1.4;color:#e6e6e6;margin-bottom:18px}
+  .dep .who{font-size:13px;color:var(--cinza);letter-spacing:1px}
+  .dep .who b{color:#fff}
+
+  footer{border-top:1px solid #242424;padding:30px 0;text-align:center;color:var(--cinza);font-size:12px;line-height:2}
+
+  .vtag{position:fixed;top:8px;right:8px;background:#fff;color:#000;font-size:10px;padding:4px 8px;border-radius:6px;font-family:monospace;z-index:99}
+
+  @media(max-width:820px){
+    .hero{padding:90px 18px 60px;align-items:flex-start}
+    .hero-inner{grid-template-columns:1fr;gap:26px}
+    .hero-txt h1{font-size:34px}
+    .topo img{height:40px}
+  }
+</style>
+</head>
+<body>
+
+  <div class="hero">
+    <div class="bg"><img src="capa.jpg" alt="" onerror="this.style.display='none'"></div>
+
+    <div class="topo">
+      <div class="brand">CRECI 5377<small>Palmas — Tocantins</small></div>
+    </div>
+
+    <div class="hero-inner">
+      <div class="hero-txt">
+        <h1>O imóvel certo existe. Eu encontro <em>pra você</em>.</h1>
+        <p>Lançamentos e revendas em Palmas, selecionados pro seu perfil — pra morar ou pra investir.</p>
+        <div class="ju">
+          <img src="juliana.jpg" alt="Juliana Alves" onerror="this.style.display='none'">
+          <div><b>Juliana Alves</b><span>Corretora de Imóveis · URBS Cerrado</span></div>
+        </div>
+      </div>
+
+      <div class="glass">
+        <h3>Uma seleção feita pra você</h3>
+        <div class="sub">Me conta seu momento — eu garimpo o que encaixa, sem custo.</div>
+        <form onsubmit="enviar(event)">
+          <input type="text" id="nome" placeholder="Seu nome" required>
+          <input type="tel" id="zap" placeholder="Seu WhatsApp — (63) 9____-____" required>
+          <select id="interesse">
+            <option>Apartamento para morar</option>
+            <option>Imóvel para investir / renda</option>
+            <option>Lançamento na planta</option>
+            <option>Casa / condomínio</option>
+            <option>Lote / terreno</option>
+          </select>
+          <button type="submit">Quero receber →</button>
+        </form>
+        <div class="seguro">🔒 Sem spam. Seus dados ficam só com a Juliana.</div>
+      </div>
+    </div>
+
+    <div class="scroll-hint">↓</div>
+  </div>
+
+  <div class="prova">
+    <div class="item"><b>+50</b><span>imóveis negociados</span></div>
+    <div class="item"><b>18,8k</b><span>seguidores</span></div>
+    <div class="item"><b>5★</b><span>atendimento</span></div>
+    <div class="item"><b>100%</b><span>foco em Palmas</span></div>
+  </div>
+
+  <div class="dep">
+    <div class="stars">★★★★★</div>
+    <p>"A Juliana entendeu o que eu queria em 5 minutos e me mostrou exatamente o imóvel certo. Comprei sem stress."</p>
+    <div class="who"><b>Marina C.</b> · Investidora · Palmas</div>
+  </div>
+
+  <footer>
+    <strong style="color:#f5f5f5">Juliana Alves</strong> · Corretora de Imóveis · CRECI 5377 · Palmas — TO<br>
+    <a href="https://instagram.com/juu_alves8" style="color:#bbb">@juu_alves8</a> · Parceira URBS Cerrado
+  </footer>
+
+  <script>
+    /* ======================================================================
+       CRM — cole aqui a URL do seu Web App do Apps Script (termina em /exec)
+       Enquanto estiver vazio, o lead vai só pro WhatsApp (sem gravar na base).
+       ====================================================================== */
+    var CRM_ENDPOINT = "https://script.google.com/macros/s/AKfycbxPjat7C66mU5GDRjHTMBuymxNilBvQ1pv0Jn31LXtdxwHlnI7pyPuuSqYjkS5EJwZg/exec";
+
+    // ORIGEM do visitante: ?origem= na URL (prioridade) ou normaliza o referrer
+    function paramURL(n){ var m=location.search.match(new RegExp('[?&]'+n+'=([^&]+)')); return m?decodeURIComponent(m[1].replace(/\+/g,' ')):''; }
+    function getOrigem(){
+      var o = paramURL('origem') || paramURL('utm_source');
+      if(o) return o.toLowerCase();
+      var r = (document.referrer||'').toLowerCase();
+      if(r.indexOf('instagram')>-1) return 'instagram';
+      if(r.indexOf('google')>-1)    return 'google';
+      if(r.indexOf('facebook')>-1 || r.indexOf('fb.')>-1) return 'facebook';
+      if(r && location.host && r.indexOf(location.host)>-1) return 'bio';
+      return 'direto';
+    }
+
+    // PING de visita (1 por sessão) — alimenta o BI de conversão da página
+    (function(){
+      if(!CRM_ENDPOINT) return;
+      try{
+        if(sessionStorage.getItem('jacontou')) return;
+        sessionStorage.setItem('jacontou','1');
+        var p = JSON.stringify({tipo:'visita', pagina:'investir', origem: getOrigem()});
+        if(navigator.sendBeacon){ navigator.sendBeacon(CRM_ENDPOINT, new Blob([p],{type:'text/plain;charset=UTF-8'})); }
+        else { fetch(CRM_ENDPOINT,{method:'POST',mode:'no-cors',keepalive:true,headers:{'Content-Type':'text/plain;charset=utf-8'},body:p}).catch(function(){}); }
+      }catch(err){}
+    })();
+
+    function enviar(e){
+      e.preventDefault();
+      var nome = document.getElementById('nome').value.trim();
+      var zap  = document.getElementById('zap').value.trim();
+      var inter= document.getElementById('interesse').value;
+      var btn  = e.target.querySelector('button');
+      var txtOriginal = btn.textContent;
+      btn.disabled = true; btn.textContent = 'Enviando...';
+
+      // 1) grava no CRM — sendBeacon sobrevive ao redirect (não é cancelado ao sair da página)
+      var payload = JSON.stringify({
+        nome:nome, whatsapp:zap, interesse:inter,
+        pagina:'B-imersiva',
+        origem: getOrigem()
+      });
+      var gravou = false;
+      if (CRM_ENDPOINT) {
+        try {
+          if (navigator.sendBeacon) {
+            var blob = new Blob([payload], {type:'text/plain;charset=UTF-8'});
+            gravou = navigator.sendBeacon(CRM_ENDPOINT, blob);
+          }
+        } catch(err){}
+        if (!gravou) {
+          try {
+            fetch(CRM_ENDPOINT, {
+              method:'POST', mode:'no-cors', keepalive:true,
+              headers:{'Content-Type':'text/plain;charset=utf-8'},
+              body: payload
+            }).catch(function(){});
+          } catch(err){}
+        }
+      }
+
+      // 2) abre o WhatsApp — pequeno respiro pra garantir que o beacon saiu
+      var msg = 'Oi Juliana! Sou '+nome+'. Procuro: '+inter+'. Meu WhatsApp: '+zap+' [Página B]';
+      setTimeout(function(){
+        window.location.href = 'https://wa.me/5563992226998?text='+encodeURIComponent(msg);
+        btn.disabled=false; btn.textContent=txtOriginal;
+      }, 350);
+    }
+  </script>
+</body>
+</html>

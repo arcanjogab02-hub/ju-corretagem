@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Juliana Alves · Morar e investir em Palmas</title>
+<meta name="description" content="Curadoria de imóveis de alto padrão em Palmas. Morar bem é também um bom negócio. Juliana Alves, CRECI 5377.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --preto:#0c0c0c;--carvao:#151515;--bege:#e4e4e4;--nude:#c9c9c9;
+    --dourado:#ffffff;--dourado-claro:#d9d9d9;--branco:#f5f5f5;--cinza:#8f8f8f;--linha:#242424;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{font-family:'Inter',sans-serif;background:var(--preto);color:var(--branco);line-height:1.7}
+  .serif{font-family:'Cormorant Garamond',serif}
+  a{text-decoration:none;color:inherit}
+  .container{max-width:1080px;margin:0 auto;padding:0 26px}
+
+  /* NAV minimal */
+  nav{position:absolute;top:0;left:0;right:0;z-index:30;display:flex;justify-content:space-between;align-items:center;padding:26px 30px}
+  nav .logo{font-family:'Cormorant Garamond',serif;font-size:22px;letter-spacing:1px;color:var(--branco)}
+  nav .right{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--dourado-claro)}
+
+  /* HERO fullscreen */
+  .hero{min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden;
+    background:linear-gradient(115deg,#0c0c0c 0%,#0c0c0c 42%,#1a1a1a 100%)}
+  .hero::after{content:"";position:absolute;right:0;top:0;width:46%;height:100%;
+    background:linear-gradient(160deg,#242424,#101010);border-left:1px solid var(--linha);
+    display:flex;}
+  .hero .ph-label{position:absolute;right:23%;top:50%;transform:translateY(-50%);color:#454545;font-size:13px;z-index:1;letter-spacing:2px}
+  .hero .inner{position:relative;z-index:5;max-width:620px;padding:0 30px}
+  .hero .eyebrow{color:var(--dourado-claro);letter-spacing:5px;text-transform:uppercase;font-size:12px;margin-bottom:26px}
+  .hero h1{font-family:'Cormorant Garamond',serif;font-size:67px;line-height:1.04;font-weight:600;margin-bottom:26px}
+  .hero h1 em{font-style:italic;color:var(--dourado-claro)}
+  .hero p{font-size:17px;color:var(--bege);font-weight:300;max-width:430px;margin-bottom:34px}
+  .hero .actions{display:flex;gap:16px;align-items:center}
+  .lnk-gold{background:var(--dourado);color:#0a0a0a;font-weight:500;padding:15px 30px;border-radius:2px;font-size:14px;letter-spacing:.5px}
+  .lnk-text{font-size:14px;color:var(--branco);border-bottom:1px solid var(--dourado);padding-bottom:3px}
+  .scroll{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);color:var(--cinza);font-size:11px;letter-spacing:2px;z-index:5}
+
+  /* MANIFESTO */
+  .manifesto{padding:120px 0;text-align:center;border-bottom:1px solid var(--linha)}
+  .manifesto .q{font-family:'Cormorant Garamond',serif;font-size:40px;line-height:1.3;font-weight:500;max-width:840px;margin:0 auto}
+  .manifesto .q span{color:var(--dourado-claro);font-style:italic}
+  .manifesto .sign{margin-top:34px;color:var(--cinza);font-size:13px;letter-spacing:2px;text-transform:uppercase}
+
+  /* SECAO split */
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:0;align-items:stretch;border-bottom:1px solid var(--linha)}
+  .split .txt{padding:96px 70px}
+  .split .eyebrow{color:var(--dourado-claro);letter-spacing:4px;text-transform:uppercase;font-size:11px;margin-bottom:20px}
+  .split h2{font-family:'Cormorant Garamond',serif;font-size:42px;line-height:1.1;margin-bottom:22px}
+  .split p{color:var(--bege);font-weight:300;font-size:15.5px;margin-bottom:16px}
+  .split .vis{background:linear-gradient(160deg,#222222,#101010);display:flex;align-items:center;justify-content:center;color:#454545;font-size:13px;letter-spacing:2px;min-height:480px}
+
+  /* REGIOES */
+  .regioes{padding:110px 0}
+  .head-c{text-align:center;margin-bottom:60px}
+  .head-c .eyebrow{color:var(--dourado-claro);letter-spacing:4px;text-transform:uppercase;font-size:11px}
+  .head-c h2{font-family:'Cormorant Garamond',serif;font-size:46px;margin-top:12px}
+  .reg-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--linha)}
+  .reg{background:var(--carvao);aspect-ratio:3/4;position:relative;display:flex;align-items:flex-end;overflow:hidden;transition:.3s}
+  .reg:hover{background:#181818}
+  .reg .bg{position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,.85));z-index:1}
+  .reg .label{position:relative;z-index:2;padding:28px}
+  .reg .label small{color:var(--dourado-claro);font-size:11px;letter-spacing:2px;text-transform:uppercase}
+  .reg .label h3{font-family:'Cormorant Garamond',serif;font-size:27px;margin-top:4px}
+  .reg .ph{position:absolute;top:20px;left:20px;color:#383838;font-size:11px;z-index:2}
+
+  /* SOBRE */
+  .sobre{border-top:1px solid var(--linha);border-bottom:1px solid var(--linha);display:grid;grid-template-columns:.9fr 1.1fr}
+  .sobre .foto{background:linear-gradient(160deg,#222222,#101010);min-height:520px;display:flex;align-items:center;justify-content:center;color:#454545;font-size:13px;letter-spacing:2px}
+  .sobre .txt{padding:96px 70px}
+  .sobre .eyebrow{color:var(--dourado-claro);letter-spacing:4px;text-transform:uppercase;font-size:11px;margin-bottom:18px}
+  .sobre h2{font-family:'Cormorant Garamond',serif;font-size:40px;margin-bottom:20px}
+  .sobre p{color:var(--bege);font-weight:300;margin-bottom:16px}
+  .sobre .creci{margin-top:24px;color:var(--cinza);font-size:13px;letter-spacing:1px}
+
+  /* CTA */
+  .cta{text-align:center;padding:120px 0;background:radial-gradient(circle at 50% 100%,#1a1a1a,#0c0c0c 60%)}
+  .cta .eyebrow{color:var(--dourado-claro);letter-spacing:4px;text-transform:uppercase;font-size:11px}
+  .cta h2{font-family:'Cormorant Garamond',serif;font-size:52px;margin:14px 0 22px}
+  .cta p{color:var(--bege);font-weight:300;max-width:480px;margin:0 auto 36px}
+  .cta a{background:var(--dourado);color:#0a0a0a;font-weight:500;padding:18px 44px;border-radius:2px;font-size:15px;letter-spacing:.5px;display:inline-block}
+
+  footer{padding:46px 0;text-align:center;color:var(--cinza);font-size:12px;letter-spacing:1px;line-height:2;border-top:1px solid var(--linha)}
+  footer a{color:var(--dourado-claro)}
+  .note{position:fixed;top:8px;right:8px;background:#fff;color:#000;font-size:10px;padding:4px 8px;border-radius:6px;font-family:monospace;z-index:99}
+  .float{position:fixed;bottom:24px;right:24px;z-index:60;background:var(--dourado);color:#0a0a0a;padding:14px 24px;border-radius:50px;font-size:13px;font-weight:500;letter-spacing:.5px;box-shadow:0 10px 30px rgba(0,0,0,.5)}
+
+  @media(max-width:860px){
+    .hero::after{display:none}.hero .ph-label{display:none}
+    .hero h1{font-size:44px}
+    .split,.sobre{grid-template-columns:1fr}
+    .split .txt,.sobre .txt{padding:60px 30px}
+    .split .vis,.sobre .foto{min-height:300px}
+    .reg-grid{grid-template-columns:1fr}
+    .manifesto .q,.cta h2{font-size:32px}
+  }
+</style>
+</head>
+<body>
+  <div class="note">MODELO 3 · EDITORIAL</div>
+
+  <nav>
+    <div class="logo">Juliana Alves</div>
+    <div class="right">Palmas · TO</div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="ph-label">[ FOTO DA JULIANA / IMÓVEL ]</div>
+    <div class="inner">
+      <div class="eyebrow">Corretora de Imóveis · CRECI 5377</div>
+      <h1>Morar bem é,<br>antes de tudo,<br>um <em>bom negócio</em>.</h1>
+      <p>Curadoria de imóveis de alto padrão em Palmas — para quem entende que a melhor decisão de vida também é a melhor decisão financeira.</p>
+      <div class="actions">
+        <a class="lnk-gold" href="https://wa.me/55639XXXXXXXX" target="_blank">Conversar com a Juliana</a>
+        <a class="lnk-text" href="#imoveis">Ver curadoria</a>
+      </div>
+    </div>
+    <div class="scroll">↓ ROLE PARA DESCOBRIR</div>
+  </header>
+
+  <!-- MANIFESTO -->
+  <section class="manifesto">
+    <div class="container">
+      <p class="q">"O imóvel que você <span>não</span> comprou em 2021 vale o dobro hoje. O de hoje vale o dobro em <span>2030</span>. Meu trabalho é te colocar do lado certo dessa conta."</p>
+      <div class="sign">— Juliana Alves</div>
+    </div>
+  </section>
+
+  <!-- SPLIT 1 -->
+  <section class="split">
+    <div class="txt">
+      <div class="eyebrow">A diferença</div>
+      <h2>Eu mostro o negócio. Não vendo o sonho.</h2>
+      <p>A maioria te empurra um anúncio. Eu te mostro os bastidores: a visita de verdade, o que valoriza, o que pesa na revenda, onde está o dinheiro escondido em cada metro quadrado.</p>
+      <p>Você decide com informação — e dorme tranquilo sabendo que fez um bom negócio.</p>
+    </div>
+    <div class="vis">[ FOTO · VISITA / BASTIDOR ]</div>
+  </section>
+
+  <!-- SPLIT 2 invertido -->
+  <section class="split">
+    <div class="vis">[ FOTO · IMÓVEL DE ALTO PADRÃO ]</div>
+    <div class="txt">
+      <div class="eyebrow">O acesso</div>
+      <h2>Os melhores lançamentos chegam primeiro em mim.</h2>
+      <p>Pela parceria com a URBS Cerrado, acompanho os lançamentos de Palmas desde a planta. As unidades mais bem posicionadas costumam sair antes de virarem anúncio público.</p>
+      <p>Estar perto de mim é estar na frente.</p>
+    </div>
+  </section>
+
+  <!-- REGIOES -->
+  <section class="regioes" id="imoveis">
+    <div class="container">
+      <div class="head-c">
+        <div class="eyebrow">Onde investir</div>
+        <h2>Palmas por região</h2>
+      </div>
+      <div class="reg-grid">
+        <div class="reg"><span class="ph">[ foto ]</span><div class="bg"></div><div class="label"><small>Valorização</small><h3>Plano Diretor Sul</h3></div></div>
+        <div class="reg"><span class="ph">[ foto ]</span><div class="bg"></div><div class="label"><small>Lançamentos</small><h3>Orla / Graciosa</h3></div></div>
+        <div class="reg"><span class="ph">[ foto ]</span><div class="bg"></div><div class="label"><small>Alto padrão</small><h3>Condomínios</h3></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOBRE -->
+  <section class="sobre">
+    <div class="foto">[ RETRATO DA JULIANA ]</div>
+    <div class="txt">
+      <div class="eyebrow">Quem te atende</div>
+      <h2>Juliana Alves</h2>
+      <p>Corretora de imóveis em Palmas, estudante de Direito e apaixonada pelo que faz. Construí uma comunidade de quase 19 mil pessoas mostrando a corretagem como ela é de verdade — sem filtro de guru, com gente real comprando imóvel de verdade.</p>
+      <p>Meu compromisso: você comprar bem, comprar seguro e fazer um negócio que te orgulha lá na frente.</p>
+      <div class="creci">CRECI 5377 · Palmas — Tocantins · @juu_alves8</div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta">
+    <div class="container">
+      <div class="eyebrow">O próximo passo é uma conversa</div>
+      <h2>Vamos encontrar<br>o seu imóvel?</h2>
+      <p>Me conta o que você procura. Em minutos te mando uma curadoria feita para o seu perfil — para morar ou para investir.</p>
+      <a href="https://wa.me/55639XXXXXXXX?text=Oi%20Juliana!%20Quero%20uma%20curadoria%20de%20im%C3%B3veis%20em%20Palmas." target="_blank">Falar com a Juliana</a>
+    </div>
+  </section>
+
+  <footer>
+    JULIANA ALVES · CORRETORA DE IMÓVEIS · CRECI 5377<br>
+    Palmas — Tocantins · <a href="https://instagram.com/juu_alves8">@juu_alves8</a> · <a href="https://instagram.com/urbscerrado">URBS Cerrado</a>
+  </footer>
+
+  <a class="float" href="https://wa.me/55639XXXXXXXX" target="_blank">Conversar →</a>
+</body>
+</html>

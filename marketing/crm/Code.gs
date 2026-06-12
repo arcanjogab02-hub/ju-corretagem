@@ -1,0 +1,593 @@
+/**
+ * CRM Juliana Alves — Google Sheets + Apps Script  (v2 — Painel de Ação)
+ * =====================================================================
+ * A planilha é só o motor (banco). Toda a gestão acontece no WEB APP:
+ *   - feed de cards mobile
+ *   - muda etapa com 1 toque (Novo → Conversando → Visita → Fechado/Perdido)
+ *   - "Responder" abre o WhatsApp do lead E marca "Conversando" sozinho
+ *   - resumo diário no WhatsApp da Ju
+ * Ninguém precisa abrir a planilha.
+ *
+ * Depois de colar/editar este código: Implantar → Gerenciar implantações →
+ * ✏ editar → Versão: Nova → Implementar (a URL /exec continua a mesma).
+ */
+
+var ABA_LEADS   = 'Leads';
+var ABA_PAINEL  = 'Painel';
+var ABA_VISITAS = 'Visitas';
+
+var COLUNAS = ['Data/Hora','Nome','WhatsApp','Interesse','Página','Origem','Status','Observações'];
+// 4 etapas + Perdido
+var STATUS_LISTA = ['Novo','Conversando','Visita','Fechado','Perdido'];
+var STATUS_CORES = {Novo:'#ffffff', Conversando:'#cfe0ff', Visita:'#ffe9bf', Fechado:'#c8f7d8', Perdido:'#e0e0e0'};
+var INTERESSES = [
+  'Apartamento para morar',
+  'Imóvel para investir / renda',
+  'Lançamento na planta',
+  'Casa / condomínio',
+  'Lote / terreno'
+];
+
+/* ====================== NOTIFICAÇÃO / LEMBRETE ======================
+ * E-MAIL: automático (vazio = e-mail dono do script).
+ * WHATSAPP (notificação de lead novo + resumo diário) via CallMeBot:
+ *   No WhatsApp, adicione +34 644 51 95 23, mande "I allow callmebot to
+ *   send me messages", e o bot te devolve a apikey.
+ * =================================================================== */
+var EMAIL_NOTIFICACAO = '';   // ex: 'juliana@gmail.com'
+var CALLMEBOT_PHONE   = '';   // ex: '5563992226998'  (quem recebe os avisos)
+var CALLMEBOT_APIKEY  = '';   // apikey do CallMeBot
+
+/* ============================ ENTRADA DE LEAD ============================ */
+function doPost(e){
+  var lock = LockService.getScriptLock();
+  lock.tryLock(10000);
+  try {
+    var dados = {};
+    try { dados = JSON.parse(e.postData.contents); } catch(err){ dados = e.parameter || {}; }
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+
+    // PING de visita (não é lead) → registra na aba Visitas e encerra
+    if (dados.tipo === 'visita') {
+      var shv = ss.getSheetByName(ABA_VISITAS) || criaAbaVisitas(ss);
+      shv.appendRow([ new Date(), (dados.pagina||'').toString().substring(0,30), (dados.origem||'direto').toString().substring(0,120) ]);
+      return ContentService.createTextOutput(JSON.stringify({ok:true,tipo:'visita'})).setMimeType(ContentService.MimeType.JSON);
+    }
+
+    var sh = ss.getSheetByName(ABA_LEADS) || criaAbaLeads(ss);
+    var agora = new Date();
+    sh.appendRow([
+      agora,
+      (dados.nome||'').toString().substring(0,80),
+      (dados.whatsapp||'').toString().substring(0,30),
+      (dados.interesse||'').toString().substring(0,60),
+      (dados.pagina||'').toString().substring(0,30),
+      (dados.origem||'').toString().substring(0,120),
+      'Novo',
+      ''
+    ]);
+    try { notificar(dados, agora); } catch(errN){}
+    return ContentService.createTextOutput(JSON.stringify({ok:true})).setMimeType(ContentService.MimeType.JSON);
+  } catch(err){
+    return ContentService.createTextOutput(JSON.stringify({ok:false, erro:String(err)})).setMimeType(ContentService.MimeType.JSON);
+  } finally { lock.releaseLock(); }
+}
+
+/* ====================== AÇÕES DO PAINEL (1 toque) ====================== */
+function atualizarStatus(linha, status){
+  if (STATUS_LISTA.indexOf(status) < 0) return false;
+  SpreadsheetApp.getActiveSpreadsheet().getSheetByName(ABA_LEADS).getRange(linha, 7).setValue(status);
+  return true;
+}
+function salvarNota(linha, nota){
+  SpreadsheetApp.getActiveSpreadsheet().getSheetByName(ABA_LEADS).getRange(linha, 8).setValue((nota||'').toString().substring(0,300));
+  return true;
+}
+function lerLeads(){
+  var sh = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(ABA_LEADS);
+  if (!sh) return [];
+  var vals = sh.getDataRange().getValues();
+  var out = [];
+  for (var i=1; i<vals.length; i++){
+    var r = vals[i];
+    if (!r[1] && !r[2]) continue;
+    out.push({
+      linha: i+1,
+      data: r[0] ? new Date(r[0]).getTime() : 0,
+      nome: (r[1]||'(sem nome)').toString(),
+      zap: (r[2]||'').toString(),
+      zapLimpo: limpaZap(r[2]),
+      interesse: (r[3]||'—').toString(),
+      origem: (r[5]||'direto').toString(),
+      status: (r[6]||'Novo').toString(),
+      nota: (r[7]||'').toString()
+    });
+  }
+  return out;
+}
+
+function lerVisitas(){
+  var sh = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(ABA_VISITAS);
+  if (!sh) return [];
+  var vals = sh.getDataRange().getValues();
+  var out = [];
+  for (var i=1; i<vals.length; i++){
+    if (!vals[i][0]) continue;
+    out.push({ data: new Date(vals[i][0]).getTime(), pagina: (vals[i][1]||'').toString(), origem: (vals[i][2]||'direto').toString() });
+  }
+  return out;
+}
+
+/* ====================== BI DA PÁGINA (automático) ====================== */
+function calcularBI(leads, visitas){
+  var tz = Session.getScriptTimeZone();
+  function dia(ms){ return Utilities.formatDate(new Date(ms), tz, 'dd/MM'); }
+  var totalV = visitas.length, totalL = leads.length;
+  var conv = totalV ? Math.round((totalL/totalV)*1000)/10 : 0;
+
+  // série dos últimos 14 dias
+  var hoje = new Date(), serie = [], idx = {};
+  for (var d=13; d>=0; d--){
+    var k = Utilities.formatDate(new Date(hoje.getTime()-d*86400000), tz, 'dd/MM');
+    idx[k] = serie.length; serie.push({dia:k, v:0, l:0});
+  }
+  function bump(ms, campo){ var k = dia(ms); if (idx[k]!==undefined) serie[idx[k]][campo]++; }
+  visitas.forEach(function(x){ bump(x.data,'v'); });
+  leads.forEach(function(x){ bump(x.data,'l'); });
+
+  // por origem (visitas e leads) e por interesse (leads)
+  var porOrigem = {}, porInteresse = {};
+  visitas.forEach(function(x){ var o=x.origem||'direto'; (porOrigem[o]=porOrigem[o]||{v:0,l:0}).v++; });
+  leads.forEach(function(x){ var o=x.origem||'direto'; (porOrigem[o]=porOrigem[o]||{v:0,l:0}).l++; });
+  leads.forEach(function(x){ var i=x.interesse||'—'; porInteresse[i]=(porInteresse[i]||0)+1; });
+
+  return { totalV:totalV, totalL:totalL, conv:conv, serie:serie, porOrigem:porOrigem, porInteresse:porInteresse };
+}
+
+function limpaZap(s){
+  var d = (s||'').toString().replace(/\D/g,'');
+  if (!d) return '';
+  if (d.length <= 11) d = '55' + d;       // sem código do país → adiciona 55
+  if (d.indexOf('55') !== 0) d = '55' + d;
+  return d;
+}
+
+/* ============================ PAINEL WEB (app) ============================ */
+function doGet(e){
+  var leads = lerLeads();
+  var visitas = lerVisitas();
+  var bi = calcularBI(leads, visitas);
+  var html = APP_HTML()
+    .replace('__DADOS__', function(){ return JSON.stringify(leads); })
+    .replace('__BI__', function(){ return JSON.stringify(bi); })
+    .replace('__STATUS__', function(){ return JSON.stringify(STATUS_LISTA); })
+    .replace('__CORES__', function(){ return JSON.stringify(STATUS_CORES); });
+  return HtmlService.createHtmlOutput(html)
+    .setTitle('CRM · Juliana Alves')
+    .addMetaTag('viewport','width=device-width, initial-scale=1');
+}
+
+function APP_HTML(){
+  return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,Segoe UI,Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
+body{background:#0c0c0c;color:#f5f5f5;padding:16px 12px 80px}
+.wrap{max-width:560px;margin:0 auto}
+h1{font-size:19px;font-weight:600}h1 small{display:block;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#8f8f8f;font-weight:400;margin-top:3px}
+.resumo{display:flex;gap:10px;margin:16px 0}
+.rc{flex:1;background:#161616;border:1px solid #262626;border-radius:12px;padding:13px}
+.rc b{font-size:24px;display:block;line-height:1}.rc span{font-size:10px;letter-spacing:.5px;text-transform:uppercase;color:#8f8f8f}
+.filtros{display:flex;gap:8px;margin-bottom:14px;overflow-x:auto}
+.filtros button{background:#161616;border:1px solid #262626;color:#cfcfcf;padding:9px 15px;border-radius:50px;font-size:13px;white-space:nowrap;cursor:pointer}
+.filtros button.on{background:#fff;color:#0a0a0a;border-color:#fff;font-weight:600}
+.card{background:#161616;border:1px solid #262626;border-radius:16px;padding:16px;margin-bottom:12px}
+.card.frio{border-color:#5a2d2d}
+.top{display:flex;align-items:center;gap:9px;margin-bottom:3px}
+.dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.nome{font-size:17px;font-weight:600;flex:1}
+.idade{font-size:12px;color:#8f8f8f}
+.inter{font-size:13px;color:#bdbdbd;margin:2px 0 0 18px}
+.resp{display:flex;align-items:center;justify-content:center;gap:8px;background:#25D366;color:#06310f;text-decoration:none;font-weight:600;font-size:14.5px;padding:12px;border-radius:11px;margin:13px 0 11px}
+.resp svg{width:17px;height:17px;fill:#06310f}
+.etapas{display:flex;gap:6px;flex-wrap:wrap}
+.etapas .et{flex:1;min-width:60px;text-align:center;background:#1c1c1c;border:1px solid #2a2a2a;color:#bdbdbd;font-size:11.5px;padding:8px 4px;border-radius:9px;cursor:pointer}
+.etapas .et.sel{background:#fff;color:#0a0a0a;border-color:#fff;font-weight:700}
+.nota{margin-top:10px;display:flex;gap:7px;align-items:center}
+.nota input{flex:1;background:#101010;border:1px solid #262626;color:#f5f5f5;border-radius:9px;padding:9px 11px;font-size:13px}
+.nota button{background:#262626;border:none;color:#ccc;border-radius:9px;padding:9px 12px;font-size:12px;cursor:pointer}
+.vazio{text-align:center;color:#5a5a5a;padding:50px 20px;font-size:14px}
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#fff;color:#000;padding:11px 20px;border-radius:50px;font-size:13px;font-weight:600;opacity:0;transition:.3s;pointer-events:none;z-index:99}
+.toast.show{opacity:1}
+.rfr{position:fixed;top:14px;right:14px;background:#161616;border:1px solid #262626;color:#ccc;width:38px;height:38px;border-radius:50%;font-size:16px;cursor:pointer}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:14px 0}
+.kpi{background:#161616;border:1px solid #262626;border-radius:12px;padding:13px}
+.kpi b{font-size:23px;display:block;line-height:1}.kpi span{font-size:9.5px;letter-spacing:.5px;text-transform:uppercase;color:#8f8f8f}
+.kpi.hl b{color:#25D366}
+.abas{display:flex;gap:8px;margin-bottom:16px}
+.abas button{flex:1;background:#161616;border:1px solid #262626;color:#cfcfcf;padding:11px;border-radius:11px;font-size:13px;font-weight:500;cursor:pointer}
+.abas button.on{background:#fff;color:#0a0a0a;border-color:#fff;font-weight:700}
+.secao{margin-bottom:24px}
+.secao h3{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#8f8f8f;margin-bottom:12px}
+.chart{display:flex;align-items:flex-end;gap:3px;height:120px}
+.col{flex:1;height:100%;display:flex;align-items:flex-end}
+.col .bar{width:100%;background:#242424;border-radius:3px 3px 0 0;position:relative;min-height:2px}
+.col .bar .lead{position:absolute;bottom:0;left:0;right:0;background:#25D366;border-radius:0 0 3px 3px}
+.chart-x{display:flex;gap:3px;margin-top:5px}
+.chart-x span{flex:1;text-align:center;font-size:8px;color:#6a6a6a;overflow:hidden}
+.legenda{display:flex;gap:16px;font-size:10.5px;color:#8f8f8f;margin-top:10px}
+.legenda i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:5px;vertical-align:middle}
+.brow{display:flex;align-items:center;gap:9px;margin-bottom:9px;font-size:12px}
+.brow .bl{width:135px;color:#cfcfcf;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brow .bt{flex:1;height:7px;background:#222;border-radius:50px;overflow:hidden}
+.brow .bf{display:block;height:100%;background:#fff;border-radius:50px}
+.brow b{width:26px;text-align:right}
+/* contextual (mobile) */
+.acx{margin-top:12px}
+.bigwa{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;border:none;border-radius:11px;padding:13px;font-size:14.5px;font-weight:600;cursor:pointer;background:#25D366;color:#06310f;text-decoration:none}
+.bigp{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;border:none;border-radius:11px;padding:12px;font-size:14px;font-weight:600;cursor:pointer;background:#fff;color:#0a0a0a;margin-top:8px}
+.ctx-sec{display:flex;gap:8px;margin-top:8px}
+.ctx-sec button{flex:1;background:#1c1c1c;border:1px solid #2a2a2a;color:#cfcfcf;border-radius:9px;padding:10px;font-size:12.5px;cursor:pointer}
+.ctx-sec .ok{color:#7fd4a8}.ctx-sec .no{color:#cf8a8a}
+.ctx-hint{font-size:11px;color:#6a6a6a;margin-top:8px;text-align:center;font-style:italic}
+.ctx-est{color:#8f8f8f}
+/* kanban (desktop) */
+.board{display:flex;gap:10px;overflow-x:auto;padding-bottom:8px}
+.kcol{flex:0 0 230px;background:#111;border:1px solid #1f1f1f;border-radius:13px;padding:10px}
+.kbar{height:3px;border-radius:50px;margin:0 4px 9px}
+.kh{display:flex;justify-content:space-between;align-items:center;padding:0 4px 9px}
+.kh b{font-size:12px}.kh span{font-size:10px;color:#8f8f8f;background:#1c1c1c;border-radius:50px;padding:2px 9px}
+.kcard{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:10px;padding:11px;margin-bottom:8px}
+.kcard.frio{border-color:#5a2d2d}
+.kn{font-size:13px;font-weight:600}.ki{font-size:10.5px;color:#9a9a9a;margin:2px 0 8px}
+.kwa{display:block;text-align:center;background:#16301f;color:#7fd4a8;text-decoration:none;border-radius:7px;padding:6px;font-size:11px;margin-bottom:7px}
+.kmv{display:flex;gap:6px}.kmv button{flex:1;background:#262626;border:none;color:#cfcfcf;border-radius:7px;padding:7px;font-size:15px;cursor:pointer}
+.kmv button:disabled{opacity:.25;cursor:default}
+.kempty{font-size:10px;color:#5a5a5a;text-align:center;padding:12px}
+/* tamanho do ícone WhatsApp nos botões */
+.bigwa svg{width:17px;height:17px;fill:#06310f;flex-shrink:0}
+.kwa svg{width:12px;height:12px;fill:#7fd4a8;vertical-align:-2px;margin-right:3px}
+/* DESKTOP — painel largo + kanban ocupa a tela */
+@media(min-width:760px){
+  body{padding:20px 20px 60px}
+  .wrap{max-width:1160px}
+  h1,.kpis,.abas{max-width:600px;margin-left:auto;margin-right:auto}
+  #viewDesempenho{max-width:720px;margin:0 auto}
+  .kcol{flex:1 1 0;min-width:0}
+  .board{overflow-x:visible}
+}
+</style></head><body>
+<button class="rfr" onclick="location.reload()">⟳</button>
+<div class="wrap">
+  <h1>CRM · Juliana<small>Desempenho da captação + seus leads</small></h1>
+  <div class="kpis" id="kpis"></div>
+  <div class="abas">
+    <button id="ab-desempenho" class="on" onclick="trocaAba('desempenho')">📊 Desempenho</button>
+    <button id="ab-leads" onclick="trocaAba('leads')">📇 Leads</button>
+  </div>
+  <div id="viewDesempenho"></div>
+  <div id="viewLeads" style="display:none">
+    <div class="filtros" id="filtros"></div>
+    <div id="lista"></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+var LEADS = __DADOS__;
+var BI = __BI__;
+var STATUS = __STATUS__;
+var CORES = __CORES__;
+var FILTRO = 'ativos';
+var ABA = 'desempenho';
+var WA = '<svg viewBox="0 0 24 24"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.07-.3-.15-1.26-.46-2.39-1.47-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.61.13-.13.3-.35.44-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48 0 1.46 1.07 2.88 1.21 3.07.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2-1.41.25-.7.25-1.29.18-1.41-.08-.12-.27-.2-.57-.35M12.05 21.78h-.01a9.87 9.87 0 01-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 01-1.51-5.26c0-5.45 4.44-9.88 9.89-9.88 2.64 0 5.12 1.03 6.99 2.9a9.82 9.82 0 012.89 6.99c0 5.45-4.44 9.88-9.88 9.88M20.46 3.49A11.81 11.81 0 0012.05 0C5.5 0 .16 5.34.16 11.89c0 2.1.55 4.14 1.59 5.95L.06 24l6.3-1.65a11.88 11.88 0 005.69 1.45h.01c6.55 0 11.89-5.34 11.89-11.89 0-3.18-1.24-6.17-3.49-8.42"/></svg>';
+
+function idade(ms){
+  if(!ms) return '';
+  var min = Math.floor((Date.now()-ms)/60000);
+  if(min<60) return 'há '+Math.max(1,min)+' min';
+  var h = Math.floor(min/60); if(h<24) return 'há '+h+'h';
+  var d = Math.floor(h/24); if(d===1) return 'ontem';
+  return 'há '+d+' dias';
+}
+function frio(l){
+  var h=(Date.now()-l.data)/3600000;
+  return (l.status==='Novo'&&h>20)||(l.status==='Conversando'&&h>72);
+}
+function prio(s){return STATUS.indexOf(s);}
+function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function toast(t){var e=document.getElementById('toast');e.textContent=t;e.className='toast show';setTimeout(function(){e.className='toast';},1600);}
+
+function trocaAba(a){
+  ABA=a;
+  document.getElementById('ab-desempenho').className = a==='desempenho'?'on':'';
+  document.getElementById('ab-leads').className = a==='leads'?'on':'';
+  document.getElementById('viewDesempenho').style.display = a==='desempenho'?'':'none';
+  document.getElementById('viewLeads').style.display = a==='leads'?'':'none';
+}
+
+/* ---- DESEMPENHO (BI da página, automático) ---- */
+function renderKPIs(){
+  document.getElementById('kpis').innerHTML=
+    '<div class="kpi"><b>'+BI.totalV+'</b><span>Visitas</span></div>'+
+    '<div class="kpi"><b>'+BI.totalL+'</b><span>Leads</span></div>'+
+    '<div class="kpi hl"><b>'+BI.conv+'%</b><span>Conversão</span></div>';
+}
+function barrasMapa(mapa, comConv){
+  var keys=[],k; for(k in mapa) keys.push(k);
+  function val(x){ return comConv ? (mapa[x].l||0) : mapa[x]; }
+  keys.sort(function(a,b){return val(b)-val(a);});
+  var max=1,i; for(i=0;i<keys.length;i++) if(val(keys[i])>max) max=val(keys[i]);
+  var h='';
+  for(i=0;i<keys.length;i++){
+    var v=val(keys[i]); var pct=Math.round(v/max*100); var extra='';
+    if(comConv){ var vis=mapa[keys[i]].v||0; var c=vis?Math.round(mapa[keys[i]].l/vis*100):0; extra=' <span style="color:#6a6a6a">('+vis+' vis · '+c+'%)</span>'; }
+    h+='<div class="brow"><span class="bl">'+esc(keys[i])+extra+'</span><span class="bt"><span class="bf" style="width:'+pct+'%"></span></span><b>'+v+'</b></div>';
+  }
+  return h || '<div style="color:#5a5a5a;font-size:12px">Sem dados ainda</div>';
+}
+function renderDesempenho(){
+  var s=BI.serie, maxV=1, i;
+  for(i=0;i<s.length;i++) if(s[i].v>maxV) maxV=s[i].v;
+  var bars='', xs='';
+  for(i=0;i<s.length;i++){
+    var hv=Math.max(Math.round(s[i].v/maxV*100),2);
+    var hl=s[i].v?Math.round(s[i].l/s[i].v*100):0;
+    bars+='<div class="col"><div class="bar" style="height:'+hv+'%"><div class="lead" style="height:'+hl+'%"></div></div></div>';
+    xs+='<span>'+((i%2)?'':s[i].dia)+'</span>';
+  }
+  document.getElementById('viewDesempenho').innerHTML=
+    '<div class="secao"><h3>Visitas e leads · últimos 14 dias</h3>'+
+      '<div class="chart">'+bars+'</div><div class="chart-x">'+xs+'</div>'+
+      '<div class="legenda"><span><i style="background:#242424"></i>visitas</span><span><i style="background:#25D366"></i>viraram lead</span></div></div>'+
+    '<div class="secao"><h3>Por origem (de onde vêm)</h3>'+barrasMapa(BI.porOrigem,true)+'</div>'+
+    '<div class="secao"><h3>Leads por interesse</h3>'+barrasMapa(BI.porInteresse,false)+'</div>';
+}
+
+/* ---- LEADS (operacional, 1 toque) ---- */
+function setStatus(linha,status){
+  var L; for(var i=0;i<LEADS.length;i++){if(LEADS[i].linha===linha)L=LEADS[i];}
+  if(!L)return; L.status=status;
+  google.script.run.atualizarStatus(linha,status);
+  toast('Movido para "'+status+'"'); renderLeads();
+}
+function responder(linha){
+  var L; for(var i=0;i<LEADS.length;i++){if(LEADS[i].linha===linha)L=LEADS[i];}
+  if(L&&L.status==='Novo'){L.status='Conversando';google.script.run.atualizarStatus(linha,'Conversando');renderLeads();}
+}
+function nota(linha){
+  var v=document.getElementById('nota'+linha).value;
+  google.script.run.salvarNota(linha,v); toast('Anotação salva');
+}
+function ehDesktop(){ return window.innerWidth >= 760; }
+function renderLeads(){
+  if(ehDesktop()){ document.getElementById('filtros').style.display='none'; renderKanban(); }
+  else { document.getElementById('filtros').style.display=''; renderContextual(); }
+}
+function mover(linha,dir){
+  var L; for(var i=0;i<LEADS.length;i++){if(LEADS[i].linha===linha)L=LEADS[i];}
+  if(!L)return; var idx=STATUS.indexOf(L.status); var n=idx+dir;
+  if(n>=0 && n<STATUS.length) setStatus(linha, STATUS[n]);
+}
+
+/* MOBILE — ação contextual (só o próximo passo) */
+function renderContextual(){
+  var fs=[['ativos','A trabalhar'],['Visita','Visita'],['fechados','Fechados'],['todos','Todos']];
+  var fh='';for(var f=0;f<fs.length;f++){fh+='<button class="'+(FILTRO===fs[f][0]?'on':'')+'" onclick="FILTRO=\\''+fs[f][0]+'\\';renderLeads()">'+fs[f][1]+'</button>';}
+  document.getElementById('filtros').innerHTML=fh;
+  var arr=LEADS.filter(function(l){
+    if(FILTRO==='ativos')return l.status!=='Fechado'&&l.status!=='Perdido';
+    if(FILTRO==='fechados')return l.status==='Fechado'||l.status==='Perdido';
+    if(FILTRO==='todos')return true;
+    return l.status===FILTRO;
+  });
+  arr.sort(function(a,b){var p=prio(a.status)-prio(b.status);return p!==0?p:a.data-b.data;});
+  if(!arr.length){document.getElementById('lista').innerHTML='<div class="vazio">Nenhum lead aqui. 🎯</div>';return;}
+  var html='';
+  for(var k=0;k<arr.length;k++){
+    var l=arr[k];var c=CORES[l.status]||'#fff';var fr=frio(l);
+    var wa=l.zapLimpo?'<a class="bigwa" href="https://wa.me/'+l.zapLimpo+'" target="_blank" rel="noopener" onclick="responder('+l.linha+')">'+WA+' Responder no WhatsApp</a>':'';
+    var acao;
+    if(l.status==='Novo'){
+      acao='<div class="acx">'+wa+'<div class="ctx-hint">ao responder, vira "Conversando" sozinho</div></div>';
+    } else if(l.status==='Conversando'){
+      acao='<div class="acx">'+wa+'<button class="bigp" onclick="setStatus('+l.linha+',\\'Visita\\')">📅 Marcou visita</button><div class="ctx-sec"><button class="ok" onclick="setStatus('+l.linha+',\\'Fechado\\')">✓ Fechou</button><button class="no" onclick="setStatus('+l.linha+',\\'Perdido\\')">✕ Não rolou</button></div></div>';
+    } else if(l.status==='Visita'){
+      acao='<div class="acx">'+wa+'<button class="bigp" style="background:#25D366;color:#06310f" onclick="setStatus('+l.linha+',\\'Fechado\\')">✓ Fechou o negócio</button><div class="ctx-sec"><button class="no" onclick="setStatus('+l.linha+',\\'Perdido\\')">✕ Não rolou</button></div></div>';
+    } else {
+      acao='<div class="acx"><div class="ctx-hint">'+(l.status==='Fechado'?'🎉 Negócio fechado':'Lead perdido')+' — <span onclick="setStatus('+l.linha+',\\'Conversando\\')" style="color:#9a9a9a;text-decoration:underline;cursor:pointer">reabrir</span></div></div>';
+    }
+    html+='<div class="card'+(fr?' frio':'')+'">'+
+      '<div class="top"><span class="dot" style="background:'+c+'"></span><span class="nome">'+esc(l.nome)+'</span><span class="idade">'+(fr?'🔴 ':'')+idade(l.data)+'</span></div>'+
+      '<div class="inter">'+esc(l.interesse)+' · <span class="ctx-est">'+l.status+'</span></div>'+acao+
+      '<div class="nota"><input id="nota'+l.linha+'" placeholder="Anotação rápida…" value="'+esc(l.nota)+'"><button onclick="nota('+l.linha+')">Salvar</button></div></div>';
+  }
+  document.getElementById('lista').innerHTML=html;
+}
+
+/* DESKTOP — kanban (pipeline) */
+function renderKanban(){
+  var html='<div class="board">';
+  for(var s=0;s<STATUS.length;s++){
+    var st=STATUS[s];var c=CORES[st]||'#fff';
+    var arr=LEADS.filter(function(l){return l.status===st;});
+    arr.sort(function(a,b){return b.data-a.data;});
+    var cards='';
+    for(var k=0;k<arr.length;k++){
+      var l=arr[k];var fr=frio(l);
+      var wa=l.zapLimpo?'<a class="kwa" href="https://wa.me/'+l.zapLimpo+'" target="_blank" rel="noopener" onclick="responder('+l.linha+')">'+WA+' responder</a>':'';
+      cards+='<div class="kcard'+(fr?' frio':'')+'"><div class="kn">'+(fr?'🔴 ':'')+esc(l.nome)+'</div><div class="ki">'+esc(l.interesse)+' · '+idade(l.data)+'</div>'+wa+
+        '<div class="kmv"><button onclick="mover('+l.linha+',-1)" '+(s===0?'disabled':'')+'>‹</button><button onclick="mover('+l.linha+',1)" '+(s===STATUS.length-1?'disabled':'')+'>›</button></div></div>';
+    }
+    html+='<div class="kcol"><div class="kbar" style="background:'+c+'"></div><div class="kh"><b>'+st+'</b><span>'+arr.length+'</span></div>'+(cards||'<div class="kempty">vazio</div>')+'</div>';
+  }
+  document.getElementById('lista').innerHTML=html+'</div>';
+}
+
+var _desk = ehDesktop();
+window.addEventListener('resize', function(){ var n=ehDesktop(); if(n!==_desk){ _desk=n; renderLeads(); } });
+renderKPIs(); renderDesempenho(); renderLeads();
+</script></body></html>`;
+}
+
+/* ====================== NOTIFICAÇÃO + RESUMO DIÁRIO ====================== */
+function notificar(dados, quando){
+  var nome=(dados.nome||'(sem nome)').toString(), inter=(dados.interesse||'—').toString(), pag=(dados.pagina||'—').toString();
+  var zapRaw=(dados.whatsapp||'').toString(), zap=limpaZap(zapRaw), waLink=zap?'https://wa.me/'+zap:'';
+  var quandoTxt=Utilities.formatDate(quando, Session.getScriptTimeZone(), 'dd/MM/yyyy HH:mm');
+  var dest=EMAIL_NOTIFICACAO||Session.getEffectiveUser().getEmail();
+  if(dest){
+    MailApp.sendEmail({to:dest, subject:'🔔 Novo lead: '+nome+' — '+inter, htmlBody:
+      '<div style="font-family:Arial,sans-serif;max-width:480px;border:1px solid #eee;border-radius:12px;overflow:hidden">'+
+      '<div style="background:#0c0c0c;color:#fff;padding:18px 22px"><h2 style="margin:0;font-size:18px">Novo lead da Juliana 🎯</h2><p style="margin:4px 0 0;color:#aaa;font-size:12px">'+quandoTxt+'</p></div>'+
+      '<table style="width:100%;font-size:15px;line-height:1.9;padding:18px 22px"><tr><td style="color:#888;width:90px">Nome</td><td><b>'+nome+'</b></td></tr>'+
+      '<tr><td style="color:#888">WhatsApp</td><td>'+zapRaw+'</td></tr><tr><td style="color:#888">Procura</td><td>'+inter+'</td></tr>'+
+      '<tr><td style="color:#888">Página</td><td>'+pag+'</td></tr></table>'+
+      (waLink?'<div style="padding:0 22px 22px"><a href="'+waLink+'" style="display:inline-block;background:#25D366;color:#06310f;padding:13px 26px;border-radius:8px;text-decoration:none;font-weight:bold">Responder no WhatsApp →</a></div>':'')+
+      '</div>'});
+  }
+  if(CALLMEBOT_PHONE&&CALLMEBOT_APIKEY){
+    var msg='🔔 Novo lead\n'+nome+'\n'+inter+'\nWhats: '+zapRaw+'\nPágina: '+pag;
+    UrlFetchApp.fetch('https://api.callmebot.com/whatsapp.php?phone='+CALLMEBOT_PHONE+'&text='+encodeURIComponent(msg)+'&apikey='+CALLMEBOT_APIKEY, {muteHttpExceptions:true});
+  }
+}
+
+function resumoDiario(){
+  var leads=lerLeads(), agora=Date.now(), nv=0, parados=0;
+  for(var i=0;i<leads.length;i++){
+    var l=leads[i];
+    if(l.status==='Novo')nv++;
+    if((l.status==='Novo'||l.status==='Conversando') && (agora-l.data)>3*86400000) parados++;
+  }
+  var url=''; try{url=ScriptApp.getService().getUrl()||'';}catch(e){}
+  var msg='Bom dia! ☀️\n'+nv+' lead(s) novo(s) e '+parados+' parado(s) +3 dias esperando resposta.'+(url?'\nAbrir painel: '+url:'');
+  if(CALLMEBOT_PHONE&&CALLMEBOT_APIKEY){
+    UrlFetchApp.fetch('https://api.callmebot.com/whatsapp.php?phone='+CALLMEBOT_PHONE+'&text='+encodeURIComponent(msg)+'&apikey='+CALLMEBOT_APIKEY, {muteHttpExceptions:true});
+  } else {
+    MailApp.sendEmail(Session.getEffectiveUser().getEmail(), '☀️ Resumo diário — CRM Juliana', msg);
+  }
+}
+
+/** Rode 1x pra ligar o lembrete diário (8h). */
+function ativarLembreteDiario(){
+  ScriptApp.getProjectTriggers().forEach(function(t){ if(t.getHandlerFunction()==='resumoDiario') ScriptApp.deleteTrigger(t); });
+  ScriptApp.newTrigger('resumoDiario').timeBased().atHour(8).everyDays(1).create();
+  SpreadsheetApp.getUi().alert('✅ Lembrete diário ligado!\nTodo dia às 8h a Ju recebe o resumo dos leads.');
+}
+
+/** Rode 1x pra testar a notificação (e autorizar o e-mail). */
+function testarNotificacao(){
+  notificar({nome:'Lead de Teste', whatsapp:'63 99222-6998', interesse:'Imóvel para investir / renda', pagina:'teste'}, new Date());
+  SpreadsheetApp.getUi().alert('✅ Notificação de teste enviada!\nConfira o e-mail (e o WhatsApp, se configurou o CallMeBot).');
+}
+
+/**
+ * Rode pra encher o painel com 13 leads FICTÍCIOS e validar o CRM.
+ * Não envia e-mail/WhatsApp (só popula a planilha). Depois, use limparTeste() pra apagar.
+ */
+function popularTeste(){
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sh = ss.getSheetByName(ABA_LEADS) || criaAbaLeads(ss);
+  var agora = Date.now();
+  function quando(h){ return new Date(agora - h*3600000); }
+  // [horas atrás, nome, whatsapp, interesse, origem, status, nota]
+  var dados = [
+    [0.25, 'Marina Costa',        '(63) 99812-3344', 'Imóvel para investir / renda', 'instagram', 'Novo', ''],
+    [1.5,  'Rafael Andrade',      '(63) 99654-7788', 'Apartamento para morar',       'instagram', 'Novo', ''],
+    [5,    'Vanessa Lopes',       '(63) 99811-2255', 'Lançamento na planta',         'instagram', 'Novo', ''],
+    [9,    'Juliana Menezes',     '(63) 99201-5566', 'Lançamento na planta',         'direto',    'Novo', ''],
+    [27,   'Carlos Eduardo Lima', '(63) 99488-1290', 'Casa / condomínio',            'instagram', 'Novo', ''],
+    [8,    'Patrícia Souza',      '(63) 99745-3321', 'Imóvel para investir / renda', 'instagram', 'Conversando', 'Quer 2 quartos, até 600k'],
+    [31,   'Bruno Tavares',       '(63) 99633-8890', 'Apartamento para morar',       'direto',    'Conversando', 'Mandei 3 opções, aguardando resposta'],
+    [82,   'Fernanda Ribeiro',    '(63) 99102-4455', 'Lote / terreno',               'instagram', 'Conversando', 'Sumiu — fazer follow-up'],
+    [49,   'Anderson Pires',      '(63) 99877-1234', 'Lançamento na planta',         'instagram', 'Visita', 'Visita marcada sábado 10h'],
+    [73,   'Camila Nogueira',     '(63) 99566-7001', 'Apartamento para morar',       'direto',    'Visita', 'Gostou do 204 Sul'],
+    [122,  'Diego Martins',       '(63) 99344-2211', 'Imóvel para investir / renda', 'instagram', 'Fechado', 'Fechou apê 204 Sul 🎉'],
+    [205,  'Letícia Barros',      '(63) 99788-9900', 'Casa / condomínio',            'indicação', 'Fechado', 'Comprou casa na Graciosa'],
+    [98,   'Marcelo Dias',        '(63) 99455-6677', 'Lote / terreno',               'instagram', 'Perdido', 'Achou caro, comprou com outro']
+  ];
+  dados.forEach(function(d){
+    sh.appendRow([ quando(d[0]), d[1], d[2], d[3], 'B-imersiva', d[4], d[5], d[6] ]);
+  });
+
+  // visitas fictícias (~95) pra dar uma taxa de conversão realista (~14%)
+  var shv = ss.getSheetByName(ABA_VISITAS) || criaAbaVisitas(ss);
+  var origens = ['instagram','instagram','instagram','direto','indicação']; // instagram domina
+  var porDia = [4,6,9,7,11,8,13,10,6,9,12,7,5,8]; // últimos 14 dias (hoje = índice 13)
+  for (var dd = 13; dd >= 0; dd--){
+    var qtd = porDia[13-dd];
+    for (var k = 0; k < qtd; k++){
+      var hora = dd*24 + (k*1.7 % 23); // espalha no dia
+      shv.appendRow([ quando(hora), 'investir', origens[(dd+k) % origens.length] ]);
+    }
+  }
+  SpreadsheetApp.getUi().alert('✅ 13 leads + ~118 visitas fictícias adicionados!\nAbra o painel (/exec) → aba Desempenho pra ver o BI. Pra limpar: rode limparTeste().');
+}
+
+/** Apaga TODOS os leads E visitas (mantém os cabeçalhos). Use pra limpar os fictícios. */
+function limparTeste(){
+  [ABA_LEADS, ABA_VISITAS].forEach(function(nome){
+    var sh = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(nome);
+    if (sh){ var n = sh.getLastRow(); if (n > 1) sh.getRange(2,1,n-1,sh.getLastColumn()).clearContent(); }
+  });
+  SpreadsheetApp.getUi().alert('🧹 Leads e visitas limpos. Pronto pros dados reais.');
+}
+
+/* ============================ SETUP (rodar 1x) ============================ */
+function setup(){
+  var ss=SpreadsheetApp.getActiveSpreadsheet();
+  var leads=ss.getSheetByName(ABA_LEADS)||criaAbaLeads(ss);
+  criaAbaVisitas(ss);
+  montaPainel(ss, leads);
+  SpreadsheetApp.getUi().alert('✅ CRM configurado!\n\nAbas "Leads" e "Painel" prontas.\n\nPróximo: Implantar → App da Web. A gestão é toda no painel web (não na planilha).');
+}
+
+function criaAbaVisitas(ss){
+  var sh = ss.getSheetByName(ABA_VISITAS);
+  if (!sh) sh = ss.insertSheet(ABA_VISITAS);
+  if (sh.getLastRow() === 0){
+    sh.getRange(1,1,1,3).setValues([['Data/Hora','Página','Origem']])
+      .setBackground('#0c0c0c').setFontColor('#fff').setFontWeight('bold').setFontSize(11);
+    sh.setFrozenRows(1);
+    sh.setColumnWidth(1,140); sh.setColumnWidth(2,120); sh.setColumnWidth(3,160);
+  }
+  return sh;
+}
+
+function criaAbaLeads(ss){
+  var sh=ss.getSheetByName(ABA_LEADS); if(!sh) sh=ss.insertSheet(ABA_LEADS,0);
+  sh.clear();
+  sh.getRange(1,1,1,COLUNAS.length).setValues([COLUNAS]).setBackground('#0c0c0c').setFontColor('#fff').setFontWeight('bold').setFontSize(11);
+  sh.setFrozenRows(1);
+  var larg=[130,160,140,190,110,150,130,240]; for(var c=0;c<larg.length;c++) sh.setColumnWidth(c+1,larg[c]);
+  sh.getRange(2,7,2000,1).setDataValidation(SpreadsheetApp.newDataValidation().requireValueInList(STATUS_LISTA,true).build());
+  var regras=STATUS_LISTA.map(function(st){
+    return SpreadsheetApp.newConditionalFormatRule().whenTextEqualTo(st).setBackground(STATUS_CORES[st]).setRanges([sh.getRange(2,7,2000,1)]).build();
+  });
+  sh.setConditionalFormatRules(regras);
+  return sh;
+}
+
+function montaPainel(ss, leads){
+  var sh=ss.getSheetByName(ABA_PAINEL); if(!sh) sh=ss.insertSheet(ABA_PAINEL);
+  sh.clear(); sh.getCharts().forEach(function(c){sh.removeChart(c);});
+  sh.getRange('B2').setValue('PAINEL — CRM JULIANA ALVES').setFontSize(16).setFontWeight('bold');
+  sh.getRange('B3').setValue('A gestão do dia a dia é no painel web. Aqui é só o resumo.').setFontColor('#888').setFontSize(10);
+  sh.getRange('B5').setValue('RESUMO').setFontWeight('bold').setFontColor('#666');
+  var resumo=[['Total de leads','=COUNTA(Leads!B2:B)'],['Leads (7 dias)','=COUNTIFS(Leads!A2:A,">="&(TODAY()-7))'],
+    ['Novos (a contatar)','=COUNTIF(Leads!G2:G,"Novo")'],['Em conversa','=COUNTIF(Leads!G2:G,"Conversando")'],
+    ['Visitas','=COUNTIF(Leads!G2:G,"Visita")'],['Fechados','=COUNTIF(Leads!G2:G,"Fechado")'],
+    ['Taxa de fechamento','=IFERROR(COUNTIF(Leads!G2:G,"Fechado")/COUNTA(Leads!B2:B),0)']];
+  sh.getRange(6,2,resumo.length,2).setValues(resumo);
+  sh.getRange(6,2,resumo.length,1).setFontWeight('bold');
+  sh.getRange(12,3).setNumberFormat('0%');
+  sh.getRange('B15').setValue('POR INTERESSE').setFontWeight('bold').setFontColor('#666');
+  var ti=INTERESSES.map(function(it){return [it,'=COUNTIF(Leads!D2:D,"'+it+'")'];});
+  sh.getRange(16,2,ti.length,2).setValues(ti);
+  var baseS=16+INTERESSES.length+2;
+  sh.getRange(baseS-1,2).setValue('FUNIL (POR ETAPA)').setFontWeight('bold').setFontColor('#666');
+  var tsv=STATUS_LISTA.map(function(st){return [st,'=COUNTIF(Leads!G2:G,"'+st+'")'];});
+  sh.getRange(baseS,2,tsv.length,2).setValues(tsv);
+  sh.insertChart(sh.newChart().asPieChart().addRange(sh.getRange(16,2,INTERESSES.length,2)).setPosition(5,5,0,0).setOption('title','Leads por interesse').setOption('width',440).setOption('height',280).setOption('pieHole',0.4).build());
+  sh.insertChart(sh.newChart().asColumnChart().addRange(sh.getRange(baseS,2,STATUS_LISTA.length,2)).setPosition(20,5,0,0).setOption('title','Funil por etapa').setOption('width',440).setOption('height',280).setOption('legend',{position:'none'}).build());
+  sh.setColumnWidth(2,180); sh.setColumnWidth(3,90);
+  return sh;
+}

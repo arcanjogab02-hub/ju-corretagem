@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Like não vira comissão. Lead vira. · GA Business Insights</title>
+<meta name="description" content="Bio premium + página de captura + CRM de 1 toque para corretores de imóveis. O lead cai no seu WhatsApp e numa base que ninguém te tira. Uma venda paga o ano inteiro.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--preto:#0c0c0c;--card:#131313;--linha:#262626;--branco:#f5f5f5;--cinza:#8f8f8f;--wa:#25D366}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{font-family:'Inter',sans-serif;background:var(--preto);color:var(--branco);line-height:1.65;
+    background-image:radial-gradient(circle at 15% 5%, #161616 0%, transparent 40%),radial-gradient(circle at 85% 95%, #141414 0%, transparent 40%);background-attachment:fixed}
+  a{text-decoration:none}
+  .container{max-width:1020px;margin:0 auto;padding:0 22px}
+  section{padding:64px 0}
+  .serif{font-family:'Cormorant Garamond',serif}
+
+  header{position:sticky;top:0;z-index:50;background:rgba(12,12,12,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--linha)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:62px}
+  .brand{font-weight:700;font-size:14px;letter-spacing:1.5px}
+  .brand small{display:block;font-weight:400;font-size:9px;letter-spacing:2px;color:var(--cinza);text-transform:uppercase;margin-top:-2px}
+  .nav-cta{background:var(--branco);color:#0a0a0a;font-weight:600;font-size:13px;padding:10px 20px;border-radius:50px;transition:.2s}
+  .nav-cta:hover{background:#ddd}
+
+  /* HERO — shader de ondas + moldura dupla */
+  .hero{position:relative;min-height:calc(100vh - 62px);min-height:calc(100dvh - 62px);display:flex;align-items:center;justify-content:center;overflow:hidden;padding:50px 18px;background:#000}
+  #shader{position:absolute;inset:0;width:100%;height:100%;display:block;opacity:.9}
+  .hero::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 30%,rgba(0,0,0,.5) 100%);pointer-events:none}
+  .frame{position:relative;z-index:5;width:100%;max-width:780px;border:1px solid #27272a;padding:9px;background:rgba(8,8,8,.25);backdrop-filter:blur(2px)}
+  .frame-in{border:1px solid #27272a;padding:54px 26px;text-align:center}
+  .hero .tag{font-size:10.5px;letter-spacing:4px;text-transform:uppercase;color:var(--cinza);margin-bottom:20px}
+  .hero h1{font-family:'Inter',sans-serif;font-weight:800;letter-spacing:-.04em;font-size:clamp(2.1rem,6.6vw,4.6rem);line-height:1.02;margin-bottom:16px}
+  .hero h1 em{font-style:normal;color:transparent;-webkit-text-stroke:1.5px #f5f5f5}
+  .hero p{color:rgba(255,255,255,.62);font-weight:300;font-size:clamp(13px,1.7vw,16.5px);max-width:520px;margin:0 auto}
+  .disp{display:flex;align-items:center;justify-content:center;gap:8px;margin:26px 0 28px}
+  .disp .ping{position:relative;width:12px;height:12px;display:flex;align-items:center;justify-content:center}
+  .disp .ping::before{content:"";position:absolute;width:12px;height:12px;border-radius:50%;background:var(--wa);opacity:.75;animation:ping 1.6s cubic-bezier(0,0,.2,1) infinite}
+  .disp .ping::after{content:"";position:relative;width:7px;height:7px;border-radius:50%;background:var(--wa)}
+  @keyframes ping{75%,100%{transform:scale(2.2);opacity:0}}
+  .disp span{font-size:12px;color:var(--wa);letter-spacing:.5px}
+  .hero .ctas{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+  .cta-wa{display:inline-flex;align-items:center;gap:10px;background:var(--wa);color:#06310f;font-weight:600;font-size:15px;padding:16px 34px;border-radius:50px;transition:.25s}
+  .cta-wa:hover{transform:scale(1.04)}
+  /* botão de vidro líquido (port CSS) */
+  .cta-glass{position:relative;display:inline-flex;align-items:center;gap:8px;color:var(--branco);font-weight:500;font-size:15px;padding:16px 32px;border-radius:50px;background:rgba(255,255,255,.06);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);transition:.3s;
+    box-shadow:0 0 6px rgba(0,0,0,.1),0 2px 6px rgba(0,0,0,.18),inset 3px 3px .5px -3.5px rgba(255,255,255,.1),inset -3px -3px .5px -3.5px rgba(255,255,255,.55),inset 1px 1px 1px -.5px rgba(255,255,255,.5),inset -1px -1px 1px -.5px rgba(255,255,255,.5),inset 0 0 6px 6px rgba(255,255,255,.08),0 0 12px rgba(255,255,255,.1)}
+  .cta-glass:hover{transform:scale(1.05);box-shadow:0 0 6px rgba(0,0,0,.1),0 2px 10px rgba(0,0,0,.25),inset 3px 3px .5px -3.5px rgba(255,255,255,.12),inset -3px -3px .5px -3.5px rgba(255,255,255,.7),inset 1px 1px 1px -.5px rgba(255,255,255,.6),inset -1px -1px 1px -.5px rgba(255,255,255,.6),inset 0 0 6px 6px rgba(255,255,255,.1),0 0 18px rgba(255,255,255,.18)}
+
+  /* PROVA / CASE */
+  .case{border-top:1px solid var(--linha);border-bottom:1px solid var(--linha);background:#101010}
+  .case .container{display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:center;padding:56px 22px}
+  .case .tag{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--cinza);margin-bottom:12px}
+  .case h2{font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:600;margin-bottom:14px;line-height:1.12}
+  .case p{color:#cfcfcf;font-weight:300;font-size:15px;margin-bottom:18px}
+  .case .ver{color:var(--branco);border-bottom:1px solid #fff;padding-bottom:2px;font-size:14px}
+  .mock{background:var(--card);border:1px solid var(--linha);border-radius:22px;padding:24px;text-align:center}
+  .mock .ph{aspect-ratio:9/13;border-radius:14px;background:linear-gradient(165deg,#1d1d1d,#101010);border:1px solid #222;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:#4a4a4a;font-size:12px;letter-spacing:1px}
+  .mock .ph b{color:#777;font-size:13px}
+
+  /* O QUE ENTREGA */
+  .stitle{text-align:center;margin-bottom:44px}
+  .stitle .tag{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--cinza)}
+  .stitle h2{font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:600;margin-top:8px}
+  .stitle p{color:var(--cinza);font-weight:300;margin-top:8px;max-width:520px;margin-left:auto;margin-right:auto}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .feat{background:var(--card);border:1px solid var(--linha);border-radius:16px;padding:26px 22px}
+  .feat .n{font-family:'Cormorant Garamond',serif;font-size:14px;color:#777;margin-bottom:10px}
+  .feat h4{font-family:'Cormorant Garamond',serif;font-size:21px;margin-bottom:8px}
+  .feat p{font-size:13.5px;color:var(--cinza);font-weight:300}
+
+  /* ROI */
+  .roi{background:#101010;border-top:1px solid var(--linha);border-bottom:1px solid var(--linha)}
+  .roi-box{max-width:720px;margin:0 auto;text-align:center}
+  .roi-box h2{font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:600;margin-bottom:26px}
+  .conta{background:var(--card);border:1px solid var(--linha);border-radius:18px;padding:30px;text-align:left;font-size:15px}
+  .conta .linha-c{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid #1f1f1f;color:#cfcfcf}
+  .conta .linha-c b{color:var(--branco)}
+  .conta .total{display:flex;justify-content:space-between;padding:16px 0 4px;font-size:17px}
+  .conta .total b{color:var(--wa);font-size:21px}
+  .roi-frase{margin-top:22px;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:21px;color:#dcdcdc}
+
+  /* BALDE FURADO */
+  .balde{background:#0a0a0a;border-top:1px solid var(--linha);border-bottom:1px solid var(--linha)}
+  .balde .grid-b{display:grid;grid-template-columns:1.1fr .9fr;gap:46px;align-items:center}
+  .balde .tag{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--cinza);margin-bottom:14px}
+  .balde h2{font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:600;line-height:1.1;margin-bottom:18px}
+  .balde h2 em{font-style:italic;color:transparent;-webkit-text-stroke:1px #f5f5f5}
+  .balde p{color:#cfcfcf;font-weight:300;font-size:15.5px;margin-bottom:16px}
+  .balde .destaque{color:var(--branco);font-weight:500}
+  .vaza{background:var(--card);border:1px solid var(--linha);border-radius:18px;padding:26px}
+  .vaza .topo-v{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--cinza);margin-bottom:16px}
+  .vaza .barra{margin-bottom:16px}
+  .vaza .barra .lb{display:flex;justify-content:space-between;font-size:13px;margin-bottom:7px}
+  .vaza .barra .lb b{color:var(--branco)}
+  .vaza .track{height:9px;background:#2a1a1a;border-radius:50px;overflow:hidden}
+  .vaza .fill{height:100%;border-radius:50px}
+  .vaza .fill.perde{background:#7a3a3a;width:38%}
+  .vaza .fill.ganha{background:var(--wa);width:100%}
+  .vaza .nota-v{font-size:12px;color:#777;margin-top:6px}
+
+  /* COMPARATIVO */
+  .tabela{overflow-x:auto}
+  table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--linha);border-radius:16px;overflow:hidden;font-size:13.5px;min-width:680px}
+  th{background:#181818;padding:15px 14px;text-align:left;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--cinza)}
+  th.dest{background:#f5f5f5;color:#0a0a0a}
+  td{padding:13px 14px;border-top:1px solid #1f1f1f;color:#cfcfcf}
+  td.dest{background:#1a1a1a;color:var(--branco);font-weight:500}
+  td .sim{color:var(--wa);font-weight:700}
+  td .nao{color:#666}
+
+  /* PLANOS */
+  .planos{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;align-items:stretch}
+  .plano{background:var(--card);border:1px solid var(--linha);border-radius:18px;padding:30px 26px;display:flex;flex-direction:column}
+  .plano.pro{border-color:#f5f5f5;position:relative}
+  .plano.pro::before{content:"MAIS ESCOLHIDO";position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:#fff;color:#000;font-size:9.5px;font-weight:700;letter-spacing:1.5px;padding:5px 14px;border-radius:50px}
+  .plano h3{font-family:'Cormorant Garamond',serif;font-size:24px}
+  .plano .preco{margin:14px 0 4px;font-size:15px;color:var(--cinza)}
+  .plano .preco b{font-size:30px;color:var(--branco);font-weight:600}
+  .plano .setup{font-size:12px;color:#777;margin-bottom:18px}
+  .plano ul{list-style:none;flex:1;margin-bottom:22px}
+  .plano li{font-size:13.5px;color:#cfcfcf;padding:7px 0;border-bottom:1px solid #1d1d1d;font-weight:300}
+  .plano li::before{content:"✓  ";color:var(--wa);font-weight:700}
+  .plano a{display:block;text-align:center;padding:14px;border-radius:50px;font-weight:600;font-size:14px;background:#1d1d1d;color:var(--branco);border:1px solid #2e2e2e;transition:.2s}
+  .plano.pro a{background:#fff;color:#0a0a0a;border-color:#fff}
+  .plano a:hover{filter:brightness(1.15)}
+  .fundador{text-align:center;margin-top:22px;font-size:13px;color:var(--cinza)}
+  .fundador b{color:#fff}
+
+  /* CTA FINAL */
+  .cta-fim{text-align:center;background:linear-gradient(160deg,#181818,#0c0c0c);border-top:1px solid var(--linha)}
+  .cta-fim h2{font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:600;margin-bottom:14px}
+  .cta-fim p{color:#cfcfcf;font-weight:300;max-width:480px;margin:0 auto 28px}
+
+  footer{padding:32px 0;text-align:center;color:var(--cinza);font-size:12px;line-height:2;border-top:1px solid var(--linha)}
+
+  @media(max-width:840px){
+    .hero h1{font-size:36px}
+    .case .container{grid-template-columns:1fr}
+    .grid3,.planos{grid-template-columns:1fr}
+    .plano.pro{order:-1}
+  }
+</style>
+</head>
+<body>
+
+  <header>
+    <div class="container nav">
+      <div class="brand">GA BUSINESS INSIGHTS<small>Sistemas de captação · Palmas — TO</small></div>
+      <a class="nav-cta" href="https://wa.me/5563981493039?text=Quero%20saber%20mais%20sobre%20o%20sistema%20de%20capta%C3%A7%C3%A3o" target="_blank">Falar comigo</a>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <div class="hero">
+    <canvas id="shader"></canvas>
+    <div class="frame">
+      <div class="frame-in">
+        <div class="tag">Para corretores de imóveis</div>
+        <h1>Like não vira comissão.<br><em>Lead</em> vira.</h1>
+        <p>Bio premium + página de captura + CRM de 1 toque, com a sua cara. O lead clica, preenche e cai direto no seu WhatsApp — e numa base que ninguém tira de você.</p>
+        <div class="disp"><span class="ping"></span><span>Aceitando 3 corretores fundadores</span></div>
+        <div class="ctas">
+          <a class="cta-wa" href="https://wa.me/5563981493039?text=Quero%20o%20sistema%20de%20capta%C3%A7%C3%A3o%20no%20meu%20Instagram" target="_blank">💬 Quero pro meu Instagram</a>
+          <a class="cta-glass" href="https://juliana-alves.netlify.app" target="_blank">Ver funcionando ao vivo →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CASE -->
+  <div class="case">
+    <div class="container">
+      <div>
+        <div class="tag">Case real · Palmas — TO</div>
+        <h2>A Juliana Alves já está captando com isso.</h2>
+        <p>Corretora com 18,8 mil seguidores. Em vez de um Linktree genérico, o link da bio dela agora é uma página premium que apresenta, qualifica e entrega o lead pronto no WhatsApp — com cada contato salvo automaticamente num painel que ela gerencia com 1 toque.</p>
+        <p>Olha com os seus olhos — abre no celular, do jeito que o seu cliente veria:</p>
+        <a class="ver" href="https://juliana-alves.netlify.app" target="_blank">juliana-alves.netlify.app →</a>
+      </div>
+      <div class="mock">
+        <div class="ph"><b>📱 Demonstração ao vivo</b><span>juliana-alves.netlify.app</span><span style="font-size:10px;color:#3a3a3a">(troque por um print/vídeo do site da Ju)</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BALDE FURADO -->
+  <section class="balde">
+    <div class="container grid-b">
+      <div>
+        <div class="tag">A conta que ninguém te fez</div>
+        <h2>Você enche o balde<br>com tráfego. E ele<br><em>vaza</em> por baixo.</h2>
+        <p>Corretor e imobiliária em Palmas gastam <span class="destaque">R$ 2.000 a R$ 4.000 por mês</span> em tráfego pago. Dinheiro bom, atraindo gente todo dia.</p>
+        <p>Só que esse lead cai onde? No WhatsApp solto, num perfil de Instagram. Sem captura, sem registro, sem follow-up — <span class="destaque">30 a 40% escorrem pelo ralo.</span> Você pagou por cada um deles.</p>
+        <p>O meu sistema é o <span class="destaque">balde sem furo</span>: tudo que o tráfego traz é capturado, salvo e organizado. Custa uma fração do que você já gasta — e faz o resto valer a pena.</p>
+      </div>
+      <div class="vaza">
+        <div class="topo-v">O que acontece com R$ 3.000/mês de tráfego</div>
+        <div class="barra">
+          <div class="lb"><span>Sem sistema de captação</span><b>~38% vira contato</b></div>
+          <div class="track"><span class="fill perde"></span></div>
+          <div class="nota-v">o resto vaza: lead não respondido, sem dado, sem remarketing</div>
+        </div>
+        <div class="barra">
+          <div class="lb"><span>Com o sistema (+ R$ 297/mês)</span><b>quase 100% capturado</b></div>
+          <div class="track"><span class="fill ganha"></span></div>
+          <div class="nota-v">cada clique vira lead salvo, com aviso e follow-up</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- O QUE ENTREGA -->
+  <section>
+    <div class="container">
+      <div class="stitle">
+        <div class="tag">O sistema completo</div>
+        <h2>Não é um site. É uma máquina de captação.</h2>
+        <p>Seis peças que trabalham juntas, 24h por dia, com a sua identidade.</p>
+      </div>
+      <div class="grid3">
+        <div class="feat"><div class="n">01</div><h4>Bio Premium</h4><p>O link da sua bio vira um cartão de luxo: sua foto, seus números, slideshow de imóveis e botões que convertem. Nada de Linktree igual ao de todo mundo.</p></div>
+        <div class="feat"><div class="n">02</div><h4>Página de Captura</h4><p>"Seleção feita pra você": o interessado preenche 3 campos e cai no seu WhatsApp com a mensagem pronta — e você descobre o que ele procura antes de responder.</p></div>
+        <div class="feat"><div class="n">03</div><h4>CRM de 1 toque</h4><p>Cada lead é salvo sozinho numa base SUA. Painel no celular: tocou em "Responder", o sistema já organiza o funil. Zero planilha, zero burocracia.</p></div>
+        <div class="feat"><div class="n">04</div><h4>Avisos automáticos</h4><p>Lead novo = aviso na hora no seu e-mail/WhatsApp. Todo dia às 8h, um resumo: quantos leads novos e quais estão esfriando. Você nunca perde o timing.</p></div>
+        <div class="feat"><div class="n">05</div><h4>Catálogo de imóveis</h4><p>Vitrine dos seus destaques com botão "Tenho interesse" que abre o WhatsApp já dizendo qual imóvel. Lead qualificado por definição.</p></div>
+        <div class="feat"><div class="n">06</div><h4>Identidade própria</h4><p>Tudo desenhado com a sua marca — foto, cores, CRECI, imobiliária. O cliente sente que está falando com um profissional de outro nível.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ROI -->
+  <section class="roi">
+    <div class="container roi-box">
+      <h2>A conta que importa</h2>
+      <div class="conta">
+        <div class="linha-c"><span>O que você já gasta em tráfego (12 meses)</span><b>R$ 24.000 — 48.000</b></div>
+        <div class="linha-c"><span>O sistema que captura esse tráfego (1 ano, Pro)</span><b>~ R$ 5.000</b></div>
+        <div class="linha-c"><span>Comissão de 1 venda (apê R$ 700 mil)</span><b>R$ 15.000 — 25.000</b></div>
+        <div class="total"><span>O sistema custa 1/5 do seu tráfego. E impede que ele vaze.</span><b>ROI 3–5x</b></div>
+      </div>
+      <p class="roi-frase">"E se trouxer uma por trimestre, ele se paga 12 vezes."</p>
+    </div>
+  </section>
+
+  <!-- COMPARATIVO -->
+  <section>
+    <div class="container">
+      <div class="stitle">
+        <div class="tag">Comparativo honesto</div>
+        <h2>Por que não usar o que já existe?</h2>
+      </div>
+      <div class="tabela">
+        <table>
+          <thead><tr>
+            <th></th><th>Linktree</th><th>Site de plataforma<br>(Tecimob etc.)</th><th>Agência<br>(landing avulsa)</th><th class="dest">Este sistema</th>
+          </tr></thead>
+          <tbody>
+            <tr><td>Visual exclusivo com sua marca</td><td><span class="nao">✕ genérico</span></td><td><span class="nao">✕ template igual pra todos</span></td><td><span class="sim">✓</span></td><td class="dest"><span class="sim">✓ desenhado pra você</span></td></tr>
+            <tr><td>Captura de lead com formulário</td><td><span class="nao">✕</span></td><td><span class="sim">✓</span></td><td><span class="sim">✓</span></td><td class="dest"><span class="sim">✓ direto no WhatsApp</span></td></tr>
+            <tr><td>CRM incluso (base é sua)</td><td><span class="nao">✕</span></td><td><span class="nao">parcial, preso à plataforma</span></td><td><span class="nao">✕</span></td><td class="dest"><span class="sim">✓ de 1 toque, no celular</span></td></tr>
+            <tr><td>Aviso de lead + resumo diário</td><td><span class="nao">✕</span></td><td><span class="nao">✕</span></td><td><span class="nao">✕</span></td><td class="dest"><span class="sim">✓ automático</span></td></tr>
+            <tr><td>Sai do ar se você cancelar?</td><td>sim</td><td>sim — e leva seus dados</td><td>não</td><td class="dest">não — o sistema é seu</td></tr>
+            <tr><td>Custo típico</td><td>R$ 25/mês</td><td>R$ 100–250/mês</td><td>R$ 2–5 mil avulso</td><td class="dest">a partir de R$ 147/mês</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- PLANOS -->
+  <section style="padding-top:0">
+    <div class="container">
+      <div class="stitle">
+        <div class="tag">Investimento</div>
+        <h2>Planos</h2>
+      </div>
+      <div class="planos">
+        <div class="plano">
+          <h3>Essencial</h3>
+          <div class="preco"><b>R$ 147</b>/mês</div>
+          <div class="setup">+ R$ 800 de implantação</div>
+          <ul>
+            <li>Bio premium com sua identidade</li>
+            <li>Página de captura no WhatsApp</li>
+            <li>CRM de 1 toque + avisos de lead</li>
+            <li>Hospedagem e manutenção</li>
+            <li>Suporte por WhatsApp</li>
+          </ul>
+          <a href="https://wa.me/5563981493039?text=Quero%20o%20plano%20Essencial" target="_blank">Começar</a>
+        </div>
+        <div class="plano pro">
+          <h3>Pro</h3>
+          <div class="preco"><b>R$ 297</b>/mês</div>
+          <div class="setup">+ R$ 1.500 de implantação</div>
+          <ul>
+            <li>Tudo do Essencial</li>
+            <li>Catálogo de imóveis atualizado por nós</li>
+            <li>Resumo diário no seu WhatsApp</li>
+            <li>Relatório mensal de leads e funil</li>
+            <li>Ajustes e melhorias contínuas</li>
+          </ul>
+          <a href="https://wa.me/5563981493039?text=Quero%20o%20plano%20Pro" target="_blank">Quero o Pro</a>
+        </div>
+        <div class="plano">
+          <h3>Gestão</h3>
+          <div class="preco"><b>sob consulta</b></div>
+          <div class="setup">para quem quer escalar</div>
+          <ul>
+            <li>Tudo do Pro</li>
+            <li>Tráfego pago (Google/Meta) apontando pra captura</li>
+            <li>Conteúdo e identidade visual</li>
+            <li>Reunião mensal de estratégia</li>
+          </ul>
+          <a href="https://wa.me/5563981493039?text=Quero%20saber%20do%20plano%20Gest%C3%A3o" target="_blank">Conversar</a>
+        </div>
+      </div>
+      <div class="fundador">🎁 <b>Condição de fundador:</b> os 3 primeiros corretores têm 50% off na implantação e preço travado por 12 meses.</div>
+    </div>
+  </section>
+
+  <!-- CTA FINAL -->
+  <section class="cta-fim">
+    <div class="container">
+      <h2>Quantos leads você perdeu<br>esse mês sem saber?</h2>
+      <p>Me chama no WhatsApp, te mostro o sistema rodando ao vivo e em até 7 dias o seu está no ar.</p>
+      <a class="cta-wa" href="https://wa.me/5563981493039?text=Quero%20ver%20o%20sistema%20de%20capta%C3%A7%C3%A3o%20funcionando" target="_blank">💬 Ver demonstração ao vivo</a>
+    </div>
+  </section>
+
+  <footer>
+    <strong style="color:#f5f5f5">GA Business Insights</strong> · Gabriel Arcanjo · Palmas — TO<br>
+    Sistemas de captação e dados para negócios locais
+  </footer>
+
+  <script>
+  /* Constelação de leads — rede de pontos que se conectam (Canvas 2D, P&B) */
+  (function(){
+    var canvas = document.getElementById('shader');
+    if (!canvas) return;
+    var ctx = canvas.getContext('2d');
+    if (!ctx) { canvas.style.display = 'none'; return; }
+
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var W = 0, H = 0, pts = [];
+    var mouse = { x: -9999, y: -9999 };
+    var LINK = 130, MOUSE_LINK = 170;
+
+    function resize(){
+      W = canvas.clientWidth; H = canvas.clientHeight;
+      canvas.width = W * dpr; canvas.height = H * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      // densidade proporcional à área (cap pra performance)
+      var n = Math.min(95, Math.round((W * H) / 16000));
+      pts = [];
+      for (var i = 0; i < n; i++) {
+        pts.push({
+          x: Math.random() * W,
+          y: Math.random() * H,
+          vx: (Math.random() - .5) * .35,
+          vy: (Math.random() - .5) * .35,
+          r: Math.random() * 1.3 + .7
+        });
+      }
+    }
+
+    function passo(){
+      ctx.clearRect(0, 0, W, H);
+      var i, j, p, q, dx, dy, d;
+
+      for (i = 0; i < pts.length; i++) {
+        p = pts[i];
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < -10) p.x = W + 10; else if (p.x > W + 10) p.x = -10;
+        if (p.y < -10) p.y = H + 10; else if (p.y > H + 10) p.y = -10;
+      }
+
+      // linhas ponto↔ponto
+      for (i = 0; i < pts.length; i++) {
+        p = pts[i];
+        for (j = i + 1; j < pts.length; j++) {
+          q = pts[j];
+          dx = p.x - q.x; dy = p.y - q.y;
+          d = dx * dx + dy * dy;
+          if (d < LINK * LINK) {
+            var a = (1 - Math.sqrt(d) / LINK) * .28;
+            ctx.strokeStyle = 'rgba(255,255,255,' + a.toFixed(3) + ')';
+            ctx.lineWidth = .6;
+            ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y); ctx.stroke();
+          }
+        }
+        // linha ponto↔mouse (mais clara — o "lead" se conectando a você)
+        dx = p.x - mouse.x; dy = p.y - mouse.y;
+        d = dx * dx + dy * dy;
+        if (d < MOUSE_LINK * MOUSE_LINK) {
+          var am = (1 - Math.sqrt(d) / MOUSE_LINK) * .5;
+          ctx.strokeStyle = 'rgba(255,255,255,' + am.toFixed(3) + ')';
+          ctx.lineWidth = .8;
+          ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(mouse.x, mouse.y); ctx.stroke();
+        }
+      }
+
+      // pontos
+      for (i = 0; i < pts.length; i++) {
+        p = pts[i];
+        ctx.fillStyle = 'rgba(255,255,255,.75)';
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, 6.2832); ctx.fill();
+      }
+    }
+
+    var reduz = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function loop(){ passo(); if (!reduz) requestAnimationFrame(loop); }
+
+    var hero = canvas.parentElement;
+    hero.addEventListener('mousemove', function(e){
+      var r = canvas.getBoundingClientRect();
+      mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top;
+    });
+    hero.addEventListener('mouseleave', function(){ mouse.x = -9999; mouse.y = -9999; });
+
+    resize();
+    window.addEventListener('resize', resize);
+    loop();
+  })();
+  </script>
+</body>
+</html>

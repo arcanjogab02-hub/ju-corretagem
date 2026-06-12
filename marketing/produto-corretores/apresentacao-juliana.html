@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Juliana · Seu novo sistema de captação</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--preto:#0c0c0c;--card:#141414;--linha:#262626;--branco:#f5f5f5;--cinza:#8f8f8f;--wa:#25D366}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-snap-type:y mandatory;scroll-behavior:smooth}
+  body{font-family:'Inter',sans-serif;background:var(--preto);color:var(--branco);line-height:1.6}
+  .serif{font-family:'Cormorant Garamond',serif}
+  section{min-height:100vh;min-height:100dvh;scroll-snap-align:start;display:flex;flex-direction:column;justify-content:center;padding:60px 26px;position:relative;border-bottom:1px solid #1a1a1a}
+  .inner{max-width:780px;margin:0 auto;width:100%}
+  .eyebrow{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--cinza);margin-bottom:18px}
+  h1{font-family:'Cormorant Garamond',serif;font-weight:600;line-height:1.04}
+  .num-slide{position:absolute;top:24px;right:28px;font-size:12px;color:#3a3a3a;letter-spacing:2px}
+  .scroll-tip{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);font-size:10px;letter-spacing:2px;color:#555;text-transform:uppercase;animation:bob 2s infinite}
+  @keyframes bob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(5px)}}
+
+  /* CAPA */
+  .capa{background:radial-gradient(circle at 25% 15%,#1c1c1c,#0a0a0a 60%);text-align:center}
+  .capa .brand{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:#7a7a7a;margin-bottom:30px}
+  .capa h1{font-size:clamp(2.4rem,8vw,4.4rem)}
+  .capa h1 em{font-style:italic;color:transparent;-webkit-text-stroke:1.5px #fff}
+  .capa .sub{margin-top:22px;font-size:clamp(15px,2.2vw,19px);color:#cfcfcf;font-weight:300;max-width:520px;margin-left:auto;margin-right:auto}
+  .capa .por{margin-top:36px;font-size:11px;letter-spacing:2px;color:#6a6a6a;text-transform:uppercase}
+
+  h2{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,5.5vw,3.2rem);font-weight:600;line-height:1.08;margin-bottom:20px}
+  h2 em{font-style:italic;color:transparent;-webkit-text-stroke:1px #fff}
+  p.lead{font-size:clamp(15px,2.2vw,18px);color:#cfcfcf;font-weight:300;max-width:600px}
+  .destaque{color:#fff;font-weight:500}
+
+  /* peças */
+  .pecas{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:30px}
+  .peca{background:var(--card);border:1px solid var(--linha);border-radius:14px;padding:22px}
+  .peca .pn{font-family:'Cormorant Garamond',serif;font-size:15px;color:#666;margin-bottom:8px}
+  .peca h4{font-family:'Cormorant Garamond',serif;font-size:21px;margin-bottom:6px}
+  .peca p{font-size:13px;color:var(--cinza);font-weight:300}
+
+  /* benefícios */
+  .benef{margin-top:26px}
+  .blin{display:flex;gap:16px;align-items:flex-start;padding:16px 0;border-top:1px solid var(--linha)}
+  .blin .ic{font-size:22px;flex-shrink:0;width:30px}
+  .blin h4{font-size:16px;font-weight:600;margin-bottom:3px}
+  .blin p{font-size:13.5px;color:var(--cinza);font-weight:300}
+
+  /* fluxo */
+  .fluxo{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:28px}
+  .fbox{flex:1;min-width:130px;background:var(--card);border:1px solid var(--linha);border-radius:12px;padding:16px;text-align:center}
+  .fbox .fi{font-size:22px;margin-bottom:8px}
+  .fbox b{font-size:13.5px;display:block}
+  .fbox span{font-size:11px;color:var(--cinza);font-weight:300}
+  .fseta{color:#444;font-size:18px}
+
+  /* links ao vivo */
+  .links{display:flex;flex-direction:column;gap:12px;margin-top:28px;max-width:420px}
+  .lk{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--linha);border-radius:13px;padding:16px 18px;text-decoration:none;color:var(--branco);transition:.2s}
+  .lk:hover{border-color:#fff}
+  .lk .ico{font-size:20px}
+  .lk b{font-size:14.5px;display:block}
+  .lk span{font-size:12px;color:var(--cinza)}
+  .lk .arw{margin-left:auto;color:#5a5a5a}
+
+  /* cronograma */
+  .crono{margin-top:26px}
+  .dia{display:flex;gap:16px;padding:14px 0;border-top:1px solid var(--linha)}
+  .dia .d{font-family:'Cormorant Garamond',serif;font-size:15px;color:#fff;width:64px;flex-shrink:0;font-weight:600}
+  .dia .t b{font-size:14.5px}.dia .t p{font-size:12.5px;color:var(--cinza);font-weight:300}
+
+  /* CTA final */
+  .fim{background:radial-gradient(circle at 50% 100%,#1a1a1a,#0a0a0a 60%);text-align:center}
+  .fim h2{margin-bottom:16px}
+  .fim .cta{display:inline-flex;align-items:center;gap:10px;background:var(--wa);color:#06310f;font-weight:600;font-size:16px;padding:17px 36px;border-radius:50px;text-decoration:none;margin-top:14px}
+  .fim .ass{margin-top:30px;font-size:11px;letter-spacing:2px;color:#6a6a6a;text-transform:uppercase}
+
+  @media(max-width:620px){.pecas{grid-template-columns:1fr}.fluxo .fseta{display:none}.fbox{min-width:100%}}
+</style>
+</head>
+<body>
+
+  <!-- 1. CAPA -->
+  <section class="capa">
+    <div class="inner">
+      <div class="brand">GA Business Insights · Palmas — TO</div>
+      <h1>Juliana,<br>seus leads não<br>vão mais <em>sumir</em>.</h1>
+      <p class="sub">Um sistema feito pra você captar, organizar e fechar mais — sem perder ninguém no meio do direct.</p>
+      <div class="por">Apresentação · proposta de implementação</div>
+    </div>
+    <div class="scroll-tip">↓ role para ver</div>
+  </section>
+
+  <!-- 2. O PROBLEMA -->
+  <section>
+    <span class="num-slide">01</span>
+    <div class="inner">
+      <div class="eyebrow">A verdade que ninguém fala</div>
+      <h2>Sua audiência é enorme.<br>Mas quantos viram <em>cliente</em>?</h2>
+      <p class="lead">Todo dia chega gente no seu direct e nos stories. Uns você responde, outros se perdem no meio das conversas. Sem onde anotar, sem lembrete, <span class="destaque">o lead esfria e você nem percebe.</span><br><br>Não é falta de movimento — é falta de um <span class="destaque">sistema</span> que segura tudo que o seu Instagram já traz.</p>
+    </div>
+    <div class="scroll-tip">↓</div>
+  </section>
+
+  <!-- 3. A SOLUÇÃO -->
+  <section>
+    <span class="num-slide">02</span>
+    <div class="inner">
+      <div class="eyebrow">O que eu montei pra você</div>
+      <h2>Um sistema que trabalha<br>24h, com a <em>sua cara</em>.</h2>
+      <p class="lead">Quatro peças que conversam entre si — do clique no seu link até o lead organizado no seu WhatsApp.</p>
+      <div class="pecas">
+        <div class="peca"><div class="pn">01</div><h4>Bio Premium</h4><p>O link da sua bio vira uma página de luxo: sua foto, seus números, imóveis e botões que convertem.</p></div>
+        <div class="peca"><div class="pn">02</div><h4>Página de Captura</h4><p>A pessoa preenche 3 campos e cai no seu WhatsApp já dizendo o que procura.</p></div>
+        <div class="peca"><div class="pn">03</div><h4>Catálogo de Imóveis</h4><p>Seus destaques numa vitrine elegante, com botão direto pra falar com você.</p></div>
+        <div class="peca"><div class="pn">04</div><h4>CRM no celular</h4><p>Cada lead salvo automaticamente. Você gerencia com 1 toque — sem planilha, sem complicação.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. O QUE MUDA -->
+  <section>
+    <span class="num-slide">03</span>
+    <div class="inner">
+      <div class="eyebrow">O que muda no seu dia</div>
+      <h2>Menos esforço.<br>Mais <em>controle</em>.</h2>
+      <div class="benef">
+        <div class="blin"><span class="ic">✦</span><div><h4>Nunca mais perde um lead</h4><p>Todo contato é salvo sozinho. Aparece aviso na hora, e os que estão esfriando sobem pro topo.</p></div></div>
+        <div class="blin"><span class="ic">◷</span><div><h4>Responde mais rápido (e fecha mais)</h4><p>Quem responde em minutos converte muito mais. O sistema te avisa pra você não perder o timing.</p></div></div>
+        <div class="blin"><span class="ic">◈</span><div><h4>Sabe de onde vem cada cliente</h4><p>Story, anúncio, indicação… você vê o que traz mais lead e foca no que funciona.</p></div></div>
+        <div class="blin"><span class="ic">♦</span><div><h4>Uma marca de outro nível</h4><p>Enquanto os outros usam o mesmo Linktree, você tem um sistema com a sua identidade.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. O DIA A DIA -->
+  <section>
+    <span class="num-slide">04</span>
+    <div class="inner">
+      <div class="eyebrow">Simples assim</div>
+      <h2>Seu dia a dia em <em>3 toques</em></h2>
+      <div class="fluxo">
+        <div class="fbox"><div class="fi">📲</div><b>Chega o lead</b><span>aviso no seu WhatsApp</span></div>
+        <span class="fseta">→</span>
+        <div class="fbox"><div class="fi">💬</div><b>Você toca "Responder"</b><span>abre a conversa pronta</span></div>
+        <span class="fseta">→</span>
+        <div class="fbox"><div class="fi">✓</div><b>Marca a etapa</b><span>conversa · visita · fechou</span></div>
+      </div>
+      <p class="lead" style="margin-top:26px">No celular, parece um app de mensagem. <span class="destaque">Nada de planilha, nada de complicação.</span> No computador, você vê o funil inteiro em colunas.</p>
+    </div>
+  </section>
+
+  <!-- 6. AO VIVO -->
+  <section>
+    <span class="num-slide">05</span>
+    <div class="inner">
+      <div class="eyebrow">Não é maquete — está no ar</div>
+      <h2>Veja com seus<br>próprios <em>olhos</em></h2>
+      <p class="lead">Abre no seu celular agora. Isso já é seu, com a sua cara:</p>
+      <div class="links">
+        <a class="lk" href="https://juliana-alves.netlify.app" target="_blank"><span class="ico">◎</span><div><b>Sua Bio Premium</b><span>juliana-alves.netlify.app</span></div><span class="arw">→</span></a>
+        <a class="lk" href="https://juliana-alves.netlify.app/investir.html" target="_blank"><span class="ico">◈</span><div><b>Sua Página de Captura</b><span>onde o lead preenche e te chama</span></div><span class="arw">→</span></a>
+        <a class="lk" href="https://juliana-alves.netlify.app/imoveis.html" target="_blank"><span class="ico">▦</span><div><b>Seu Catálogo de Imóveis</b><span>a vitrine dos seus destaques</span></div><span class="arw">→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. PLANO DA SEMANA -->
+  <section>
+    <span class="num-slide">06</span>
+    <div class="inner">
+      <div class="eyebrow">Próxima semana</div>
+      <h2>Em 5 dias,<br>no <em>ar</em>.</h2>
+      <div class="crono">
+        <div class="dia"><div class="d">Seg</div><div class="t"><b>Material</b><p>Você me passa fotos, logo e seus números. Eu organizo tudo.</p></div></div>
+        <div class="dia"><div class="d">Ter</div><div class="t"><b>Montagem</b><p>Deixo o site com a sua identidade — foto, cores, imóveis.</p></div></div>
+        <div class="dia"><div class="d">Qua</div><div class="t"><b>CRM</b><p>Configuro o painel de leads e os avisos no seu WhatsApp.</p></div></div>
+        <div class="dia"><div class="d">Qui</div><div class="t"><b>Testes</b><p>Publico e testamos juntos — um lead de teste de ponta a ponta.</p></div></div>
+        <div class="dia"><div class="d">Sex</div><div class="t"><b>Lançamento 🚀</b><p>Link na bio + roteiro de stories pra anunciar. A máquina liga.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. CTA -->
+  <section class="fim">
+    <span class="num-slide">07</span>
+    <div class="inner">
+      <div class="eyebrow">Bora?</div>
+      <h2>Sua audiência já existe.<br>Falta só <em>captar</em> ela.</h2>
+      <p class="lead" style="margin:0 auto">Semana que vem a gente coloca tudo no ar. Você só precisa dizer "sim" e me passar suas fotos.</p>
+      <a class="cta" href="https://wa.me/5563981493039?text=Gabriel%2C%20bora%20come%C3%A7ar%20meu%20sistema!" target="_blank">💬 Bora começar</a>
+      <div class="ass">Gabriel Arcanjo · GA Business Insights · Palmas — TO</div>
+    </div>
+  </section>
+
+</body>
+</html>
