@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>É assim que seu relatório chega — GA Business Insights</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0a0a; --card:#141414; --linha:#262626; --branco:#f5f5f5;
+    --cinza:#8f8f8f; --cinza2:#bdbdbd; --wa:#25D366;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    background:#000;font-family:'Inter',sans-serif;color:var(--branco);
+    padding:34px 16px 60px;-webkit-font-smoothing:antialiased;line-height:1.55;
+  }
+  .frame{max-width:600px;margin:0 auto}
+
+  /* ribbon de venda */
+  .ribbon{
+    text-align:center;margin-bottom:22px;
+  }
+  .ribbon .tag{
+    display:inline-block;font-size:10.5px;letter-spacing:2px;text-transform:uppercase;
+    color:#cfcfcf;border:1px solid #2e2e2e;border-radius:50px;padding:7px 16px;font-weight:600;
+  }
+  .ribbon h1{
+    font-family:'Cormorant Garamond',serif;font-weight:600;font-size:27px;line-height:1.2;
+    margin-top:16px;color:#fff;
+  }
+  .ribbon p{font-size:13.5px;color:var(--cinza);font-weight:300;margin-top:8px;max-width:440px;margin-left:auto;margin-right:auto}
+
+  /* selo de entrega */
+  .entrega{
+    display:flex;align-items:center;gap:10px;font-size:11.5px;color:#6a6a6a;
+    letter-spacing:.3px;margin-bottom:14px;padding:0 4px;
+  }
+  .entrega .dot{width:7px;height:7px;border-radius:50%;background:var(--wa);box-shadow:0 0 0 4px rgba(37,211,102,.12)}
+  .entrega b{color:#9a9a9a;font-weight:500}
+
+  .rel{
+    background:var(--bg);border:1px solid var(--linha);border-radius:20px;
+    overflow:hidden;box-shadow:0 30px 80px -30px rgba(0,0,0,.9);
+  }
+
+  .head{padding:30px 30px 26px;border-bottom:1px solid var(--linha);position:relative}
+  .head .marca{font-size:10.5px;letter-spacing:2.5px;text-transform:uppercase;color:var(--cinza);font-weight:500}
+  .head .titulo{font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:600;line-height:1.05;margin-top:8px;text-transform:capitalize}
+  .head .sub{font-size:13px;color:var(--cinza2);font-weight:300;margin-top:6px}
+  .head .selo{
+    position:absolute;top:30px;right:30px;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;
+    color:#cfcfcf;border:1px solid #2e2e2e;border-radius:50px;padding:6px 13px;font-weight:500;
+  }
+
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--linha)}
+  .kpi{background:var(--bg);padding:22px 16px;text-align:center}
+  .kpi b{font-size:32px;font-weight:600;display:block;line-height:1;letter-spacing:-.5px}
+  .kpi.verde b{color:var(--wa)}
+  .kpi span{font-size:10px;letter-spacing:.8px;text-transform:uppercase;color:var(--cinza);display:block;margin-top:7px}
+  .kpi em{font-size:11px;font-style:normal;color:#6a8f6a;display:block;margin-top:4px;font-weight:500}
+
+  .sec{padding:26px 30px;border-top:1px solid var(--linha)}
+  .sec h3{font-size:10.5px;letter-spacing:1.8px;text-transform:uppercase;color:var(--cinza);margin-bottom:16px;font-weight:600}
+
+  .ia-head{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+  .ia-badge{
+    display:inline-flex;align-items:center;gap:6px;font-size:10px;letter-spacing:1.2px;text-transform:uppercase;
+    background:linear-gradient(135deg,#1d1d1d,#262626);border:1px solid #333;border-radius:50px;
+    padding:6px 12px;color:#e6e6e6;font-weight:600;
+  }
+  .ia-badge .spark{width:13px;height:13px;display:inline-block}
+  .ia-head .lbl{font-size:10.5px;letter-spacing:1.8px;text-transform:uppercase;color:var(--cinza);font-weight:600}
+  .leitura{font-size:14.5px;line-height:1.8;color:#e3e3e3;font-weight:300}
+  .leitura p{margin-bottom:13px}
+  .leitura p:last-child{margin-bottom:0}
+  .leitura b{color:#fff;font-weight:600}
+  .leitura .foco{
+    margin-top:6px;padding:14px 16px;background:#101810;border:1px solid #1f2e1f;border-radius:12px;
+    font-size:13.5px;color:#cfe6cf;font-weight:400;
+  }
+  .leitura .foco b{color:var(--wa)}
+
+  .funil{display:flex;flex-direction:column;gap:10px}
+  .frow{display:flex;align-items:center;gap:12px;font-size:13px}
+  .frow .et{width:104px;color:var(--cinza2);font-weight:400;flex-shrink:0}
+  .frow .track{flex:1;height:9px;background:#1c1c1c;border-radius:50px;overflow:hidden}
+  .frow .fill{display:block;height:100%;border-radius:50px}
+  .frow .n{width:24px;text-align:right;font-weight:600;font-size:13px}
+  .f-novo{background:#f5f5f5}.f-conv{background:#7ba0e0}.f-vis{background:#e0c074}.f-fec{background:var(--wa)}.f-per{background:#5a5a5a}
+
+  .canais{display:flex;flex-direction:column;gap:11px}
+  .crow{display:flex;align-items:center;gap:12px;font-size:13px}
+  .crow .nm{width:104px;color:var(--cinza2);text-transform:capitalize;flex-shrink:0}
+  .crow .track{flex:1;height:7px;background:#1c1c1c;border-radius:50px;overflow:hidden}
+  .crow .fill{display:block;height:100%;background:#fff;border-radius:50px}
+  .crow .n{width:24px;text-align:right;font-weight:600}
+
+  .cta{padding:24px 30px 28px;border-top:1px solid var(--linha);text-align:center}
+  .cta a{
+    display:inline-block;background:#f5f5f5;color:#0a0a0a;text-decoration:none;font-weight:600;
+    font-size:13.5px;padding:13px 30px;border-radius:50px;
+  }
+  .cta .nota{font-size:11.5px;color:#6a6a6a;margin-top:12px}
+
+  .foot{text-align:center;font-size:11px;color:#5a5a5a;margin-top:18px;line-height:1.7}
+  .foot b{color:#8f8f8f;font-weight:600}
+
+  @media(max-width:480px){
+    .head .titulo{font-size:32px}
+    .head .selo{position:static;display:inline-block;margin-top:14px}
+    .kpi b{font-size:26px}
+    .ribbon h1{font-size:23px}
+  }
+</style>
+</head>
+<body>
+  <div class="frame">
+
+    <!-- FRAMING DE VENDA -->
+    <div class="ribbon">
+      <span class="tag">Plano Performance</span>
+      <h1>Todo dia 1º, isso chega no seu WhatsApp e e-mail.</h1>
+      <p>Você não abre planilha, não monta gráfico, não interpreta nada. O sistema fecha o mês, a IA lê os números e te diz exatamente o que fazer.</p>
+    </div>
+
+    <div class="entrega">
+      <span class="dot"></span>
+      <b>Entregue automaticamente · 01 do mês, 08:00</b>
+    </div>
+
+    <div class="rel">
+
+      <div class="head">
+        <div class="marca">Relatório de captação</div>
+        <div class="titulo">Seu mês</div>
+        <div class="sub">Corretor(a) de Imóveis · Sua cidade</div>
+        <div class="selo">Exemplo ilustrativo</div>
+      </div>
+
+      <div class="grid">
+        <div class="kpi"><b>214</b><span>Visitas na página</span><em>+23% no mês</em></div>
+        <div class="kpi verde"><b>21</b><span>Leads captados</span><em>+31% no mês</em></div>
+        <div class="kpi"><b>9,8%</b><span>Conversão</span><em>+0,9 p.p.</em></div>
+      </div>
+      <div class="grid">
+        <div class="kpi"><b>4</b><span>Visitas agendadas</span></div>
+        <div class="kpi"><b>3</b><span>Negócios fechados</span></div>
+        <div class="kpi"><b>Instagram</b><span>Melhor canal</span></div>
+      </div>
+
+      <div class="sec">
+        <div class="ia-head">
+          <span class="ia-badge">
+            <svg class="spark" viewBox="0 0 24 24" fill="none"><path d="M12 2l2.2 6.3L20 10l-5.8 1.7L12 18l-2.2-6.3L4 10l5.8-1.7L12 2z" fill="#e6e6e6"/></svg>
+            Leitura por IA
+          </span>
+          <span class="lbl">o que os números dizem</span>
+        </div>
+        <div class="leitura">
+          <p>Seu mês fechou com <b>21 leads</b> — o Instagram respondeu bem e segue como seu canal mais forte, com 14 dos 21. É sinal claro de onde concentrar energia: conteúdo com chamada pro link de captura, principalmente nos dias de visita e plantão.</p>
+          <p>A conversão da página (9,8%) está dentro do esperado pra captação orgânica — atrair não é o seu gargalo. O ponto de atenção é o <b>meio do funil</b>: 6 leads em conversa e 4 visitas marcadas. É o estágio onde o corretor mais perde dinheiro — não por falta de lead, mas por demora na resposta.</p>
+          <div class="foco"><b>Foco do próximo mês:</b> transformar os 6 "Conversando" em visita e manter a primeira resposta abaixo de 1 hora. O sistema já te mostra quem está esfriando.</div>
+        </div>
+      </div>
+
+      <div class="sec">
+        <h3>Onde estão os 21 leads</h3>
+        <div class="funil">
+          <div class="frow"><span class="et">Novo</span><span class="track"><span class="fill f-novo" style="width:100%"></span></span><span class="n">7</span></div>
+          <div class="frow"><span class="et">Conversando</span><span class="track"><span class="fill f-conv" style="width:86%"></span></span><span class="n">6</span></div>
+          <div class="frow"><span class="et">Visita</span><span class="track"><span class="fill f-vis" style="width:57%"></span></span><span class="n">4</span></div>
+          <div class="frow"><span class="et">Fechado</span><span class="track"><span class="fill f-fec" style="width:43%"></span></span><span class="n">3</span></div>
+          <div class="frow"><span class="et">Perdido</span><span class="track"><span class="fill f-per" style="width:14%"></span></span><span class="n">1</span></div>
+        </div>
+      </div>
+
+      <div class="sec">
+        <h3>De onde vieram os leads</h3>
+        <div class="canais">
+          <div class="crow"><span class="nm">Instagram</span><span class="track"><span class="fill" style="width:100%"></span></span><span class="n">14</span></div>
+          <div class="crow"><span class="nm">Direto</span><span class="track"><span class="fill" style="width:29%"></span></span><span class="n">4</span></div>
+          <div class="crow"><span class="nm">Indicação</span><span class="track"><span class="fill" style="width:14%"></span></span><span class="n">2</span></div>
+          <div class="crow"><span class="nm">Google</span><span class="track"><span class="fill" style="width:7%"></span></span><span class="n">1</span></div>
+        </div>
+      </div>
+
+      <div class="cta">
+        <a href="#">Abrir o painel completo →</a>
+        <div class="nota">Todos os leads, etapas e anotações em tempo real.</div>
+      </div>
+
+    </div>
+
+    <div class="foot">
+      <b>GA Business Insights</b> · Sistema de captação e dados<br>
+      Relatório com IA embarcada · incluso no plano Performance
+    </div>
+
+  </div>
+</body>
+</html>

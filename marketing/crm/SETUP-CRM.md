@@ -24,10 +24,15 @@ feed de cards, muda etapa tocando, "Responder" abre o WhatsApp e já marca "Conv
 
 ### Ligar o relatório mensal automático (entregável do plano Performance)
 Fecha o mês anterior todo **dia 1 às 8h**: visitas, leads, conversão, melhor canal, funil + uma **leitura do mês**.
-1. *(Opcional)* Pra leitura escrita por **IA**, pegue uma chave em **console.anthropic.com → API Keys** e preencha
-   `ANTHROPIC_APIKEY = 'sk-ant-...'` no `Code.gs`. **Sem chave, a leitura sai automática por código** (heurística) — funciona igual, de graça.
+1. *(Opcional)* Pra leitura escrita por **IA** (Sonnet 4.6):
+   - Pegue uma chave em **console.anthropic.com → Chaves de API** e ponha um crédito em **Billing** (US$ 5 dura meses).
+   - ⚠ **Não cole a chave no `Code.gs`** (ele vai pro GitHub). Guarde no cofre do projeto:
+     **⚙ Configurações do projeto → Propriedades do script → Adicionar propriedade** →
+     Propriedade `ANTHROPIC_APIKEY`, Valor `sk-ant-...`. **Salvar.** O código lê dali sozinho.
+   - **Sem chave, a leitura sai automática por código** (heurística) — funciona igual, de graça.
 2. Roda **`ativarRelatorioMensal`** uma vez (autoriza). Sai por e-mail (e WhatsApp, se o CallMeBot estiver ligado).
 3. Quer ver agora sem esperar o dia 1? Roda **`testarRelatorioMensal`** — manda o relatório do mês anterior na hora.
+4. Trocou de chave ou modelo? Não precisa reimplantar — as funções de gatilho rodam a versão salva do código.
 
 ### Como a Ju usa o painel (zero planilha)
 - **Card novo** aparece no topo, marcado 🔴 se está esfriando.

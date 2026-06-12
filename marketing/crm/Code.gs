@@ -39,11 +39,24 @@ var CALLMEBOT_PHONE   = '';   // ex: '5563992226998'  (quem recebe os avisos)
 var CALLMEBOT_APIKEY  = '';   // apikey do CallMeBot
 
 /* RELATÓRIO MENSAL (dia 1) — leitura por IA é OPCIONAL.
- * Vazio = relatório com leitura automática por código (heurística). Funciona sem custo.
- * Preenchido = leitura escrita pela IA da Anthropic (análise mais rica). Pegue a chave em
- * console.anthropic.com → API Keys. Modelo barato (Haiku) dá conta. */
-var ANTHROPIC_APIKEY  = '';   // ex: 'sk-ant-...'  (deixe vazio pra usar a leitura automática)
-var ANTHROPIC_MODELO  = 'claude-haiku-4-5-20251001';
+ * Sem chave = leitura automática por código (heurística). Funciona, de graça.
+ * Com chave = leitura escrita pela IA da Anthropic (análise mais rica — Sonnet 4.6).
+ *
+ * ⚠ SEGURANÇA: a chave NÃO fica neste arquivo (ele vai pro GitHub). Ela mora nas
+ * Propriedades do Script — um cofre do próprio projeto, que não é versionado:
+ *   ⚙ Configurações do projeto → Propriedades do script → Adicionar propriedade
+ *   Propriedade:  ANTHROPIC_APIKEY      Valor:  sk-ant-...
+ * Salvou ali, o código lê sozinho. (Deixe a linha abaixo VAZIA.)
+ * Sonnet escreve análise mais rica; Haiku ('claude-haiku-4-5') é ~3x mais barato.
+ * Os dois custam centavos por relatório. */
+var ANTHROPIC_APIKEY  = '';   // NÃO cole a chave aqui — use as Propriedades do Script (ver acima)
+var ANTHROPIC_MODELO  = 'claude-sonnet-4-6';
+
+/** Lê a chave do cofre (Propriedades do Script). Só usa a var local se alguém preenchê-la. */
+function _anthropicKey(){
+  try { var k = PropertiesService.getScriptProperties().getProperty('ANTHROPIC_APIKEY'); if (k) return k; } catch(e){}
+  return ANTHROPIC_APIKEY || '';
+}
 
 /* ============================ ENTRADA DE LEAD ============================ */
 function doPost(e){
@@ -213,6 +226,9 @@ h1{font-size:19px;font-weight:600}h1 small{display:block;font-size:10px;letter-s
 .abas{display:flex;gap:8px;margin-bottom:16px}
 .abas button{flex:1;background:#161616;border:1px solid #262626;color:#cfcfcf;padding:11px;border-radius:11px;font-size:13px;font-weight:500;cursor:pointer}
 .abas button.on{background:#fff;color:#0a0a0a;border-color:#fff;font-weight:700}
+.barra-exp{display:flex;justify-content:flex-end;margin-bottom:11px}
+.btnexp{background:#161616;border:1px solid #262626;color:#cfcfcf;padding:9px 15px;border-radius:50px;font-size:12.5px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.btnexp:hover{background:#1c1c1c;border-color:#3a3a3a}
 .secao{margin-bottom:24px}
 .secao h3{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#8f8f8f;margin-bottom:12px}
 .chart{display:flex;align-items:flex-end;gap:3px;height:120px}
@@ -273,6 +289,7 @@ h1{font-size:19px;font-weight:600}h1 small{display:block;font-size:10px;letter-s
   </div>
   <div id="viewDesempenho"></div>
   <div id="viewLeads" style="display:none">
+    <div class="barra-exp"><button class="btnexp" onclick="baixarCSV()">⬇ Baixar leads (CSV)</button></div>
     <div class="filtros" id="filtros"></div>
     <div id="lista"></div>
   </div>
@@ -363,6 +380,33 @@ function responder(linha){
 function nota(linha){
   var v=document.getElementById('nota'+linha).value;
   google.script.run.salvarNota(linha,v); toast('Anotação salva');
+}
+/* ---- EXPORTAR LEADS (CSV, baixa no aparelho) ---- */
+function csvData(ms){
+  if(!ms) return '';
+  var d=new Date(ms); function p(n){return ('0'+n).slice(-2);}
+  return p(d.getDate())+'/'+p(d.getMonth()+1)+'/'+d.getFullYear()+' '+p(d.getHours())+':'+p(d.getMinutes());
+}
+function baixarCSV(){
+  var sep=';';  // Excel BR usa ponto-e-vírgula
+  var linhas=[['Data','Nome','WhatsApp','Interesse','Origem','Status','Anotação']];
+  var arr=LEADS.slice().sort(function(a,b){return b.data-a.data;});
+  arr.forEach(function(l){ linhas.push([csvData(l.data),l.nome,l.zap,l.interesse,l.origem,l.status,l.nota]); });
+  var csv=linhas.map(function(row){
+    return row.map(function(c){
+      c=(c==null?'':String(c));
+      if(/[";\n\r]/.test(c)) c='"'+c.replace(/"/g,'""')+'"';
+      return c;
+    }).join(sep);
+  }).join('\r\n');
+  var blob=new Blob(['﻿'+csv],{type:'text/csv;charset=utf-8;'});  // BOM = acento certo no Excel
+  var hoje=new Date(); function p(n){return ('0'+n).slice(-2);}
+  var nome='leads-'+hoje.getFullYear()+'-'+p(hoje.getMonth()+1)+'-'+p(hoje.getDate())+'.csv';
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(blob); a.download=nome;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(function(){URL.revokeObjectURL(a.href);},1500);
+  toast(arr.length+' leads exportados');
 }
 function ehDesktop(){ return window.innerWidth >= 760; }
 function renderLeads(){
@@ -539,7 +583,8 @@ function leituraHeuristica(a, b){
 
 /** Leitura escrita pela IA (Anthropic). Retorna null se não houver chave ou der erro. */
 function leituraIA(a, b){
-  if (!ANTHROPIC_APIKEY) return null;
+  var apikey = _anthropicKey();
+  if (!apikey) return null;
   try {
     var ctx = 'Você é analista de captação de leads de um corretor de imóveis em Palmas-TO. '+
       'Escreva uma análise curta (máx 140 palavras), em português do Brasil, tom direto e prático, '+
@@ -550,7 +595,7 @@ function leituraIA(a, b){
       'MÊS ANTERIOR ('+b.rotulo+'): '+b.totalL+' leads, '+b.conv+'% de conversão.';
     var resp = UrlFetchApp.fetch('https://api.anthropic.com/v1/messages', {
       method:'post', contentType:'application/json', muteHttpExceptions:true,
-      headers:{ 'x-api-key':ANTHROPIC_APIKEY, 'anthropic-version':'2023-06-01' },
+      headers:{ 'x-api-key':apikey, 'anthropic-version':'2023-06-01' },
       payload: JSON.stringify({ model:ANTHROPIC_MODELO, max_tokens:400, messages:[{role:'user', content:ctx}] })
     });
     if (resp.getResponseCode()!==200) return null;
@@ -571,7 +616,7 @@ function relatorioMensal(){
   var a = metricasMes(leads, visitas, refAno, refMes, tz);
   var b = metricasMes(leads, visitas, pAno, pMes, tz);
   var leitura = leituraIA(a, b) || leituraHeuristica(a, b);
-  var viaIA = !!ANTHROPIC_APIKEY;
+  var viaIA = !!_anthropicKey();
 
   // ---- E-MAIL (HTML) ----
   var dest = EMAIL_NOTIFICACAO || Session.getEffectiveUser().getEmail();

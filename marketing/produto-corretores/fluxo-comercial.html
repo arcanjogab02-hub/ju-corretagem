@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fluxo Comercial · GA Business Insights</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0a0a; --card:#141414; --linha:#262626; --branco:#f5f5f5;
+    --cinza:#8f8f8f; --cinza2:#bdbdbd; --wa:#25D366; --amarelo:#e0c074;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    background:#000;font-family:'Inter',sans-serif;color:var(--branco);
+    padding:40px 16px 80px;-webkit-font-smoothing:antialiased;line-height:1.6;
+  }
+  .frame{max-width:680px;margin:0 auto}
+
+  /* HERO */
+  .hero{text-align:center;margin-bottom:44px}
+  .hero .tag{
+    display:inline-block;font-size:10.5px;letter-spacing:2.5px;text-transform:uppercase;
+    color:#cfcfcf;border:1px solid #2e2e2e;border-radius:50px;padding:7px 16px;font-weight:600;margin-bottom:20px;
+  }
+  .hero h1{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:42px;line-height:1.08;color:#fff}
+  .hero p{font-size:14.5px;color:var(--cinza);font-weight:300;margin-top:14px;max-width:480px;margin-left:auto;margin-right:auto}
+
+  /* REGRA DE OURO */
+  .ouro{
+    background:linear-gradient(135deg,#15130d,#0f0e0a);border:1px solid #2e2a1c;border-radius:16px;
+    padding:24px 26px;margin-bottom:40px;
+  }
+  .ouro h3{font-size:11px;letter-spacing:1.8px;text-transform:uppercase;color:var(--amarelo);margin-bottom:12px;font-weight:600}
+  .ouro p{font-size:14.5px;color:#e3e3e3;font-weight:300;line-height:1.75}
+  .ouro b{color:#fff;font-weight:600}
+
+  /* TIMELINE / ETAPAS */
+  .etapa{position:relative;padding-left:54px;margin-bottom:14px}
+  .etapa::before{
+    content:attr(data-n);position:absolute;left:0;top:0;width:36px;height:36px;border-radius:50%;
+    background:var(--bg);border:1px solid var(--linha);color:#fff;font-family:'Cormorant Garamond',serif;
+    font-size:19px;font-weight:600;display:flex;align-items:center;justify-content:center;
+  }
+  .etapa::after{
+    content:'';position:absolute;left:17.5px;top:36px;bottom:-14px;width:1px;background:var(--linha);
+  }
+  .etapa:last-child::after{display:none}
+
+  .card{
+    background:var(--bg);border:1px solid var(--linha);border-radius:16px;padding:22px 24px;
+  }
+  .card .et-tag{font-size:10px;letter-spacing:1.8px;text-transform:uppercase;color:var(--cinza);font-weight:600}
+  .card h2{font-family:'Cormorant Garamond',serif;font-size:25px;font-weight:600;color:#fff;margin:3px 0 12px;line-height:1.15}
+  .card .desc{font-size:14px;color:var(--cinza2);font-weight:300;margin-bottom:16px;line-height:1.7}
+
+  .bloco{margin-bottom:13px}
+  .bloco:last-child{margin-bottom:0}
+  .bloco .lbl{font-size:10px;letter-spacing:1.2px;text-transform:uppercase;font-weight:700;margin-bottom:5px;display:flex;align-items:center;gap:7px}
+  .bloco .lbl.fazer{color:#9ad0a0}
+  .bloco .lbl.dizer{color:#7ba0e0}
+  .bloco .lbl.evitar{color:#d08f8f}
+  .bloco ul{list-style:none;padding:0}
+  .bloco li{font-size:13.5px;color:#dcdcdc;font-weight:300;line-height:1.65;padding-left:16px;position:relative;margin-bottom:5px}
+  .bloco li::before{content:'·';position:absolute;left:4px;color:var(--cinza);font-weight:700}
+  .fala{
+    font-size:14px;font-style:italic;color:#e6e6e6;font-weight:300;line-height:1.7;
+    border-left:2px solid #3a3a3a;padding:4px 0 4px 14px;margin-top:4px;
+  }
+
+  /* ALERTA LEGAL */
+  .alerta{
+    background:#1a1410;border:1px solid #3a2a1c;border-radius:16px;padding:24px 26px;margin:14px 0 40px 0;
+  }
+  .alerta h3{font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--amarelo);margin-bottom:14px;font-weight:700;display:flex;align-items:center;gap:9px}
+  .alerta p{font-size:14px;color:#e3e3e3;font-weight:300;line-height:1.75;margin-bottom:12px}
+  .alerta p:last-child{margin-bottom:0}
+  .alerta b{color:#fff;font-weight:600}
+  .alerta .check{font-size:13.5px;color:#dcdcdc;font-weight:300;line-height:1.65;padding-left:22px;position:relative;margin-bottom:9px}
+  .alerta .check::before{content:'?';position:absolute;left:0;top:0;width:15px;height:15px;border-radius:50%;border:1px solid var(--amarelo);color:var(--amarelo);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:2px}
+
+  /* PLANOS RÁPIDO */
+  .planos{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:6px 0}
+  .plano{background:#101010;border:1px solid var(--linha);border-radius:14px;padding:18px 18px}
+  .plano.destaque{border-color:#3a3a2a;background:#13120d}
+  .plano .nm{font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--cinza2);font-weight:600}
+  .plano .pr{font-family:'Cormorant Garamond',serif;font-size:27px;font-weight:600;color:#fff;margin:6px 0 2px}
+  .plano .pr small{font-size:13px;color:var(--cinza);font-weight:400;font-family:'Inter'}
+  .plano .impl{font-size:11.5px;color:var(--cinza);margin-bottom:10px}
+  .plano .li{font-size:12.5px;color:#cfcfcf;font-weight:300;line-height:1.6;padding-left:14px;position:relative}
+  .plano .li::before{content:'+';position:absolute;left:0;color:var(--wa);font-weight:700}
+  .plano .star{display:inline-block;font-size:9.5px;letter-spacing:1px;text-transform:uppercase;color:#0a0a0a;background:var(--amarelo);border-radius:50px;padding:3px 9px;font-weight:700;margin-bottom:8px}
+
+  /* SEÇÃO TÍTULO */
+  .titulo-sec{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:600;color:#fff;text-align:center;margin:48px 0 8px}
+  .sub-sec{font-size:13.5px;color:var(--cinza);font-weight:300;text-align:center;margin-bottom:28px}
+
+  /* DIVULGAÇÃO */
+  .post{background:var(--bg);border:1px solid var(--linha);border-radius:14px;padding:18px 20px;margin-bottom:12px}
+  .post .h{font-size:14px;font-weight:600;color:#fff;margin-bottom:5px}
+  .post .p{font-size:13px;color:var(--cinza2);font-weight:300;line-height:1.6}
+
+  /* COLA FINAL */
+  .cola{background:#0d0d0d;border:1px dashed #333;border-radius:16px;padding:26px 28px;margin-top:40px}
+  .cola h3{font-family:'Cormorant Garamond',serif;font-size:24px;color:#fff;margin-bottom:16px;text-align:center}
+  .cola ol{list-style:none;counter-reset:c;padding:0}
+  .cola li{counter-increment:c;font-size:14px;color:#dcdcdc;font-weight:300;line-height:1.6;padding-left:32px;position:relative;margin-bottom:11px}
+  .cola li::before{content:counter(c);position:absolute;left:0;top:0;width:22px;height:22px;border-radius:50%;background:#1c1c1c;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center}
+  .cola li b{color:#fff;font-weight:600}
+
+  .foot{text-align:center;font-size:11.5px;color:#5a5a5a;margin-top:44px;line-height:1.8}
+  .foot b{color:#8f8f8f;font-weight:600}
+
+  @media(max-width:520px){
+    .hero h1{font-size:33px}
+    .planos{grid-template-columns:1fr}
+    .etapa{padding-left:46px}
+    .card{padding:20px}
+  }
+</style>
+</head>
+<body>
+  <div class="frame">
+
+    <!-- HERO -->
+    <div class="hero">
+      <span class="tag">Playbook interno · v1</span>
+      <h1>Do primeiro contato<br>ao fechamento</h1>
+      <p>O caminho pra transformar um corretor curioso em cliente do sistema. Específico
+      pra esse projeto — vai sendo lapidado conforme a operação com a Ju andar.</p>
+    </div>
+
+    <!-- REGRA DE OURO -->
+    <div class="ouro">
+      <h3>★ A regra de ouro</h3>
+      <p>Você não vende um site nem um CRM. Vende <b>dois resultados</b>: parar de perder
+      lead no WhatsApp bagunçado, e saber o que funciona (o relatório com IA todo dia 1º).
+      Fale sempre do <b>resultado</b> — a ferramenta é só a prova. E a <b>Ju funcionando</b>
+      é a sua maior prova: mostre, não prometa.</p>
+    </div>
+
+    <!-- ETAPA 1 -->
+    <div class="etapa" data-n="1">
+      <div class="card">
+        <div class="et-tag">Origem do contato</div>
+        <h2>De onde vem o corretor</h2>
+        <div class="desc">Dois canais. Trabalhe os dois — mas a indicação da Ju fecha 3x mais fácil.</div>
+        <div class="bloco">
+          <div class="lbl fazer">▸ Indicação da Ju (quente)</div>
+          <ul>
+            <li>A Ju usa e comenta com colegas. Ela te passa o contato.</li>
+            <li>Combine um incentivo: cada indicado que fechar = 1 mês grátis pra ela.</li>
+          </ul>
+        </div>
+        <div class="bloco">
+          <div class="lbl dizer">▸ Você prospectando</div>
+          <ul>
+            <li>Alvo: corretor que JÁ posta bastante mas tem lead bagunçado, sem site.</li>
+            <li>Onde: Instagram local, imobiliárias, grupos de WhatsApp do ramo.</li>
+          </ul>
+        </div>
+        <div class="bloco">
+          <div class="lbl dizer">▸ Primeira mensagem</div>
+          <div class="fala">"Oi [nome], acompanho seu trampo. Montei pra @juu_alves8 um sistema
+          que capta e organiza os leads dela — todo dia 1º ela recebe um relatório com IA do que
+          funcionou no mês. Tá rodando bonito. Faz sentido eu te mostrar?"</div>
+        </div>
+        <div class="bloco">
+          <div class="lbl evitar">▸ Evite</div>
+          <ul><li>Textão. Mande curto, espere responder, aí avança.</li></ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ETAPA 2 -->
+    <div class="etapa" data-n="2">
+      <div class="card">
+        <div class="et-tag">Qualificação</div>
+        <h2>Ele vale seu tempo?</h2>
+        <div class="desc">3 perguntas rápidas antes de montar demonstração pra qualquer um.</div>
+        <div class="bloco">
+          <div class="lbl dizer">▸ Pergunte</div>
+          <ul>
+            <li>"Posta no Instagram com que frequência?" → o sistema brilha pra quem tem audiência.</li>
+            <li>"Como organiza seus contatos hoje?" → WhatsApp + caderno = seu cliente.</li>
+            <li>"Quanto vale fechar 1 imóvel a mais por mês?" → ele mesmo justifica o preço.</li>
+          </ul>
+        </div>
+        <div class="bloco">
+          <div class="lbl evitar">▸ Desqualifique sem dó</div>
+          <ul><li>Quem não posta, sem CRECI ativo, quer tudo de graça, ou só "dar uma olhada".</li></ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ETAPA 3 -->
+    <div class="etapa" data-n="3">
+      <div class="card">
+        <div class="et-tag">Demonstração</div>
+        <h2>Mostrar funcionando</h2>
+        <div class="desc">A força é que já existe rodando. Roteiro de 5 minutos, no celular dele.</div>
+        <div class="bloco">
+          <div class="lbl fazer">▸ Roteiro</div>
+          <ul>
+            <li>1. Abra <b>juliana-alves.netlify.app</b> — bio, catálogo, botão de captura.</li>
+            <li>2. Preencha um lead de teste na frente dele → mostra caindo no painel.</li>
+            <li>3. Abra o painel <b>/exec</b> — "ela trabalha o lead com 1 toque, sem planilha".</li>
+            <li>4. O golpe final: o <b>exemplo de relatório com IA</b>. "Isso chega no dia 1º. Ninguém em Palmas entrega."</li>
+          </ul>
+        </div>
+        <div class="bloco">
+          <div class="lbl dizer">▸ Materiais prontos</div>
+          <ul>
+            <li>apresentacao-juliana.html · exemplo-relatorio-vendas.html · vendas.html</li>
+          </ul>
+        </div>
+        <div class="bloco">
+          <div class="lbl evitar">▸ Evite</div>
+          <ul><li>Falar demais. Pergunte "isso resolveria seu problema?" e CALE a boca.</li></ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ETAPA 4 -->
+    <div class="etapa" data-n="4">
+      <div class="card">
+        <div class="et-tag">Proposta</div>
+        <h2>Os dois planos</h2>
+        <div class="desc">Sempre apresente os dois. O de cima faz o de baixo parecer barato — mas empurre o Performance.</div>
+        <div class="planos">
+          <div class="plano">
+            <div class="nm">Captação</div>
+            <div class="pr">R$ 297,90<small>/mês</small></div>
+            <div class="impl">+ R$ 1.200 implantação</div>
+            <div class="li">Sistema completo, ele toca o orgânico</div>
+          </div>
+          <div class="plano destaque">
+            <span class="star">★ empurre este</span>
+            <div class="nm">Performance</div>
+            <div class="pr">R$ 497,90<small>/mês</small></div>
+            <div class="impl">+ R$ 1.200 implantação</div>
+            <div class="li">Relatório com IA dia 1º</div>
+            <div class="li">Pacote mensal de copy</div>
+          </div>
+        </div>
+        <div class="bloco" style="margin-top:14px">
+          <div class="lbl dizer">▸ Condição de fundador (fecha agora)</div>
+          <div class="fala">"Como você é dos primeiros: 30% off na implantação — de R$ 1.200 por
+          R$ 840, preço travado 12 meses, suporte prioritário. São só 3 vagas por região."</div>
+        </div>
+        <div class="bloco">
+          <div class="lbl dizer">▸ A carência (90 dias)</div>
+          <div class="fala">"Não é te prender. É que o relatório só fica bom com 2-3 meses de dados.
+          Por isso o compromisso mínimo."</div>
+        </div>
+        <div class="bloco">
+          <div class="lbl evitar">▸ Evite</div>
+          <ul><li>Falar o preço e emendar "mas se for caro...". Fale o valor e PARE. Silêncio fecha.</li></ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ETAPA 5 -->
+    <div class="etapa" data-n="5">
+      <div class="card">
+        <div class="et-tag">Fechamento</div>
+        <h2>Contrato, pagamento e dados</h2>
+        <div class="desc">Aceitou? Formaliza. Simples — não precisa de advogado caro pra começar.</div>
+        <div class="bloco">
+          <div class="lbl fazer">▸ Contrato de 1 página</div>
+          <ul>
+            <li>Quem presta / quem contrata · o que entrega (plano) · valores e vencimento.</li>
+            <li>Carência 90 dias e como cancela depois.</li>
+            <li>Dados e contas (GA, Pixel, planilha) são do cliente — te protege e é argumento de venda.</li>
+            <li>Peça ajuda ao jurídico da URBS — eles lidam com contrato todo dia.</li>
+          </ul>
+        </div>
+        <div class="bloco">
+          <div class="lbl fazer">▸ Como receber</div>
+          <ul>
+            <li>Começo: Pix. Com 2-3 clientes: cobrança recorrente (Asaas / Cora) — boleto + nota automáticos.</li>
+          </ul>
+        </div>
+        <div class="bloco">
+          <div class="lbl fazer">▸ Checklist pra implantar (peça ao cliente)</div>
+          <ul>
+            <li>Logo, foto, cores · 3 imóveis de destaque · WhatsApp de captação · conta Google · @ do Instagram.</li>
+            <li>A skill <b>/novo-corretor</b> monta o sistema a partir disso.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ALERTA LEGAL -->
+    <div class="alerta">
+      <h3>⚠ Resolva ANTES do 1º contrato — servidor público</h3>
+      <p>Tecnicamente o negócio roda fácil. O que você <b>precisa confirmar primeiro</b> é a parte
+      legal de "servidor pode faturar isso e como". Não chute — é conversa de 15 min com o <b>RH do
+      seu órgão</b> e um <b>contador</b>:</p>
+      <div class="check">Seu estatuto/cargo permite atividade privada fora do horário? Alguns restringem.</div>
+      <div class="check">MEI serve no seu caso? Servidor tem restrição pra ser MEI em várias situações.</div>
+      <div class="check">Seu cargo tem dedicação exclusiva? Aí a regra muda.</div>
+      <p>Se MEI não rolar, alternativas: faturar pela própria imobiliária, RPA (autônomo), ou empresa
+      no nome de um sócio de confiança. <b>Nada impede você de já demonstrar, validar e ter cliente
+      na fila enquanto resolve isso.</b></p>
+    </div>
+
+    <!-- ETAPA 6 -->
+    <div class="etapa" data-n="6">
+      <div class="card">
+        <div class="et-tag">Implantação</div>
+        <h2>A entrega</h2>
+        <div class="desc">Prometa um prazo (ex: 5 dias úteis) e cumpra.</div>
+        <div class="bloco">
+          <div class="lbl fazer">▸ Passos</div>
+          <ul>
+            <li>Rode <b>/novo-corretor</b> → gera o site dele. Suba no Netlify.</li>
+            <li>Monte o CRM na conta Google dele (ver SETUP-CRM.md).</li>
+            <li>Performance: ligue <b>ativarRelatorioMensal</b> e configure a chave Anthropic.</li>
+            <li>Troque o link da bio do Instagram dele.</li>
+            <li><b>Entrega guiada:</b> chamada de 20 min mostrando o painel. Quem entende, não cancela.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ETAPA 7 -->
+    <div class="etapa" data-n="7">
+      <div class="card">
+        <div class="et-tag">Rotina mensal</div>
+        <h2>O que mantém ele pagando</h2>
+        <div class="desc">O dinheiro recorrente mora aqui — e quase não dá trabalho.</div>
+        <div class="bloco">
+          <div class="lbl fazer">▸ Por cliente, por mês</div>
+          <ul>
+            <li><b>Dia 1º:</b> relatório com IA sai sozinho — seu custo de trabalho é zero.</li>
+            <li><b>1x/mês:</b> rode <b>/copy-imobiliaria</b> e entregue o pacote (só Performance). ~15 min.</li>
+            <li>Esporádico: trocar imóveis em destaque quando ele pedir.</li>
+          </ul>
+        </div>
+        <div class="bloco">
+          <div class="lbl evitar">▸ Evite</div>
+          <ul><li>Prometer reunião mensal ou tráfego manual. Não escala — foi o que decidimos NÃO fazer.</li></ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- DIVULGAÇÃO -->
+    <div class="titulo-sec">Como divulgar nas suas mídias</div>
+    <div class="sub-sec">Você não precisa ser influencer. Só parecer "o cara do sistema + IA pra corretor".</div>
+
+    <div class="ouro" style="margin-bottom:20px">
+      <h3>★ Seu posicionamento</h3>
+      <p>"Ajudo corretores a captar e organizar leads com sistema + IA. Sem enrolação, sem agência
+      cara. Montei o sistema da <b>@juu_alves8</b>." — a Ju é sua prova viva. Use o nome dela (com
+      autorização) em tudo.</p>
+    </div>
+
+    <div class="post"><div class="h">1. Print do resultado</div><div class="p">O relatório com IA, o painel, um gráfico subindo. "Olha o que o sistema da Ju entregou esse mês."</div></div>
+    <div class="post"><div class="h">2. Bastidor técnico</div><div class="p">"Montei mais um sistema de captação hoje." Mostra que tá rodando, gera prova social.</div></div>
+    <div class="post"><div class="h">3. Conteúdo de valor</div><div class="p">"3 erros que fazem corretor perder lead no WhatsApp." Você vira referência, eles vêm até você.</div></div>
+    <div class="post"><div class="h">4. Antes / depois</div><div class="p">Bio bagunçada vs. sistema premium. Visual forte.</div></div>
+    <div class="post" style="border-style:dashed"><div class="h">Ritmo</div><div class="p">2-3 posts/semana, sempre com prova (print, número, nome da Ju). Constância &gt; volume. Instagram profissional + WhatsApp Status. Bio com link pra vendas.html.</div></div>
+
+    <!-- COLA FINAL -->
+    <div class="cola">
+      <h3>Cola de bolso</h3>
+      <ol>
+        <li><b>Venda resultado</b>, não ferramenta (mais imóvel, menos esforço).</li>
+        <li><b>Indicação da Ju &gt; prospecção</b> — trabalhe a Ju como canal.</li>
+        <li><b>Sempre mostre a Ju funcionando</b> — prova mata promessa.</li>
+        <li><b>2 planos, empurre o Performance</b>, feche com a condição de fundador.</li>
+        <li><b>Resolva a parte legal de servidor</b> antes do 1º contrato.</li>
+        <li><b>Implantação rápida + entrega guiada</b> — quem entende não cancela.</li>
+        <li><b>A mágica é a rotina mensal automática</b> — não prometa trabalho que não escala.</li>
+        <li><b>Divulgue com prova</b>, 2-3x/semana, posicionado como "o cara do sistema + IA".</li>
+      </ol>
+    </div>
+
+    <div class="foot">
+      <b>GA Business Insights</b> · Playbook comercial interno<br>
+      Documento vivo — atualizar conforme a operação com a Ju evoluir
+    </div>
+
+  </div>
+</body>
+</html>
