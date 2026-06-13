@@ -48,6 +48,9 @@
   }
   .glass input::placeholder{color:#999}
   .glass input:focus,.glass select:focus{outline:none;border-color:rgba(255,255,255,.5)}
+  .glass input.erro{border-color:#ff4d4d !important}
+  .glass .msg-erro{color:#ff4d4d;font-size:11px;margin:-8px 0 10px 4px;display:none}
+  .glass .msg-erro.vis{display:block}
   .glass select option{background:#111}
   .glass button{
     width:100%;padding:17px;border:none;border-radius:12px;background:#fff;color:#0a0a0a;
@@ -106,8 +109,10 @@
         <h3>Uma seleção feita pra você</h3>
         <div class="sub">Me conta seu momento — eu garimpo o que encaixa, sem custo.</div>
         <form onsubmit="enviar(event)">
-          <input type="text" id="nome" placeholder="Seu nome" required>
-          <input type="tel" id="zap" placeholder="Seu WhatsApp — (63) 9____-____" required>
+          <input type="text" id="nome" placeholder="Seu nome">
+          <div class="msg-erro" id="erro-nome">Preencha seu nome para continuar.</div>
+          <input type="tel" id="zap" placeholder="Seu WhatsApp — (63) 9____-____">
+          <div class="msg-erro" id="erro-zap">Informe seu WhatsApp com DDD para continuar.</div>
           <select id="interesse">
             <option>Apartamento para morar</option>
             <option>Imóvel para investir / renda</option>
@@ -174,6 +179,13 @@
       }catch(err){}
     })();
 
+    function setErro(id, erroId, mostrar){
+      var campo = document.getElementById(id);
+      var msg   = document.getElementById(erroId);
+      if(mostrar){ campo.classList.add('erro'); msg.classList.add('vis'); }
+      else        { campo.classList.remove('erro'); msg.classList.remove('vis'); }
+    }
+
     function enviar(e){
       e.preventDefault();
       var nome = document.getElementById('nome').value.trim();
@@ -182,13 +194,14 @@
       var btn  = e.target.querySelector('button');
       var txtOriginal = btn.textContent;
 
-      // valida o WhatsApp: precisa de DDD + número (10 ou 11 dígitos). Lead sem telefone válido é lead morto.
+      // validação customizada — borda vermelha + mensagem abaixo do campo
       var soDigitos = zap.replace(/\D/g,'');
-      if (soDigitos.length < 10 || soDigitos.length > 11) {
-        alert('Confere seu WhatsApp com DDD — ex: (63) 99149-3039 🙂');
-        document.getElementById('zap').focus();
-        return;
-      }
+      var nomeOk = nome.length > 0;
+      var zapOk  = soDigitos.length >= 10 && soDigitos.length <= 11;
+      setErro('nome','erro-nome', !nomeOk);
+      setErro('zap','erro-zap',  !zapOk);
+      if (!nomeOk){ document.getElementById('nome').focus(); return; }
+      if (!zapOk) { document.getElementById('zap').focus();  return; }
 
       btn.disabled = true; btn.textContent = 'Enviando...';
 
@@ -224,6 +237,14 @@
         btn.disabled=false; btn.textContent=txtOriginal;
       }, 350);
     }
+
+    // limpa erro visual ao digitar
+    ['nome','zap'].forEach(function(id){
+      document.getElementById(id).addEventListener('input', function(){
+        this.classList.remove('erro');
+        document.getElementById('erro-'+id).classList.remove('vis');
+      });
+    });
 
     // máscara de telefone: formata (63) 99149-3039 conforme digita
     (function(){
