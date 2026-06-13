@@ -42,6 +42,22 @@ Toda **segunda às 8h**, olha os últimos 7 dias + os leads em aberto/esfriando 
 
 > **Os dois modelos:** mensal = Sonnet (vitrine, escrita mais rica) · semanal = Haiku (ação rápida). Os dois juntos custam ~R$1-2/mês por cliente.
 
+### IA embarcada no lead (sempre ligada, sem ativar nada)
+Diferente do relatório (1x/mês) e das recomendações (1x/semana), essa IA age **em todo lead** e aparece no painel do dia a dia. Usa a **mesma chave** do cofre (modelo Haiku — fração de centavo por lead). **Sem chave, cai numa análise heurística por código** — funciona igual, de graça.
+
+O que ela faz, automático, assim que o lead entra:
+- **Perfil** — classifica o comprador (Investidor, Pra morar, Lançamento…) → vira um selo no card.
+- **Score 0-100** — prioridade de atendimento. O painel **se ordena sozinho**: o lead mais quente fica no topo (🔥 a partir de 70).
+- **1ª resposta sugerida** — escreve a primeira mensagem no tom da Ju. Ao tocar **"Responder no WhatsApp"**, o WhatsApp já abre **com a mensagem escrita** (ela só revisa e envia).
+
+E sob demanda, no painel:
+- **Botão "🔥 Gerar follow-up"** (aparece nos leads esfriando) — a IA escreve uma mensagem de reativação citando o que o lead procurava e há quantos dias está parado. Toca → abre o WhatsApp já preenchido.
+- **Botão "✨ Analisar leads"** (topo da aba Leads) — preenche perfil/score/sugestão dos leads antigos que ainda não foram analisados (teto de 25 por vez).
+
+> **Custo:** com Haiku, a análise por lead é fração de centavo. Mesmo com 1.000 leads/mês fica em poucos reais. Sem chave configurada, **tudo funciona na heurística** — a Ju não fica travada.
+> **Colunas novas na planilha:** `IA Perfil`, `IA Score`, `IA Sugestão` (I/J/K) — criadas sozinhas no primeiro lead analisado. Não precisa rodar `setup` de novo.
+> **Briefing matinal:** o lembrete das 8h (`resumoDiario`) virou um **briefing acionável** — a IA diz quem contatar primeiro e quem precisa de follow-up, usando o score. Teste agora com **`testarBriefing`**.
+
 ### Como a Ju usa o painel (zero planilha)
 - **Card novo** aparece no topo, marcado 🔴 se está esfriando.
 - Toca **"Responder no WhatsApp"** → abre a conversa **e** marca "Conversando" sozinho.

@@ -16,7 +16,7 @@ var ABA_LEADS   = 'Leads';
 var ABA_PAINEL  = 'Painel';
 var ABA_VISITAS = 'Visitas';
 
-var COLUNAS = ['Data/Hora','Nome','WhatsApp','Interesse','Página','Origem','Status','Observações'];
+var COLUNAS = ['Data/Hora','Nome','WhatsApp','Interesse','Página','Origem','Status','Observações','IA Perfil','IA Score','IA Sugestão'];
 // 4 etapas + Perdido
 var STATUS_LISTA = ['Novo','Conversando','Visita','Fechado','Perdido'];
 var STATUS_CORES = {Novo:'#ffffff', Conversando:'#cfe0ff', Visita:'#ffe9bf', Fechado:'#c8f7d8', Perdido:'#e0e0e0'};
@@ -104,6 +104,9 @@ function doPost(e){
       ''
     ]);
     try { notificar(dados, agora); } catch(errN){}
+    // IA embarcada: analisa o lead recém-criado (perfil/score/sugestão) já na entrada.
+    // Em try próprio — se a IA falhar, o lead já está salvo e notificado.
+    try { analisarEGravar(sh.getLastRow()); } catch(errA){}
     return ContentService.createTextOutput(JSON.stringify({ok:true})).setMimeType(ContentService.MimeType.JSON);
   } catch(err){
     return ContentService.createTextOutput(JSON.stringify({ok:false, erro:String(err)})).setMimeType(ContentService.MimeType.JSON);
@@ -137,7 +140,10 @@ function lerLeads(){
       interesse: (r[3]||'—').toString(),
       origem: (r[5]||'direto').toString(),
       status: (r[6]||'Novo').toString(),
-      nota: (r[7]||'').toString()
+      nota: (r[7]||'').toString(),
+      perfilIA: (r[8]||'').toString(),
+      scoreIA: (r[9]!=='' && r[9]!=null) ? (parseInt(r[9],10)||0) : 0,
+      sugestaoIA: (r[10]||'').toString()
     });
   }
   return out;
@@ -187,6 +193,84 @@ function limpaZap(s){
   if (d.length <= 11) d = '55' + d;       // sem código do país → adiciona 55
   if (d.indexOf('55') !== 0) d = '55' + d;
   return d;
+}
+
+/* ====================== IA EMBARCADA — ANÁLISE POR LEAD ======================
+ * Quando um lead entra (doPost) ou quando se aperta "Analisar" no painel, a IA
+ * (Haiku — barata e rápida) faz 3 coisas e grava nas colunas I/J/K:
+ *   • PERFIL    — que tipo de comprador é (Investidor, Pra morar, Lançamento…)
+ *   • SCORE     — prioridade de atendimento 0-100 (o painel ordena por isso)
+ *   • SUGESTÃO  — a 1ª mensagem de WhatsApp pronta, no tom da Ju (vai pré-preenchida)
+ * Sem chave da Anthropic, cai numa análise heurística (de graça, sempre funciona).
+ * Custo com Haiku: fração de centavo por lead. */
+
+function perfilHeuristico(interesse){
+  var i=(interesse||'').toLowerCase();
+  if(i.indexOf('investir')>-1||i.indexOf('renda')>-1) return 'Investidor';
+  if(i.indexOf('morar')>-1) return 'Pra morar';
+  if(i.indexOf('lançamento')>-1||i.indexOf('lancamento')>-1||i.indexOf('planta')>-1) return 'Lançamento';
+  if(i.indexOf('casa')>-1||i.indexOf('condom')>-1) return 'Casa/cond.';
+  if(i.indexOf('lote')>-1||i.indexOf('terreno')>-1) return 'Terreno';
+  return 'A definir';
+}
+function scoreHeuristico(lead){
+  var s=55, o=(lead.origem||'').toLowerCase(), i=(lead.interesse||'').toLowerCase();
+  if(o.indexOf('indicacao')>-1) s+=25;                 // indicação é o lead que mais converte
+  else if(o.indexOf('story')>-1||o.indexOf('bio')>-1) s+=8;
+  if(i.indexOf('investir')>-1||i.indexOf('renda')>-1) s+=12;   // investidor decide mais rápido
+  if(i.indexOf('lançamento')>-1||i.indexOf('planta')>-1) s+=6;
+  var h=(Date.now()-(lead.data||Date.now()))/3600000;
+  if(h<6) s+=10; else if(h<24) s+=5;                   // quanto mais fresco, mais quente
+  return Math.max(20,Math.min(98,s));
+}
+function sugestaoHeuristica(lead){
+  var pn=(lead.nome||'').split(' ')[0]||'';
+  return 'Oi'+(pn?' '+pn:'')+'! Aqui é a Juliana, corretora em Palmas. Vi que você procura '+
+    (lead.interesse||'um imóvel').toLowerCase()+'. Tenho algumas opções que podem encaixar no seu perfil — posso te mandar?';
+}
+
+/** Análise via IA (Haiku). Retorna {perfil,score,sugestao} ou null se sem chave/erro. */
+function analisarLeadIA(lead){
+  var ctx='Você é assistente de uma corretora de imóveis em Palmas-TO (Juliana). '+
+    'Analise o lead e responda APENAS um JSON válido, sem texto antes ou depois:\n'+
+    '{"perfil":"<até 2 palavras>","score":<0-100>,"sugestao":"<1ª mensagem de WhatsApp>"}\n\n'+
+    'perfil = tipo do comprador (ex: Investidor, Pra morar, Lançamento). '+
+    'score = prioridade de atendimento 0-100 — indicação e investidor decidido pontuam mais alto; quanto mais recente, mais quente. '+
+    'sugestao = a primeira mensagem que a Juliana mandaria, 1ª pessoa, tom leve e direto, citando o que o lead procura, máx 45 palavras, sem emoji.\n\n'+
+    'LEAD: nome="'+(lead.nome||'')+'", procura="'+(lead.interesse||'')+'", veio de="'+(lead.origem||'direto')+'".';
+  var raw=_chamarIA(ctx, ANTHROPIC_MODELO_SEMANAL);
+  if(!raw) return null;
+  try{
+    var a=raw.indexOf('{'), b=raw.lastIndexOf('}');
+    if(a<0||b<0) return null;
+    var o=JSON.parse(raw.substring(a,b+1));
+    var score=parseInt(o.score,10); if(isNaN(score)) score=scoreHeuristico(lead);
+    return { perfil:(o.perfil||perfilHeuristico(lead.interesse)).toString().substring(0,24),
+             score:Math.max(0,Math.min(100,score)),
+             sugestao:(o.sugestao||sugestaoHeuristica(lead)).toString().substring(0,400) };
+  }catch(e){ return null; }
+}
+
+/** Garante os cabeçalhos I/J/K (planilha antiga não tem). Idempotente e barato. */
+function garantirHeaderIA(sh){
+  var h=sh.getRange(1,9,1,3).getValues()[0];
+  if(!h[0]&&!h[1]&&!h[2]){
+    sh.getRange(1,9,1,3).setValues([['IA Perfil','IA Score','IA Sugestão']])
+      .setBackground('#0c0c0c').setFontColor('#fff').setFontWeight('bold').setFontSize(11);
+  }
+}
+
+/** Analisa o lead da linha e grava perfil/score/sugestão. Usa heurística se a IA falhar. */
+function analisarEGravar(linha){
+  var sh=SpreadsheetApp.getActiveSpreadsheet().getSheetByName(ABA_LEADS);
+  if(!sh) return null;
+  garantirHeaderIA(sh);
+  var r=sh.getRange(linha,1,1,8).getValues()[0];
+  var lead={ nome:(r[1]||'').toString(), interesse:(r[3]||'').toString(),
+             origem:(r[5]||'direto').toString(), data:r[0]?new Date(r[0]).getTime():Date.now() };
+  var a=analisarLeadIA(lead) || { perfil:perfilHeuristico(lead.interesse), score:scoreHeuristico(lead), sugestao:sugestaoHeuristica(lead) };
+  sh.getRange(linha,9,1,3).setValues([[a.perfil, a.score, a.sugestao]]);
+  return a;
 }
 
 /* ============================ PAINEL WEB (app) ============================ */
@@ -270,6 +354,19 @@ h1{font-size:19px;font-weight:600}h1 small{display:block;font-size:10px;letter-s
 .ctx-sec .ok{color:#7fd4a8}.ctx-sec .no{color:#cf8a8a}
 .ctx-hint{font-size:11px;color:#6a6a6a;margin-top:8px;text-align:center;font-style:italic}
 .ctx-est{color:#8f8f8f}
+/* IA: badges de perfil/score, sugestão e reativação */
+.badges{display:flex;gap:6px;margin:7px 0 0 18px;flex-wrap:wrap}
+.bperfil{font-size:10.5px;color:#cfcfcf;background:#1c1c1c;border:1px solid #2f2f2f;border-radius:50px;padding:3px 9px}
+.bscore{font-size:10.5px;color:#0a0a0a;background:#e8c97a;border-radius:50px;padding:3px 9px;font-weight:700}
+.bscore.morno{background:#bdbdbd}.bscore.frio2{background:#3a3a3a;color:#bdbdbd}
+.sugia{background:#11140f;border:1px solid #2a3320;border-left:3px solid #25D366;border-radius:9px;padding:10px 12px;margin:11px 0 0;font-size:12.5px;color:#cfe6d4;line-height:1.5}
+.sugia b{color:#7fd4a8;font-weight:600;display:block;font-size:10px;letter-spacing:.5px;text-transform:uppercase;margin-bottom:3px}
+.reat-btn{background:#241a10 !important;color:#e8c97a !important;border:1px solid #4a3a1f !important}
+.reatbox{margin-top:9px}
+.reatbox .ger{font-size:12px;color:#8f8f8f;font-style:italic;text-align:center;padding:8px}
+.reatmsg{background:#141414;border:1px solid #2a2a2a;border-radius:9px;padding:10px 12px;font-size:12.5px;color:#dcdcdc;line-height:1.5;margin-bottom:8px}
+.kbadge{display:inline-block;font-size:9.5px;color:#0a0a0a;background:#e8c97a;border-radius:50px;padding:1px 7px;font-weight:700;margin-left:5px}
+.kbadge.morno{background:#bdbdbd}.kbadge.frio2{background:#3a3a3a;color:#bdbdbd}
 /* kanban (desktop) */
 .board{display:flex;gap:10px;overflow-x:auto;padding-bottom:8px}
 .kcol{flex:0 0 230px;background:#111;border:1px solid #1f1f1f;border-radius:13px;padding:10px}
@@ -306,7 +403,7 @@ h1{font-size:19px;font-weight:600}h1 small{display:block;font-size:10px;letter-s
   </div>
   <div id="viewDesempenho"></div>
   <div id="viewLeads" style="display:none">
-    <div class="barra-exp"><button class="btnexp" onclick="baixarCSV()">⬇ Baixar leads (CSV)</button></div>
+    <div class="barra-exp"><button class="btnexp" id="btnIA" onclick="analisarTodos()">✨ Analisar leads</button><button class="btnexp" onclick="baixarCSV()">⬇ Baixar leads (CSV)</button></div>
     <div class="filtros" id="filtros"></div>
     <div id="lista"></div>
   </div>
@@ -398,6 +495,38 @@ function nota(linha){
   var v=document.getElementById('nota'+linha).value;
   google.script.run.salvarNota(linha,v); toast('Anotação salva');
 }
+/* ---- IA: badge, reativação e análise em lote ---- */
+function scoreClasse(s){ return s>=70?'':(s>=45?'morno':'frio2'); }
+function badgeHTML(l){
+  if(!l.perfilIA && !l.scoreIA) return '';
+  var h='<div class="badges">';
+  if(l.perfilIA) h+='<span class="bperfil">'+esc(l.perfilIA)+'</span>';
+  if(l.scoreIA){ var fogo=l.scoreIA>=70?'🔥 ':''; h+='<span class="bscore '+scoreClasse(l.scoreIA)+'">'+fogo+l.scoreIA+'</span>'; }
+  return h+'</div>';
+}
+function reativar(linha){
+  var box=document.getElementById('reat'+linha); if(!box) return;
+  box.innerHTML='<div class="ger">Escrevendo follow-up…</div>';
+  google.script.run.withSuccessHandler(function(msg){
+    var L; for(var i=0;i<LEADS.length;i++){if(LEADS[i].linha===linha)L=LEADS[i];}
+    var zap=L?L.zapLimpo:'';
+    var href='https://wa.me/'+zap+'?text='+encodeURIComponent(msg);
+    box.innerHTML='<div class="reatmsg">'+esc(msg)+'</div>'+
+      (zap?'<a class="bigwa" href="'+href+'" target="_blank" rel="noopener" onclick="responder('+linha+')">'+WA+' Enviar follow-up</a>':'');
+  }).withFailureHandler(function(){
+    box.innerHTML='<div class="ger">Não consegui gerar agora. Tente de novo.</div>';
+  }).gerarReativacao(linha);
+}
+function analisarTodos(){
+  var b=document.getElementById('btnIA'); if(b){ b.disabled=true; b.textContent='✨ Analisando…'; }
+  google.script.run.withSuccessHandler(function(n){
+    toast(n>0?(n+' lead(s) analisado(s)'):'Tudo já analisado');
+    if(n>0) setTimeout(function(){location.reload();},900);
+    else if(b){ b.disabled=false; b.textContent='✨ Analisar leads'; }
+  }).withFailureHandler(function(){
+    if(b){ b.disabled=false; b.textContent='✨ Analisar leads'; } toast('Erro ao analisar');
+  }).analisarPendentes();
+}
 /* ---- EXPORTAR LEADS (CSV, baixa no aparelho) ---- */
 function csvData(ms){
   if(!ms) return '';
@@ -447,17 +576,28 @@ function renderContextual(){
     if(FILTRO==='todos')return true;
     return l.status===FILTRO;
   });
-  arr.sort(function(a,b){var p=prio(a.status)-prio(b.status);return p!==0?p:a.data-b.data;});
+  if(FILTRO==='ativos'){  // a trabalhar: mais quente (maior score) primeiro
+    arr.sort(function(a,b){var s=(b.scoreIA||0)-(a.scoreIA||0);return s!==0?s:b.data-a.data;});
+  } else {
+    arr.sort(function(a,b){var p=prio(a.status)-prio(b.status);return p!==0?p:a.data-b.data;});
+  }
   if(!arr.length){document.getElementById('lista').innerHTML='<div class="vazio">Nenhum lead aqui. 🎯</div>';return;}
   var html='';
   for(var k=0;k<arr.length;k++){
     var l=arr[k];var c=CORES[l.status]||'#fff';var fr=frio(l);
-    var wa=l.zapLimpo?'<a class="bigwa" href="https://wa.me/'+l.zapLimpo+'" target="_blank" rel="noopener" onclick="responder('+l.linha+')">'+WA+' Responder no WhatsApp</a>':'';
+    // sugestão da IA pré-preenchida no WhatsApp (só pro 1º contato, status Novo)
+    var temSug=(l.status==='Novo' && l.sugestaoIA);
+    var waUrl='https://wa.me/'+l.zapLimpo+(temSug?'?text='+encodeURIComponent(l.sugestaoIA):'');
+    var wa=l.zapLimpo?'<a class="bigwa" href="'+waUrl+'" target="_blank" rel="noopener" onclick="responder('+l.linha+')">'+WA+' Responder no WhatsApp</a>':'';
+    var sug=temSug?'<div class="sugia"><b>✨ Sugestão da IA — já vai escrita no WhatsApp</b>'+esc(l.sugestaoIA)+'</div>':'';
+    // botão de follow-up (IA) pros leads esfriando em aberto
+    var reatBtn=(fr&&(l.status==='Novo'||l.status==='Conversando'))?'<button class="bigp reat-btn" onclick="reativar('+l.linha+')">🔥 Gerar follow-up</button>':'';
+    var reatBox='<div id="reat'+l.linha+'" class="reatbox"></div>';
     var acao;
     if(l.status==='Novo'){
-      acao='<div class="acx">'+wa+'<div class="ctx-hint">ao responder, vira "Conversando" sozinho</div></div>';
+      acao='<div class="acx">'+sug+wa+reatBtn+reatBox+'<div class="ctx-hint">ao responder, vira "Conversando" sozinho</div></div>';
     } else if(l.status==='Conversando'){
-      acao='<div class="acx">'+wa+'<button class="bigp" onclick="setStatus('+l.linha+',\\'Visita\\')">📅 Marcou visita</button><div class="ctx-sec"><button class="ok" onclick="setStatus('+l.linha+',\\'Fechado\\')">✓ Fechou</button><button class="no" onclick="setStatus('+l.linha+',\\'Perdido\\')">✕ Não rolou</button></div></div>';
+      acao='<div class="acx">'+wa+reatBtn+reatBox+'<button class="bigp" onclick="setStatus('+l.linha+',\\'Visita\\')">📅 Marcou visita</button><div class="ctx-sec"><button class="ok" onclick="setStatus('+l.linha+',\\'Fechado\\')">✓ Fechou</button><button class="no" onclick="setStatus('+l.linha+',\\'Perdido\\')">✕ Não rolou</button></div></div>';
     } else if(l.status==='Visita'){
       acao='<div class="acx">'+wa+'<button class="bigp" style="background:#25D366;color:#06310f" onclick="setStatus('+l.linha+',\\'Fechado\\')">✓ Fechou o negócio</button><div class="ctx-sec"><button class="no" onclick="setStatus('+l.linha+',\\'Perdido\\')">✕ Não rolou</button></div></div>';
     } else {
@@ -465,7 +605,7 @@ function renderContextual(){
     }
     html+='<div class="card'+(fr?' frio':'')+'">'+
       '<div class="top"><span class="dot" style="background:'+c+'"></span><span class="nome">'+esc(l.nome)+'</span><span class="idade">'+(fr?'🔴 ':'')+idade(l.data)+'</span></div>'+
-      '<div class="inter">'+esc(l.interesse)+' · <span class="ctx-est">'+l.status+'</span></div>'+acao+
+      '<div class="inter">'+esc(l.interesse)+' · <span class="ctx-est">'+l.status+'</span></div>'+badgeHTML(l)+acao+
       '<div class="nota"><input id="nota'+l.linha+'" placeholder="Anotação rápida…" value="'+esc(l.nota)+'"><button onclick="nota('+l.linha+')">Salvar</button></div></div>';
   }
   document.getElementById('lista').innerHTML=html;
@@ -477,12 +617,17 @@ function renderKanban(){
   for(var s=0;s<STATUS.length;s++){
     var st=STATUS[s];var c=CORES[st]||'#fff';
     var arr=LEADS.filter(function(l){return l.status===st;});
-    arr.sort(function(a,b){return b.data-a.data;});
+    // Novo/Conversando: ordena por score (quente primeiro); demais: por recência
+    if(st==='Novo'||st==='Conversando') arr.sort(function(a,b){var s=(b.scoreIA||0)-(a.scoreIA||0);return s!==0?s:b.data-a.data;});
+    else arr.sort(function(a,b){return b.data-a.data;});
     var cards='';
     for(var k=0;k<arr.length;k++){
       var l=arr[k];var fr=frio(l);
-      var wa=l.zapLimpo?'<a class="kwa" href="https://wa.me/'+l.zapLimpo+'" target="_blank" rel="noopener" onclick="responder('+l.linha+')">'+WA+' responder</a>':'';
-      cards+='<div class="kcard'+(fr?' frio':'')+'"><div class="kn">'+(fr?'🔴 ':'')+esc(l.nome)+'</div><div class="ki">'+esc(l.interesse)+' · '+idade(l.data)+'</div>'+wa+
+      var temSug=(l.status==='Novo' && l.sugestaoIA);
+      var waUrl='https://wa.me/'+l.zapLimpo+(temSug?'?text='+encodeURIComponent(l.sugestaoIA):'');
+      var wa=l.zapLimpo?'<a class="kwa" href="'+waUrl+'" target="_blank" rel="noopener" onclick="responder('+l.linha+')">'+WA+' responder</a>':'';
+      var kb=l.scoreIA?'<span class="kbadge '+scoreClasse(l.scoreIA)+'">'+(l.scoreIA>=70?'🔥':'')+l.scoreIA+'</span>':'';
+      cards+='<div class="kcard'+(fr?' frio':'')+'"><div class="kn">'+(fr?'🔴 ':'')+esc(l.nome)+kb+'</div><div class="ki">'+(l.perfilIA?esc(l.perfilIA)+' · ':'')+esc(l.interesse)+' · '+idade(l.data)+'</div>'+wa+
         '<div class="kmv"><button onclick="mover('+l.linha+',-1)" '+(s===0?'disabled':'')+'>‹</button><button onclick="mover('+l.linha+',1)" '+(s===STATUS.length-1?'disabled':'')+'>›</button></div></div>';
     }
     html+='<div class="kcol"><div class="kbar" style="background:'+c+'"></div><div class="kh"><b>'+st+'</b><span>'+arr.length+'</span></div>'+(cards||'<div class="kempty">vazio</div>')+'</div>';
@@ -494,6 +639,44 @@ var _desk = ehDesktop();
 window.addEventListener('resize', function(){ var n=ehDesktop(); if(n!==_desk){ _desk=n; renderLeads(); } });
 renderKPIs(); renderDesempenho(); renderLeads();
 </script></body></html>`;
+}
+
+/* ====================== AÇÕES DE IA DO PAINEL ====================== */
+
+/** Botão "Analisar leads": analisa todos os leads ativos que ainda não têm score.
+ *  Teto de 25 por execução pra não estourar o tempo do Apps Script. Retorna quantos fez. */
+function analisarPendentes(){
+  var sh=SpreadsheetApp.getActiveSpreadsheet().getSheetByName(ABA_LEADS);
+  if(!sh) return 0;
+  garantirHeaderIA(sh);
+  var vals=sh.getDataRange().getValues(), n=0;
+  for(var i=1;i<vals.length;i++){
+    var r=vals[i]; if(!r[1]&&!r[2]) continue;
+    var status=(r[6]||'Novo').toString();
+    if(status==='Fechado'||status==='Perdido') continue;
+    if(r[9]) continue;                 // já tem score (coluna J)
+    analisarEGravar(i+1); n++;
+    if(n>=25) break;
+  }
+  return n;
+}
+
+/** Botão "Reativar" (lead frio): a IA escreve uma mensagem de follow-up no tom da Ju. */
+function gerarReativacao(linha){
+  var sh=SpreadsheetApp.getActiveSpreadsheet().getSheetByName(ABA_LEADS);
+  if(!sh) return '';
+  var r=sh.getRange(linha,1,1,8).getValues()[0];
+  var nome=(r[1]||'').toString(), inter=(r[3]||'').toString(), nota=(r[7]||'').toString();
+  var dias=r[0]?Math.floor((Date.now()-new Date(r[0]).getTime())/86400000):0;
+  var ctx='Você é a corretora Juliana (Palmas-TO) escrevendo no WhatsApp pra reaquecer um lead parado. '+
+    'Escreva UMA mensagem curta (máx 40 palavras), 1ª pessoa, calorosa mas sem forçar, sem soar cobrança, sem emoji. '+
+    'Retome o contato de forma natural e ofereça um próximo passo leve. Responda só a mensagem, sem aspas.\n\n'+
+    'LEAD: nome="'+nome+'", procura="'+inter+'", parado há '+dias+' dias.'+(nota?' Anotação da corretora: "'+nota+'".':'');
+  var raw=_chamarIA(ctx, ANTHROPIC_MODELO_SEMANAL);
+  if(raw) return raw.replace(/^["']+|["']+$/g,'').substring(0,400);
+  var pn=(nome.split(' ')[0]||'');
+  return 'Oi'+(pn?' '+pn:'')+'! Passando pra saber se você ainda está procurando '+(inter||'imóvel').toLowerCase()+
+    '. Apareceram opções novas aqui que acho que valem o seu olhar. Quer que eu te mande?';
 }
 
 /* ====================== NOTIFICAÇÃO + RESUMO DIÁRIO ====================== */
@@ -518,20 +701,68 @@ function notificar(dados, quando){
   }
 }
 
+/* BRIEFING MATINAL (8h no WhatsApp). Antes era só uma contagem; agora a IA escreve
+ * um briefing acionável: quem contatar primeiro e por quê, e quem precisa de follow-up.
+ * Usa o score gravado por lead pra priorizar. Sem chave da IA, cai na versão heurística. */
 function resumoDiario(){
-  var leads=lerLeads(), agora=Date.now(), nv=0, parados=0;
+  var leads=lerLeads(), agora=Date.now(), novos=[], esfriando=[];
   for(var i=0;i<leads.length;i++){
-    var l=leads[i];
-    if(l.status==='Novo')nv++;
-    if((l.status==='Novo'||l.status==='Conversando') && (agora-l.data)>3*86400000) parados++;
+    var l=leads[i], h=(agora-l.data)/3600000;
+    if(l.status==='Novo') novos.push(l);
+    if((l.status==='Novo'&&h>20)||(l.status==='Conversando'&&h>72)) esfriando.push(l);
   }
+  novos.sort(function(a,b){return (b.scoreIA||0)-(a.scoreIA||0);});       // mais quente primeiro
+  esfriando.sort(function(a,b){return a.data-b.data;});                   // mais parado primeiro
+  var ctx={novos:novos, esfriando:esfriando};
+  var texto = briefingIA(ctx) || briefingHeuristico(ctx);
   var url=''; try{url=ScriptApp.getService().getUrl()||'';}catch(e){}
-  var msg='Bom dia! ☀️\n'+nv+' lead(s) novo(s) e '+parados+' parado(s) +3 dias esperando resposta.'+(url?'\nAbrir painel: '+url:'');
+  var msg='☀️ '+texto+(url?'\n\nAbrir painel: '+url:'');
   if(CALLMEBOT_PHONE&&CALLMEBOT_APIKEY){
     UrlFetchApp.fetch('https://api.callmebot.com/whatsapp.php?phone='+CALLMEBOT_PHONE+'&text='+encodeURIComponent(msg)+'&apikey='+CALLMEBOT_APIKEY, {muteHttpExceptions:true});
   } else {
-    MailApp.sendEmail(Session.getEffectiveUser().getEmail(), '☀️ Resumo diário — CRM Juliana', msg);
+    MailApp.sendEmail(Session.getEffectiveUser().getEmail(), '☀️ Briefing do dia — CRM Juliana', msg);
   }
+}
+
+/** Briefing por código (sem IA). Sempre funciona. */
+function briefingHeuristico(c){
+  function pn(l){ return (l.nome||'').split(' ')[0]||l.nome; }
+  var p=[];
+  if(c.novos.length){
+    var t=c.novos[0];
+    p.push('Bom dia! Você tem '+c.novos.length+' lead'+(c.novos.length>1?'s':'')+' novo'+(c.novos.length>1?'s':'')+'.');
+    p.push('Comece pelo '+pn(t)+' ('+(t.perfilIA||t.interesse)+') — é o mais quente da fila.');
+  } else {
+    p.push('Bom dia! Nenhum lead novo na fila hoje.');
+  }
+  if(c.esfriando.length){
+    p.push(c.esfriando.length+' lead'+(c.esfriando.length>1?'s':'')+' esfriando precisa'+(c.esfriando.length>1?'m':'')+' de follow-up — no painel, o botão "Reativar" já escreve a mensagem.');
+  }
+  return p.join(' ');
+}
+
+/** Briefing escrito pela IA (Haiku). Retorna null se sem chave/erro ou nada relevante. */
+function briefingIA(c){
+  if(!c.novos.length && !c.esfriando.length) return null;
+  function lista(arr,comDias){
+    return arr.slice(0,6).map(function(l){
+      var pn=(l.nome||'').split(' ')[0]||l.nome;
+      var d=comDias?(' — parado há '+Math.floor((Date.now()-l.data)/86400000)+'d'):'';
+      return '- '+pn+' ('+(l.perfilIA||l.interesse)+', via '+l.origem+', score '+(l.scoreIA||'?')+')'+d;
+    }).join('\n') || '(nenhum)';
+  }
+  var ctx='Você é o assistente pessoal da corretora Juliana (Palmas-TO). Escreva o BRIEFING MATINAL dela pro WhatsApp. '+
+    'Curto (máx 80 palavras), tom de quem organiza o dia dela, direto e prático. Comece dizendo quem contatar primeiro e por quê. '+
+    'Traduza os dados em ação, não repita números crus nem o score. No máximo 1 emoji no total. Sem saudação longa.\n\n'+
+    'LEADS NOVOS (do mais quente pro mais frio):\n'+lista(c.novos,false)+'\n\n'+
+    'LEADS ESFRIANDO (parados, precisam follow-up):\n'+lista(c.esfriando,true);
+  return _chamarIA(ctx, ANTHROPIC_MODELO_SEMANAL);
+}
+
+/** Rode pra ver o briefing agora, sem esperar as 8h. */
+function testarBriefing(){
+  resumoDiario();
+  SpreadsheetApp.getUi().alert('✅ Briefing de teste enviado!\nConfira o e-mail'+(CALLMEBOT_APIKEY?' e o WhatsApp':'')+'.');
 }
 
 /** Rode 1x pra ligar o lembrete diário (8h). */
@@ -850,7 +1081,7 @@ function criaAbaLeads(ss){
   sh.clear();
   sh.getRange(1,1,1,COLUNAS.length).setValues([COLUNAS]).setBackground('#0c0c0c').setFontColor('#fff').setFontWeight('bold').setFontSize(11);
   sh.setFrozenRows(1);
-  var larg=[130,160,140,190,110,150,130,240]; for(var c=0;c<larg.length;c++) sh.setColumnWidth(c+1,larg[c]);
+  var larg=[130,160,140,190,110,150,130,240,110,70,360]; for(var c=0;c<larg.length;c++) sh.setColumnWidth(c+1,larg[c]);
   sh.getRange(2,7,2000,1).setDataValidation(SpreadsheetApp.newDataValidation().requireValueInList(STATUS_LISTA,true).build());
   var regras=STATUS_LISTA.map(function(st){
     return SpreadsheetApp.newConditionalFormatRule().whenTextEqualTo(st).setBackground(STATUS_CORES[st]).setRanges([sh.getRange(2,7,2000,1)]).build();
