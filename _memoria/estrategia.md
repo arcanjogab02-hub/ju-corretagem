@@ -60,6 +60,23 @@ e rodar 1 semana de validação. Depois disso: produtizar o sistema para outros 
 - Decisão de produto: corretor edita só os **imóveis em destaque** (catálogo lê de planilha,
   mesma stack do CRM) — NÃO migrar pra Vercel/CMS antes de validar. Feature pós-validação.
 
+## Regra de posicionamento — COMPLEMENTAR, não concorrente (permanente)
+
+Em TODA divulgação do produto, deixar claro que o nosso CRM **não substitui o CRM da
+imobiliária** — eles medem coisas diferentes e por isso se completam. É um risco real:
+se o corretor achar que tem que escolher, larga um dos dois (provavelmente o nosso, já que
+o da imob é obrigatório).
+
+- **CRM da imob (ex: URBS):** gere a carteira e o processo — documentação, repasse, comissão.
+- **Nosso CRM:** funil de **captação pessoal** do corretor — mede os leads que ELE gerou com
+  bio, stories e indicações (via links rastreados). É dele, vai junto se trocar de imobiliária.
+
+**Frase-mãe (usar nas peças):** *"Não substitui o CRM da sua imobiliária — ele mede o que é
+SEU. A imob gerencia a venda; aqui você prova quantos leads sua bio, seus stories e suas
+indicações trouxeram. É o número do seu esforço de captação, que hoje ninguém te mostra."*
+
+Aplicado na `vendas.html` (seção "E o CRM da imobiliária?"). Replicar em qualquer material novo.
+
 ## Links rastreáveis por canal
 
 Ver catálogo completo em `marketing/site/links-rastreaveis.md`.
