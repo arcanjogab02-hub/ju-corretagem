@@ -37,7 +37,7 @@ Antes de gerar, perguntar (num bloco só, e aceitar respostas curtas):
 4. **Tom** — direto/leve, sóbrio/premium, descontraído? (default: direto, leve, real,
    máx. 1 emoji por peça — o padrão da casa)
 5. **Link de captura** — a URL pra onde o conteúdo manda o lead (ex:
-   `juliana-alves.netlify.app/investir`)
+   `juliana-alves.pages.dev/investir`)
 6. **Destaques do mês (opcional)** — 1-3 imóveis ou novidades pra ancorar o conteúdo
    (bairro, faixa de preço, diferencial). Se não houver, gerar genérico do nicho.
 

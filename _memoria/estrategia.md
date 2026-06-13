@@ -4,9 +4,11 @@
 
 ## Fase atual (jun/2026)
 
-Sistema de captação da Juliana está **construído e no ar** em `juliana-alves.netlify.app`.
-Próxima semana: sentar com a Ju, ajustar com dados/fotos reais, publicar oficialmente
-e rodar 1 semana de validação. Depois disso: produtizar o sistema para outros corretores.
+Sistema de captação da Juliana está **construído e no ar** em `juliana-alves.pages.dev`.
+Hospedado no **Cloudflare Pages**, deploy automático a cada `git push` na `main` (migrado do
+Netlify em 13/06/2026, que travou por falta de créditos — modelo de crédito medido descartado
+para o produto). Próxima semana: sentar com a Ju, ajustar com dados/fotos reais, publicar
+oficialmente e rodar 1 semana de validação. Depois disso: produtizar o sistema para outros corretores.
 
 ## O que está no ar (produção)
 
@@ -29,9 +31,9 @@ e rodar 1 semana de validação. Depois disso: produtizar o sistema para outros 
 1. **Sentar com a Ju** — usar `marketing/produto-corretores/apresentacao-juliana.html`
 2. **Substituir fotos demo** — `imoveis.html` (3 imóveis reais da URBS)
 3. **Atualizar stats da bio** — número real de famílias atendidas, seguidores atuais
-4. **Instalar PWA** no celular da Ju — `juliana-alves.netlify.app/crm.html`
+4. **Instalar PWA** no celular da Ju — `juliana-alves.pages.dev/crm.html`
 5. **Ativar CallMeBot** — lembrete diário às 8h no WhatsApp (ver `marketing/crm/SETUP-CRM.md`)
-6. **Trocar link da bio do Instagram** → `juliana-alves.netlify.app`
+6. **Trocar link da bio do Instagram** → `juliana-alves.pages.dev`
 7. **Rodar 1 semana** → validar funil, analisar conversão no painel
 
 ## Fase seguinte: produtizar para outros corretores

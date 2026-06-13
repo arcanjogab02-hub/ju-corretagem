@@ -37,7 +37,7 @@ O "impacto" vem de: link novo na bio + 1 story por dia + uma chamada que dá von
 
 **Dia 3 — Revelar com leveza (1º clique)**
 > "Pronto. Agora é só tocar no link aqui da bio que você vê o que eu vejo."
-> Sticker de link → `juliana-alves.netlify.app`
+> Sticker de link → `juliana-alves.pages.dev`
 - *Objetivo:* primeiro tráfego de verdade. Caixinha de pergunta: "Achou fácil?".
 
 **Dia 4 — Prova social / movimento**
@@ -46,7 +46,7 @@ O "impacto" vem de: link novo na bio + 1 story por dia + uma chamada que dá von
 
 **Dia 5 — Bastidor de um imóvel do catálogo**
 > Visita/foto de um imóvel real → "Esse aqui tá lá no link. Quem viu primeiro foi quem clicou."
-> Sticker de link → `juliana-alves.netlify.app/investir.html?origem=story`
+> Sticker de link → `juliana-alves.pages.dev/investir.html?origem=story`
 - *Objetivo:* amarrar o link a um imóvel concreto = razão pra clicar agora.
 
 **Dia 6 — Convite direto (mas leve)**

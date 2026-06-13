@@ -4,7 +4,7 @@
 > **de onde o lead veio** — e aparece no painel, na seção "Por origem". Assim você sabe qual
 > canal traz mais lead (e mais venda) e otimiza o que funciona.
 >
-> Site base: **https://juliana-alves.netlify.app** · Página de captura: **/investir.html**
+> Site base: **https://juliana-alves.pages.dev** · Página de captura: **/investir.html**
 
 ---
 
@@ -20,13 +20,13 @@
 
 | Onde a Ju usa | Link | Aparece no painel como |
 |---|---|---|
-| **Link principal da bio do Insta** | `https://juliana-alves.netlify.app` | (entra pela bio premium → vira `bio` ao clicar "Quero investir") |
-| **Story com link direto pra captura** | `https://juliana-alves.netlify.app/investir.html?origem=story` | `story` |
-| **Destaque "Imóveis" do Insta** | `https://juliana-alves.netlify.app/investir.html?origem=destaque` | `destaque` |
-| **Anúncio pago (Meta/Google)** | `https://juliana-alves.netlify.app/investir.html?origem=ads` | `ads` |
-| **Link mandado no WhatsApp** | `https://juliana-alves.netlify.app/investir.html?origem=whatsapp` | `whatsapp` |
-| **Indicação de cliente** | `https://juliana-alves.netlify.app/investir.html?origem=indicacao` | `indicacao` |
-| **Campanha de um lançamento** | `https://juliana-alves.netlify.app/investir.html?origem=lancamento-essence` | `lancamento-essence` |
+| **Link principal da bio do Insta** | `https://juliana-alves.pages.dev` | (entra pela bio premium → vira `bio` ao clicar "Quero investir") |
+| **Story com link direto pra captura** | `https://juliana-alves.pages.dev/investir.html?origem=story` | `story` |
+| **Destaque "Imóveis" do Insta** | `https://juliana-alves.pages.dev/investir.html?origem=destaque` | `destaque` |
+| **Anúncio pago (Meta/Google)** | `https://juliana-alves.pages.dev/investir.html?origem=ads` | `ads` |
+| **Link mandado no WhatsApp** | `https://juliana-alves.pages.dev/investir.html?origem=whatsapp` | `whatsapp` |
+| **Indicação de cliente** | `https://juliana-alves.pages.dev/investir.html?origem=indicacao` | `indicacao` |
+| **Campanha de um lançamento** | `https://juliana-alves.pages.dev/investir.html?origem=lancamento-essence` | `lancamento-essence` |
 
 > O botão "Quero investir" **da bio premium** já anexa `?origem=bio` sozinho — não precisa fazer nada.
 
@@ -34,7 +34,7 @@
 
 ## Como usar na prática (roteiro pra Ju)
 
-1. **No link da bio do Instagram:** usa o principal (`juliana-alves.netlify.app`). Quem clica "Quero investir" conta como **bio**.
+1. **No link da bio do Instagram:** usa o principal (`juliana-alves.pages.dev`). Quem clica "Quero investir" conta como **bio**.
 2. **Quando postar um story com link** (sticker de link) apontando direto pra captura: usa o de `?origem=story`.
 3. **Quando rodar anúncio:** usa o de `?origem=ads` no destino. Aí você compara: o tráfego pago converte melhor que o orgânico?
 4. **Quando mandar pra alguém no WhatsApp:** usa `?origem=whatsapp`.

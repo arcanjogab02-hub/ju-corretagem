@@ -110,7 +110,7 @@ infraestrutura que as agências de tráfego não entregam.
 > dizendo o que procura — e fica gravado numa base sua, com aviso na hora. É tipo um balde sem furo
 > pra tudo que seu Instagram (e seu tráfego) já traz. A Juliana Alves já usa. Quer ver?"
 
-E aí manda o link `juliana-alves.netlify.app`. **O link é o pitch.**
+E aí manda o link `juliana-alves.pages.dev`. **O link é o pitch.**
 
 ---
 

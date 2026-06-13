@@ -13,7 +13,7 @@
 **Story:**
 > "Mostrei esse aqui hoje pra um casal que não sabia bem o que queria.
 > A gente achou. Mas ainda tem outros que encaixam nesse perfil — tá no link. 👇"
-**Sticker de link →** `juliana-alves.netlify.app/imoveis.html?origem=story`
+**Sticker de link →** `juliana-alves.pages.dev/imoveis.html?origem=story`
 **Por que funciona:** natural, rasteiro, sem forçar. Quem tem perfil parecido clica pra ver os outros imóveis.
 **O que demonstra pro sistema:** o link de catálogo rastreado funcionando desde o primeiro dia.
 
@@ -24,7 +24,7 @@
 **Story:**
 > "Hoje me ligaram por indicação de uma cliente do ano passado.
 > Se alguém te falou da Ju — esse link aqui já te coloca na frente. 👇"
-**Sticker de link →** `juliana-alves.netlify.app/investir.html?origem=indicacao`
+**Sticker de link →** `juliana-alves.pages.dev/investir.html?origem=indicacao`
 **Por que funciona:** ativa a rede de indicação existente. Quem recebeu indicação mas ainda não entrou
 em contato, entra agora com um CTA gentil.
 **O que demonstra pro sistema:** origem `indicacao` aparece separado no painel BI — Gabriel mostra
@@ -37,7 +37,7 @@ isso pra futuros corretores: "olha, 40% dos leads vieram de indicação, e a gen
 **Story (pode ser vídeo rápido do imóvel):**
 > "Esse entrou hoje. Área nobre de Palmas, planta diferenciada.
 > Quem quer detalhes antes de todo mundo — link aqui."
-**Sticker de link →** `juliana-alves.netlify.app/investir.html?origem=lancamento-[nome-do-imovel]`
+**Sticker de link →** `juliana-alves.pages.dev/investir.html?origem=lancamento-[nome-do-imovel]`
 **Por que funciona:** cria urgência real sem falsidade ("entrou hoje" é verdade).
 **O que demonstra pro sistema:** link específico por lançamento = cada empreendimento com sua própria
 métrica. Argumento de venda fortíssimo pro produto.
@@ -49,7 +49,7 @@ métrica. Argumento de venda fortíssimo pro produto.
 **Story:**
 > "Essa semana movimentada. Três atendimentos, dois imóveis entrando, um fechamento.
 > Se você tá pensando em Palmas — me conta o que procura. É por aqui. 👇"
-**Sticker de link →** `juliana-alves.netlify.app/investir.html?origem=story`
+**Sticker de link →** `juliana-alves.pages.dev/investir.html?origem=story`
 **Por que funciona:** tom de balanço real, não de vendedor. CTA suave no final.
 
 ---
@@ -61,7 +61,7 @@ Como a base de indicação dela é forte, vale um movimento extra além dos post
 **Mensagem pro WhatsApp de clientes anteriores (manual, 1x):**
 > "Oi [nome]! Criei uma forma mais fácil de quem você indicar pra mim já me achar.
 > Se alguém perguntar sobre imóveis em Palmas, manda esse link:
-> juliana-alves.netlify.app/investir.html?origem=indicacao
+> juliana-alves.pages.dev/investir.html?origem=indicacao
 > Aparece pra mim direto 🙂"
 
 Isso ativa a rede dela sem story, sem post — e cada lead que entrar por esse link
@@ -86,8 +86,8 @@ Ao apresentar o sistema pra um novo corretor:
 
 | Post | Link |
 |------|------|
-| Post 1 — catálogo | `juliana-alves.netlify.app/imoveis.html?origem=story` |
-| Post 2 — indicação | `juliana-alves.netlify.app/investir.html?origem=indicacao` |
-| Post 3 — lançamento | `juliana-alves.netlify.app/investir.html?origem=lancamento-[nome]` |
-| Post 4 — CTA geral | `juliana-alves.netlify.app/investir.html?origem=story` |
-| WhatsApp pra rede | `juliana-alves.netlify.app/investir.html?origem=indicacao` |
+| Post 1 — catálogo | `juliana-alves.pages.dev/imoveis.html?origem=story` |
+| Post 2 — indicação | `juliana-alves.pages.dev/investir.html?origem=indicacao` |
+| Post 3 — lançamento | `juliana-alves.pages.dev/investir.html?origem=lancamento-[nome]` |
+| Post 4 — CTA geral | `juliana-alves.pages.dev/investir.html?origem=story` |
+| WhatsApp pra rede | `juliana-alves.pages.dev/investir.html?origem=indicacao` |

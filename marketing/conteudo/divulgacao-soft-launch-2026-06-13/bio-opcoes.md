@@ -51,5 +51,5 @@ combina a autoridade no topo com curiosidade na chamada, sem soar vendedora.
 
 A **Opção 2** é a escolha se a prioridade for atrair o perfil investidor mais decidido.
 
-> Seja qual for, o link da bio continua sendo `juliana-alves.netlify.app` (conta como `bio` no painel).
+> Seja qual for, o link da bio continua sendo `juliana-alves.pages.dev` (conta como `bio` no painel).
 > Trocar a chamada na bio **junto** com o Dia 3 do plano de stories — os dois se reforçam.

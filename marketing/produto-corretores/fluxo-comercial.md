@@ -89,7 +89,7 @@ A força do produto é que **já existe rodando**. Não venda promessa, mostre a
 
 **Roteiro de 5 minutos (mande os links / faça por chamada de vídeo):**
 
-1. Abra `juliana-alves.netlify.app` no celular dele. *"Esse é o sistema da Ju.
+1. Abra `juliana-alves.pages.dev` no celular dele. *"Esse é o sistema da Ju.
    Olha a bio, o catálogo, e aqui o botão de captura."*
 2. Preencha um lead de teste na frente dele. *"Acabei de virar um lead. Olha o
    que acontece..."* → mostra caindo no painel.

@@ -188,7 +188,11 @@ inteligente em Palmas — não vende sonho genérico, mostra o bom negócio.
 
 ## Stack do projeto "Site + CRM" (definida)
 
-- **Site/landing:** HTML estático em `marketing/site/` → deploy no **Netlify** (não Linktree).
+- **Site/landing:** HTML estático em `marketing/site/` → deploy no **Cloudflare Pages** (não Linktree).
+  Projeto conectado ao GitHub (`arcanjogab02-hub/ju-corretagem`), output dir `marketing/site`, branch `main`.
+  **Deploy é automático a cada `git push` na `main`** (~1 min). No ar em `juliana-alves.pages.dev`.
+  (Migrado do Netlify em 13/06/2026 — a conta travou por falta de créditos; modelo de crédito medido
+  descartado pro produto. Cloudflare Pages é grátis, comercial-OK e hospeda sites ilimitados.)
   - `index.html` = bio premium (modelo business-card). Botão destaque "Quero investir" → `investir.html`.
   - `investir.html` = página de captura (variante B imersiva). Form de 3 campos.
   - `imoveis.html` = catálogo (3 imóveis demo da URBS, trocar pelos reais).
