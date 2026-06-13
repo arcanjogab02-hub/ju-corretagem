@@ -218,7 +218,7 @@
       }
 
       // 2) abre o WhatsApp — pequeno respiro pra garantir que o beacon saiu
-      var msg = 'Oi Juliana! Sou '+nome+'. Procuro: '+inter+'. Meu WhatsApp: '+zap;
+      var msg = 'Oi Juliana! Sou '+nome+'. Procuro: '+inter+'.';
       setTimeout(function(){
         window.location.href = 'https://wa.me/5563992226998?text='+encodeURIComponent(msg);
         btn.disabled=false; btn.textContent=txtOriginal;
