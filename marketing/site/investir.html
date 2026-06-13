@@ -181,6 +181,15 @@
       var inter= document.getElementById('interesse').value;
       var btn  = e.target.querySelector('button');
       var txtOriginal = btn.textContent;
+
+      // valida o WhatsApp: precisa de DDD + número (10 ou 11 dígitos). Lead sem telefone válido é lead morto.
+      var soDigitos = zap.replace(/\D/g,'');
+      if (soDigitos.length < 10 || soDigitos.length > 11) {
+        alert('Confere seu WhatsApp com DDD — ex: (63) 99149-3039 🙂');
+        document.getElementById('zap').focus();
+        return;
+      }
+
       btn.disabled = true; btn.textContent = 'Enviando...';
 
       // 1) grava no CRM — sendBeacon sobrevive ao redirect (não é cancelado ao sair da página)
@@ -209,12 +218,27 @@
       }
 
       // 2) abre o WhatsApp — pequeno respiro pra garantir que o beacon saiu
-      var msg = 'Oi Juliana! Sou '+nome+'. Procuro: '+inter+'. Meu WhatsApp: '+zap+' [Página B]';
+      var msg = 'Oi Juliana! Sou '+nome+'. Procuro: '+inter+'. Meu WhatsApp: '+zap;
       setTimeout(function(){
         window.location.href = 'https://wa.me/5563992226998?text='+encodeURIComponent(msg);
         btn.disabled=false; btn.textContent=txtOriginal;
       }, 350);
     }
+
+    // máscara de telefone: formata (63) 99149-3039 conforme digita
+    (function(){
+      var z = document.getElementById('zap');
+      if(!z) return;
+      z.addEventListener('input', function(){
+        var d = this.value.replace(/\D/g,'').slice(0,11);
+        var out = '';
+        if(d.length > 0)  out  = '(' + d.slice(0,2);
+        if(d.length >= 2) out += ') ';
+        if(d.length > 2)  out += d.slice(2, d.length > 10 ? 7 : 6);
+        if(d.length > (d.length > 10 ? 7 : 6)) out += '-' + d.slice(d.length > 10 ? 7 : 6);
+        this.value = out;
+      });
+    })();
   </script>
 </body>
 </html>
