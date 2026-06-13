@@ -57,9 +57,9 @@
   .case h2{font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:600;margin-bottom:14px;line-height:1.12}
   .case p{color:#cfcfcf;font-weight:300;font-size:15px;margin-bottom:18px}
   .case .ver{color:var(--branco);border-bottom:1px solid #fff;padding-bottom:2px;font-size:14px}
-  .mock{background:var(--card);border:1px solid var(--linha);border-radius:22px;padding:24px;text-align:center}
-  .mock .ph{display:block;border-radius:18px;overflow:hidden;border:1px solid #222;background:linear-gradient(165deg,#1d1d1d,#101010)}
-  .mock .ph img{width:100%;height:auto;display:block;border-radius:18px;transition:transform .4s ease}
+  .mock{background:#000;border:1px solid var(--linha);border-radius:30px;padding:10px;max-width:330px;margin:0 auto;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+  .mock .ph{display:block;border-radius:22px;overflow:hidden;line-height:0}
+  .mock .ph img{width:100%;height:auto;display:block;transition:transform .4s ease}
   .mock .ph:hover img{transform:scale(1.02)}
 
   /* O QUE ENTREGA */
@@ -181,7 +181,7 @@
   </div>
 
   <!-- CASE -->
-  <div class="case">
+  <div class="case" id="case">
     <div class="container">
       <div>
         <div class="tag">Case real · Palmas — TO</div>
@@ -214,7 +214,7 @@
           <div class="nota-v">o resto vaza: lead não respondido, sem dado, sem remarketing</div>
         </div>
         <div class="barra">
-          <div class="lb"><span>Com o sistema (+ R$ 197,90/mês)</span><b>quase 100% capturado</b></div>
+          <div class="lb"><span>Com o sistema (+ R$ 297,90/mês)</span><b>quase 100% capturado</b></div>
           <div class="track"><span class="fill ganha"></span></div>
           <div class="nota-v">cada clique vira lead salvo, com aviso e follow-up</div>
         </div>
@@ -273,7 +273,7 @@
             <tr><td>CRM incluso (base é sua)</td><td><span class="nao">✕</span></td><td><span class="nao">parcial, preso à plataforma</span></td><td><span class="nao">✕</span></td><td class="dest"><span class="sim">✓ de 1 toque, no celular</span></td></tr>
             <tr><td>Aviso de lead + resumo diário</td><td><span class="nao">✕</span></td><td><span class="nao">✕</span></td><td><span class="nao">✕</span></td><td class="dest"><span class="sim">✓ automático</span></td></tr>
             <tr><td>Sai do ar se você cancelar?</td><td>sim</td><td>sim — e leva seus dados</td><td>não</td><td class="dest">não — o sistema é seu</td></tr>
-            <tr><td>Custo típico</td><td>R$ 25/mês</td><td>R$ 100–250/mês</td><td>R$ 2–5 mil avulso</td><td class="dest">R$ 197,90/mês + implantação</td></tr>
+            <tr><td>Custo típico</td><td>R$ 25/mês</td><td>R$ 100–250/mês</td><td>R$ 2–5 mil avulso</td><td class="dest">R$ 297,90/mês + implantação</td></tr>
           </tbody>
         </table>
       </div>
@@ -322,11 +322,9 @@
       <div class="planos">
         <div class="plano">
           <h3>Captação</h3>
-          <span class="badge-ind">Condição de indicação</span>
-          <div class="preco-orig">R$ 297,90/mês</div>
-          <div class="preco"><b>R$ 197,90</b>/mês</div>
-          <div class="setup">+ R$ 600 de implantação · você toca o orgânico</div>
-          <div class="parc">Implantação: à vista no Pix ou <b>3× de R$ 200 sem juros</b> no cartão</div>
+          <div class="preco"><b>R$ 297,90</b>/mês</div>
+          <div class="setup">+ R$ 1.200 de implantação · você toca o orgânico</div>
+          <div class="parc">Implantação: à vista no Pix ou <b>3× de R$ 400 sem juros</b> no cartão</div>
           <ul>
             <li>Bio premium com sua identidade</li>
             <li>Página de captura direto no WhatsApp</li>
@@ -340,11 +338,9 @@
         </div>
         <div class="plano pro">
           <h3>Performance</h3>
-          <span class="badge-ind">Condição de indicação</span>
-          <div class="preco-orig">R$ 497,90/mês</div>
-          <div class="preco"><b>R$ 397,90</b>/mês</div>
-          <div class="setup">+ R$ 600 de implantação · tudo no automático, sem reunião</div>
-          <div class="parc">Implantação: à vista no Pix ou <b>3× de R$ 200 sem juros</b> no cartão</div>
+          <div class="preco"><b>R$ 497,90</b>/mês</div>
+          <div class="setup">+ R$ 1.200 de implantação · tudo no automático, sem reunião</div>
+          <div class="parc">Implantação: à vista no Pix ou <b>3× de R$ 400 sem juros</b> no cartão</div>
           <ul>
             <li>Tudo do Captação</li>
             <li><b>Recomendação toda segunda 8h</b>: 2-3 ações práticas pra semana, escritas por IA</li>
@@ -356,7 +352,7 @@
         </div>
       </div>
       <div class="carencia">Sem fidelidade de longo prazo: <b>compromisso de 90 dias</b> — o tempo que o sistema leva pra juntar dado suficiente e o relatório começar a apontar o que de fato funciona pra você.</div>
-      <div class="fundador">🤝 <b>Condição de indicação (via @juu_alves8):</b> preço reduzido e implantação de <b>R$&nbsp;600</b> (parcelável em 3× sem juros no cartão). Válido pra indicações diretas da Juliana. Preço travado por 12 meses.</div>
+      <div class="fundador">🤝 <b>Condição de fundador:</b> implantação com <b>30% off (R$&nbsp;1.200 → R$&nbsp;840)</b>, preço travado por 12 meses e suporte prioritário. Apenas <b>3 vagas por região</b>.</div>
       <div class="impl-parc">Mensalidade via Pix todo mês ou cobrança automática no cartão. Sem surpresa no bolso.</div>
     </div>
   </section>
