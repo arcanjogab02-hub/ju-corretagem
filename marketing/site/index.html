@@ -13,7 +13,7 @@
   *{margin:0;padding:0;box-sizing:border-box}
   body{
     font-family:'Inter',sans-serif;background:var(--preto);color:var(--branco);
-    min-height:100vh;display:flex;justify-content:center;align-items:center;padding:22px 16px;
+    min-height:100vh;min-height:100dvh;display:flex;justify-content:center;align-items:center;padding:14px 12px;
     background-image:
       radial-gradient(circle at 15% 10%, #161616 0%, transparent 45%),
       radial-gradient(circle at 85% 90%, #141414 0%, transparent 45%);
@@ -26,7 +26,7 @@
   }
 
   /* FOTO topo do cartão — slideshow cinematográfico (Ken Burns) */
-  .foto{position:relative;aspect-ratio:16/11;overflow:hidden;background:linear-gradient(160deg,#222,#101010)}
+  .foto{position:relative;aspect-ratio:16/9;overflow:hidden;background:linear-gradient(160deg,#222,#101010)}
   .foto .slide{position:absolute;inset:0;z-index:2;background-size:cover;background-position:center;opacity:0;will-change:opacity,transform;animation:slideshow 16.5s infinite}
   .foto .slide:nth-child(1){animation-delay:0s}
   .foto .slide:nth-child(2){animation-delay:5.5s}
@@ -38,39 +38,39 @@
     33%{opacity:0;transform:scale(1.10)}
     100%{opacity:0}
   }
-  .foto::after{content:"";position:absolute;inset:0;z-index:3;background:linear-gradient(180deg,transparent 55%,rgba(19,19,19,.95) 96%)}
+  .foto::after{content:"";position:absolute;inset:0;z-index:3;background:linear-gradient(180deg,transparent 52%,rgba(19,19,19,.95) 97%)}
 
   /* avatar sobreposto entre foto e corpo */
-  .avatar-row{position:relative;margin-top:-66px;z-index:4;display:flex;justify-content:center}
+  .avatar-row{position:relative;margin-top:-54px;z-index:4;display:flex;justify-content:center}
   .avatar{
-    position:relative;width:128px;height:128px;border-radius:50%;overflow:hidden;
+    position:relative;width:104px;height:104px;border-radius:50%;overflow:hidden;
     border:4px solid var(--card);outline:1px solid #3a3a3a;background:#1d1d1d;
   }
   .avatar img{position:absolute;inset:0;z-index:2;width:100%;height:100%;object-fit:cover;object-position:center 28%}
-  .avatar .fb{position:absolute;inset:0;z-index:1;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:38px;color:#777}
+  .avatar .fb{position:absolute;inset:0;z-index:1;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:32px;color:#777}
 
-  .corpo{padding:14px 26px 26px;text-align:center}
-  h1{font-family:'Cormorant Garamond',serif;font-size:31px;font-weight:600;letter-spacing:.5px}
-  .sub{font-size:10.5px;letter-spacing:3.5px;text-transform:uppercase;color:#cfcfcf;margin-top:5px}
-  .cred{font-size:11px;color:var(--cinza);margin-top:8px;letter-spacing:1px}
+  .corpo{padding:10px 24px 18px;text-align:center}
+  h1{font-family:'Cormorant Garamond',serif;font-size:27px;font-weight:600;letter-spacing:.5px}
+  .sub{font-size:10px;letter-spacing:3.5px;text-transform:uppercase;color:#cfcfcf;margin-top:4px}
+  .cred{font-size:11px;color:var(--cinza);margin-top:5px;letter-spacing:1px}
 
   /* divisor fino */
-  .div{width:42px;height:1px;background:#3a3a3a;margin:18px auto}
+  .div{width:42px;height:1px;background:#3a3a3a;margin:11px auto}
 
-  .pitch{font-size:13.5px;font-weight:300;color:#cfcfcf;line-height:1.65;padding:0 4px}
+  .pitch{font-size:12.5px;font-weight:300;color:#cfcfcf;line-height:1.5;padding:0 4px}
 
   /* LINHA DE STATS */
-  .stats{display:flex;margin:20px 0;border:1px solid var(--linha);border-radius:14px;overflow:hidden}
-  .stat{flex:1;padding:13px 4px;background:#161616}
+  .stats{display:flex;margin:13px 0;border:1px solid var(--linha);border-radius:14px;overflow:hidden}
+  .stat{flex:1;padding:10px 4px;background:#161616}
   .stat + .stat{border-left:1px solid var(--linha)}
-  .stat b{font-family:'Cormorant Garamond',serif;font-size:20px;display:block;line-height:1}
+  .stat b{font-family:'Cormorant Garamond',serif;font-size:18px;display:block;line-height:1}
   .stat span{font-size:8.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--cinza);display:block;margin-top:5px}
 
   /* BOTÕES */
-  .links{display:flex;flex-direction:column;gap:11px;text-align:left}
+  .links{display:flex;flex-direction:column;gap:9px;text-align:left}
   .btn{
-    display:flex;align-items:center;gap:13px;padding:15px 18px;border-radius:13px;
-    text-decoration:none;font-size:14px;font-weight:500;color:var(--branco);
+    display:flex;align-items:center;gap:13px;padding:12px 16px;border-radius:13px;
+    text-decoration:none;font-size:13.5px;font-weight:500;color:var(--branco);
     background:#1a1a1a;border:1px solid var(--linha);transition:all .2s;
   }
   .btn:hover{border-color:#404040;background:#1f1f1f}
@@ -84,25 +84,19 @@
   /* botão destaque (lead magnet) */
   .btn-destaque{background:#181818;border:1px solid #3a3a3a;position:relative;overflow:hidden}
   .btn-destaque::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:#fff}
-  .btn-destaque .badge{margin-left:auto;margin-right:8px;font-size:9px;font-weight:700;letter-spacing:1px;background:#fff;color:#0a0a0a;padding:3px 8px;border-radius:50px}
+  .btn-destaque .badge{margin-left:auto;font-size:9px;font-weight:700;letter-spacing:1px;background:#fff;color:#0a0a0a;padding:3px 8px;border-radius:50px}
   .btn-destaque:hover{border-color:#fff;background:#1f1f1f}
-  .btn .txt2{display:flex;flex-direction:column;gap:2px}
-  .btn .txt2 small{font-weight:300;font-size:11px;color:var(--cinza)}
-  /* faixa novidade no topo */
-  .novidade{display:flex;align-items:center;justify-content:center;gap:8px;font-size:11px;letter-spacing:.5px;color:#d6d6d6;background:#161616;border:1px solid var(--linha);border-radius:50px;padding:8px 14px;margin:0 0 16px}
-  .novidade .pulse{width:7px;height:7px;border-radius:50%;background:#25D366;box-shadow:0 0 0 0 rgba(37,211,102,.6);animation:pulse 2s infinite}
-  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(37,211,102,.6)}70%{box-shadow:0 0 0 8px rgba(37,211,102,0)}100%{box-shadow:0 0 0 0 rgba(37,211,102,0)}}
 
   /* rodapé do cartão com URBS */
   .rodape{
-    margin-top:22px;padding-top:18px;border-top:1px solid var(--linha);
+    margin-top:13px;padding-top:12px;border-top:1px solid var(--linha);
     display:flex;align-items:center;justify-content:space-between;
   }
   .rodape .lbl{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#5a5a5a;text-align:left;line-height:1.7}
-  .rodape img{height:48px;width:auto;opacity:.95}
+  .rodape img{height:38px;width:auto;opacity:.95}
   .rodape .fb{font-size:10px;letter-spacing:2px;color:#999}
 
-  .assinatura{margin-top:16px;text-align:center;font-size:9.5px;color:#4a4a4a;letter-spacing:2px}
+  .assinatura{margin-top:9px;text-align:center;font-size:9.5px;color:#4a4a4a;letter-spacing:2px}
 </style>
 </head>
 <body>
@@ -128,15 +122,13 @@
 
       <div class="div"></div>
 
-      <p class="pitch">Lançamentos e revenda com olhar de investimento. Atendimento direto, do primeiro contato à chave.</p>
+      <p class="pitch">Lançamentos e revenda com olhar de investimento.</p>
 
       <div class="stats">
         <div class="stat"><b data-count="50" data-prefix="+">+50</b><span>imóveis</span></div>
         <div class="stat"><b data-count="18.8" data-suffix="k" data-dec="1">18,8k</b><span>seguidores</span></div>
         <div class="stat"><b data-count="100" data-suffix="%">100%</b><span>Palmas</span></div>
       </div>
-
-      <div class="novidade"><span class="pulse"></span> Lançamentos abrindo essa semana em Palmas</div>
 
       <div class="links">
         <a class="btn btn-wa" href="https://wa.me/5563992226998?text=Oi%20Juliana!%20Vim%20pelo%20link%20da%20bio%20e%20quero%20falar%20sobre%20im%C3%B3veis." target="_blank">
@@ -146,7 +138,7 @@
         </a>
         <a class="btn btn-destaque" href="investir.html?origem=bio">
           <svg viewBox="0 0 24 24" fill="none" stroke="#f5f5f5" stroke-width="1.6"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg>
-          <span class="txt2">Quero investir em Palmas<small>Seleção de imóveis feita pro seu perfil — grátis</small></span>
+          Quero investir em Palmas
           <span class="badge">GRÁTIS</span>
         </a>
         <a class="btn" href="imoveis.html">
