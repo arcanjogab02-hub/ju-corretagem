@@ -23,6 +23,7 @@ com no máximo 1 emoji pontual pra dar destaque.
 - Clichê de corretor genérico ("realize o sonho da casa própria", "não perca essa chance")
 - Tom de guru de Instagram, jargão de venda agressiva
 - Texto longo e empolado — ela é objetiva
+- **Foco só em investimento** — equilibrar com "morar". Investimento é UM ângulo, não O foco; mensagem investimento-only afasta a maior fatia (quem quer morar / comprar o primeiro imóvel). Vale pra bio, site, carrossel, copy e página de novo corretor.
 
 ## Estilo geral
 
