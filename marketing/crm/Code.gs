@@ -685,7 +685,8 @@ function notificar(dados, quando){
   var zapRaw=(dados.whatsapp||'').toString(), zap=limpaZap(zapRaw), waLink=zap?'https://wa.me/'+zap:'';
   var quandoTxt=Utilities.formatDate(quando, Session.getScriptTimeZone(), 'dd/MM/yyyy HH:mm');
   var dest=EMAIL_NOTIFICACAO||Session.getEffectiveUser().getEmail();
-  if(dest){
+  // E-mail só como backup: com o WhatsApp (CallMeBot) ligado, notifica só por lá. (Ju pediu só WhatsApp.)
+  if(dest && !(CALLMEBOT_PHONE&&CALLMEBOT_APIKEY)){
     MailApp.sendEmail({to:dest, subject:'🔔 Novo lead: '+nome+' — '+inter, htmlBody:
       '<div style="font-family:Arial,sans-serif;max-width:480px;border:1px solid #eee;border-radius:12px;overflow:hidden">'+
       '<div style="background:#0c0c0c;color:#fff;padding:18px 22px"><h2 style="margin:0;font-size:18px">Novo lead da Juliana 🎯</h2><p style="margin:4px 0 0;color:#aaa;font-size:12px">'+quandoTxt+'</p></div>'+
