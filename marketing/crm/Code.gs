@@ -34,9 +34,16 @@ var INTERESSES = [
  *   No WhatsApp, adicione +34 644 51 95 23, mande "I allow callmebot to
  *   send me messages", e o bot te devolve a apikey.
  * =================================================================== */
-var EMAIL_NOTIFICACAO = '';   // ex: 'juliana@gmail.com'
-var CALLMEBOT_PHONE   = '';   // ex: '5563992226998'  (quem recebe os avisos)
-var CALLMEBOT_APIKEY  = '';   // apikey do CallMeBot
+/* ⚠ Estas 3 configs ficam no COFRE (Propriedades do Script), NÃO neste arquivo — assim você
+ * pode colar o Code.gs inteiro sem nunca perder os segredos. Defina em:
+ *   ⚙ Configurações do projeto → Propriedades do script → Adicionar propriedade
+ *     CALLMEBOT_PHONE    = 5563992226998        (quem recebe os avisos no WhatsApp)
+ *     CALLMEBOT_APIKEY   = <a apikey do CallMeBot>
+ *     EMAIL_NOTIFICACAO  = (opcional — só usado se o CallMeBot estiver desligado) */
+function _cfg(k){ try{ return PropertiesService.getScriptProperties().getProperty(k) || ''; }catch(e){ return ''; } }
+var EMAIL_NOTIFICACAO = _cfg('EMAIL_NOTIFICACAO');
+var CALLMEBOT_PHONE   = _cfg('CALLMEBOT_PHONE');
+var CALLMEBOT_APIKEY  = _cfg('CALLMEBOT_APIKEY');
 
 /* RELATÓRIO MENSAL (dia 1) — leitura por IA é OPCIONAL.
  * Sem chave = leitura automática por código (heurística). Funciona, de graça.
