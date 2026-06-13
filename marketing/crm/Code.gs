@@ -49,13 +49,30 @@ var CALLMEBOT_APIKEY  = '';   // apikey do CallMeBot
  * Salvou ali, o código lê sozinho. (Deixe a linha abaixo VAZIA.)
  * Sonnet escreve análise mais rica; Haiku ('claude-haiku-4-5') é ~3x mais barato.
  * Os dois custam centavos por relatório. */
-var ANTHROPIC_APIKEY  = '';   // NÃO cole a chave aqui — use as Propriedades do Script (ver acima)
-var ANTHROPIC_MODELO  = 'claude-sonnet-4-6';
+var ANTHROPIC_APIKEY         = '';   // NÃO cole a chave aqui — use as Propriedades do Script (ver acima)
+var ANTHROPIC_MODELO         = 'claude-sonnet-4-6';   // relatório MENSAL (vitrine — escrita mais rica)
+var ANTHROPIC_MODELO_SEMANAL = 'claude-haiku-4-5';    // recomendação SEMANAL (rápida, prática e barata)
 
 /** Lê a chave do cofre (Propriedades do Script). Só usa a var local se alguém preenchê-la. */
 function _anthropicKey(){
   try { var k = PropertiesService.getScriptProperties().getProperty('ANTHROPIC_APIKEY'); if (k) return k; } catch(e){}
   return ANTHROPIC_APIKEY || '';
+}
+
+/** Chama a IA da Anthropic com um prompt + modelo. Retorna o texto, ou null se sem chave/erro. */
+function _chamarIA(prompt, modelo){
+  var apikey = _anthropicKey();
+  if (!apikey) return null;
+  try {
+    var resp = UrlFetchApp.fetch('https://api.anthropic.com/v1/messages', {
+      method:'post', contentType:'application/json', muteHttpExceptions:true,
+      headers:{ 'x-api-key':apikey, 'anthropic-version':'2023-06-01' },
+      payload: JSON.stringify({ model:(modelo||ANTHROPIC_MODELO), max_tokens:400, messages:[{role:'user', content:prompt}] })
+    });
+    if (resp.getResponseCode()!==200) return null;
+    var j = JSON.parse(resp.getContentText());
+    return (j.content && j.content[0] && j.content[0].text) ? j.content[0].text.trim() : null;
+  } catch(e){ return null; }
 }
 
 /* ============================ ENTRADA DE LEAD ============================ */
@@ -581,27 +598,16 @@ function leituraHeuristica(a, b){
   return f.join('\n\n');
 }
 
-/** Leitura escrita pela IA (Anthropic). Retorna null se não houver chave ou der erro. */
+/** Leitura escrita pela IA (Sonnet). Retorna null se não houver chave ou der erro. */
 function leituraIA(a, b){
-  var apikey = _anthropicKey();
-  if (!apikey) return null;
-  try {
-    var ctx = 'Você é analista de captação de leads de um corretor de imóveis em Palmas-TO. '+
-      'Escreva uma análise curta (máx 140 palavras), em português do Brasil, tom direto e prático, '+
-      'sem clichê e sem emoji em excesso (no máximo 1). Foque no que melhorar no próximo mês.\n\n'+
-      'MÊS ANALISADO ('+a.rotulo+'): '+a.totalV+' visitas na página, '+a.totalL+' leads, '+a.conv+'% de conversão. '+
-      'Melhor canal: '+a.melhorCanal+' ('+a.melhorN+' leads). '+
-      'Funil — Novo:'+a.funil.Novo+', Conversando:'+a.funil.Conversando+', Visita:'+a.funil.Visita+', Fechado:'+a.fechados+', Perdido:'+a.funil.Perdido+'.\n'+
-      'MÊS ANTERIOR ('+b.rotulo+'): '+b.totalL+' leads, '+b.conv+'% de conversão.';
-    var resp = UrlFetchApp.fetch('https://api.anthropic.com/v1/messages', {
-      method:'post', contentType:'application/json', muteHttpExceptions:true,
-      headers:{ 'x-api-key':apikey, 'anthropic-version':'2023-06-01' },
-      payload: JSON.stringify({ model:ANTHROPIC_MODELO, max_tokens:400, messages:[{role:'user', content:ctx}] })
-    });
-    if (resp.getResponseCode()!==200) return null;
-    var j = JSON.parse(resp.getContentText());
-    return (j.content && j.content[0] && j.content[0].text) ? j.content[0].text.trim() : null;
-  } catch(e){ return null; }
+  var ctx = 'Você é analista de captação de leads de um corretor de imóveis em Palmas-TO. '+
+    'Escreva uma análise curta (máx 140 palavras), em português do Brasil, tom direto e prático, '+
+    'sem clichê e sem emoji em excesso (no máximo 1). Foque no que melhorar no próximo mês.\n\n'+
+    'MÊS ANALISADO ('+a.rotulo+'): '+a.totalV+' visitas na página, '+a.totalL+' leads, '+a.conv+'% de conversão. '+
+    'Melhor canal: '+a.melhorCanal+' ('+a.melhorN+' leads). '+
+    'Funil — Novo:'+a.funil.Novo+', Conversando:'+a.funil.Conversando+', Visita:'+a.funil.Visita+', Fechado:'+a.fechados+', Perdido:'+a.funil.Perdido+'.\n'+
+    'MÊS ANTERIOR ('+b.rotulo+'): '+b.totalL+' leads, '+b.conv+'% de conversão.';
+  return _chamarIA(ctx, ANTHROPIC_MODELO);
 }
 
 function relatorioMensal(){
@@ -657,6 +663,107 @@ function ativarRelatorioMensal(){
 function testarRelatorioMensal(){
   relatorioMensal();
   SpreadsheetApp.getUi().alert('✅ Relatório de teste enviado!\nConfira o e-mail'+(CALLMEBOT_APIKEY?' e o WhatsApp':'')+'.');
+}
+
+/* ================== RECOMENDAÇÕES SEMANAIS (entregável toda segunda) ==================
+ * Toda segunda às 8h (ver ativarRecomendacoesSemanais). Olha os últimos 7 dias + os leads
+ * em aberto/esfriando e manda 2-3 AÇÕES práticas pra semana. Curtinho e direto.
+ * Usa o modelo SEMANAL (Haiku — rápido e barato); sem chave, cai na heurística. */
+
+/** Métricas da última semana (7 dias) + estado dos leads em aberto. */
+function metricasSemana(leads, visitas, tz){
+  var agora=Date.now(), corte=agora-7*86400000;
+  var L=leads.filter(function(l){ return l.data>=corte; });
+  var V=visitas.filter(function(v){ return v.data>=corte; });
+  var totalV=V.length, totalL=L.length;
+  var conv = totalV ? Math.round((totalL/totalV)*1000)/10 : 0;
+
+  var porOrigem={}; L.forEach(function(l){ var o=l.origem||'direto'; porOrigem[o]=(porOrigem[o]||0)+1; });
+  var melhorCanal='—', melhorN=0;
+  for (var o in porOrigem){ if(porOrigem[o]>melhorN){ melhorN=porOrigem[o]; melhorCanal=o; } }
+
+  // leads em aberto (todos, não só da semana) e quantos estão esfriando
+  var novos=0, conversando=0, esfriando=0;
+  leads.forEach(function(l){
+    if(l.status==='Novo') novos++;
+    if(l.status==='Conversando') conversando++;
+    var h=(agora-l.data)/3600000;
+    if((l.status==='Novo'&&h>20)||(l.status==='Conversando'&&h>72)) esfriando++;
+  });
+  var fechados=0; L.forEach(function(l){ if(l.status==='Fechado') fechados++; });
+
+  return { totalV:totalV, totalL:totalL, conv:conv, melhorCanal:melhorCanal, melhorN:melhorN,
+           novos:novos, conversando:conversando, esfriando:esfriando, fechados:fechados, abertos:novos+conversando };
+}
+
+/** Recomendações automáticas por código (sem IA). Sempre funciona. */
+function recomendacaoHeuristica(s){
+  var f=[];
+  if (s.esfriando>0) f.push('🔴 '+s.esfriando+' lead(s) esfriando (sem resposta faz tempo). Responde esses primeiro hoje — é onde mais se perde venda.');
+  if (s.totalL===0) f.push('Semana parada na captação: 0 lead novo. Hora de aquecer — poste com chamada pro link de captura, principalmente em dia de plantão e visita.');
+  else f.push('Você captou '+s.totalL+' lead(s) na semana'+(s.melhorN>0?', a maioria via '+s.melhorCanal:'')+'. Mantenha o ritmo de conteúdo no canal que mais traz.');
+  if (s.abertos>0) f.push(s.abertos+' lead(s) em aberto (Novo/Conversando). Meta da semana: puxar pelo menos 1 deles pra visita.');
+  if (s.fechados>0) f.push(s.fechados+' fechamento(s) essa semana 🎉 Pede indicação pra quem fechou — indicação é o lead que mais converte.');
+  return f.join('\n\n');
+}
+
+/** Recomendações escritas pela IA (Haiku). Retorna null se não houver chave ou der erro. */
+function recomendacaoIA(s){
+  var ctx = 'Você é consultor de captação de um corretor de imóveis em Palmas-TO. '+
+    'Com base nos dados da ÚLTIMA SEMANA, escreva de 2 a 3 recomendações curtas e práticas pra ESTA semana — '+
+    'o que fazer primeiro. Português do Brasil, tom direto, sem clichê, no máximo 1 emoji no total. '+
+    'Comece pela ação mais urgente. Não repita os números crus: transforme em ação.\n\n'+
+    'SEMANA: '+s.totalL+' leads novos, '+s.totalV+' visitas na página, '+s.conv+'% de conversão. '+
+    'Melhor canal: '+s.melhorCanal+'. '+
+    'Leads em aberto: '+s.abertos+' (Novo:'+s.novos+', Conversando:'+s.conversando+'). '+
+    'Esfriando (sem resposta faz tempo): '+s.esfriando+'. Fechados na semana: '+s.fechados+'.';
+  return _chamarIA(ctx, ANTHROPIC_MODELO_SEMANAL);
+}
+
+function recomendacoesSemanais(){
+  var tz = Session.getScriptTimeZone();
+  var leads=lerLeads(), visitas=lerVisitas();
+  var s = metricasSemana(leads, visitas, tz);
+  var texto = recomendacaoIA(s) || recomendacaoHeuristica(s);
+  var viaIA = !!_anthropicKey();
+  var url=''; try{url=ScriptApp.getService().getUrl()||'';}catch(e){}
+
+  // ---- E-MAIL (HTML) ----
+  var dest = EMAIL_NOTIFICACAO || Session.getEffectiveUser().getEmail();
+  if (dest){
+    function kpi(v,l){ return '<td style="padding:10px 6px;text-align:center;border:1px solid #eee;border-radius:8px"><div style="font-size:24px;font-weight:bold">'+v+'</div><div style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:.5px">'+l+'</div></td>'; }
+    var html =
+      '<div style="font-family:Arial,sans-serif;max-width:520px;border:1px solid #eee;border-radius:12px;overflow:hidden">'+
+      '<div style="background:#0c0c0c;color:#fff;padding:20px 24px"><div style="font-size:11px;letter-spacing:2px;color:#aaa;text-transform:uppercase">Foco da semana</div><h2 style="margin:4px 0 0;font-size:22px">Suas recomendações</h2></div>'+
+      '<table style="width:100%;border-collapse:separate;border-spacing:8px;padding:14px 16px 4px">'+
+        '<tr>'+kpi(s.totalL,'Leads (7d)')+kpi(s.abertos,'Em aberto')+kpi(s.esfriando,'Esfriando')+'</tr>'+
+      '</table>'+
+      '<div style="padding:8px 24px 4px"><div style="font-size:11px;letter-spacing:1.5px;color:#888;text-transform:uppercase;margin-bottom:8px">O que fazer essa semana '+(viaIA?'(por IA)':'')+'</div>'+
+        '<div style="font-size:14px;line-height:1.7;color:#333;white-space:pre-line">'+texto+'</div></div>'+
+      (url?'<div style="padding:18px 24px 24px"><a href="'+url+'" style="display:inline-block;background:#0c0c0c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:bold">Abrir o painel →</a></div>':'<div style="height:16px"></div>')+
+      '</div>';
+    MailApp.sendEmail({ to:dest, subject:'🎯 Foco da semana — '+s.abertos+' leads pra trabalhar', htmlBody:html });
+  }
+
+  // ---- WHATSAPP (resumo curto) ----
+  if (CALLMEBOT_PHONE && CALLMEBOT_APIKEY){
+    var msg='🎯 Foco da semana\n\n'+
+      s.totalL+' leads (7d) · '+s.abertos+' em aberto · '+s.esfriando+' esfriando\n\n'+texto+(url?'\n\nPainel: '+url:'');
+    UrlFetchApp.fetch('https://api.callmebot.com/whatsapp.php?phone='+CALLMEBOT_PHONE+'&text='+encodeURIComponent(msg)+'&apikey='+CALLMEBOT_APIKEY, {muteHttpExceptions:true});
+  }
+}
+
+/** Rode 1x pra ligar as recomendações semanais (toda segunda, 8h). */
+function ativarRecomendacoesSemanais(){
+  ScriptApp.getProjectTriggers().forEach(function(t){ if(t.getHandlerFunction()==='recomendacoesSemanais') ScriptApp.deleteTrigger(t); });
+  ScriptApp.newTrigger('recomendacoesSemanais').timeBased().onWeekDay(ScriptApp.WeekDay.MONDAY).atHour(8).create();
+  SpreadsheetApp.getUi().alert('✅ Recomendações semanais ligadas!\nToda segunda às 8h sai o foco da semana por e-mail'+(CALLMEBOT_APIKEY?' e WhatsApp':'')+'.');
+}
+
+/** Rode pra ver as recomendações da semana agora, sem esperar segunda. */
+function testarRecomendacoesSemanais(){
+  recomendacoesSemanais();
+  SpreadsheetApp.getUi().alert('✅ Recomendações de teste enviadas!\nConfira o e-mail'+(CALLMEBOT_APIKEY?' e o WhatsApp':'')+'.');
 }
 
 /** Rode 1x pra testar a notificação (e autorizar o e-mail). */

@@ -34,6 +34,14 @@ Fecha o mês anterior todo **dia 1 às 8h**: visitas, leads, conversão, melhor 
 3. Quer ver agora sem esperar o dia 1? Roda **`testarRelatorioMensal`** — manda o relatório do mês anterior na hora.
 4. Trocou de chave ou modelo? Não precisa reimplantar — as funções de gatilho rodam a versão salva do código.
 
+### Ligar as recomendações semanais (entregável toda segunda)
+Toda **segunda às 8h**, olha os últimos 7 dias + os leads em aberto/esfriando e manda **2-3 ações práticas pra semana** (curtinho). Complementa o relatório mensal.
+1. Usa a **mesma chave** Anthropic do relatório mensal (a do cofre). Modelo: **Haiku** (rápido e barato) — definido em `ANTHROPIC_MODELO_SEMANAL`. Sem chave, cai na recomendação automática por código.
+2. Roda **`ativarRecomendacoesSemanais`** uma vez (autoriza). Sai por e-mail (e WhatsApp, se o CallMeBot estiver ligado).
+3. Quer ver agora? Roda **`testarRecomendacoesSemanais`** — manda o foco da semana na hora.
+
+> **Os dois modelos:** mensal = Sonnet (vitrine, escrita mais rica) · semanal = Haiku (ação rápida). Os dois juntos custam ~R$1-2/mês por cliente.
+
 ### Como a Ju usa o painel (zero planilha)
 - **Card novo** aparece no topo, marcado 🔴 se está esfriando.
 - Toca **"Responder no WhatsApp"** → abre a conversa **e** marca "Conversando" sozinho.
