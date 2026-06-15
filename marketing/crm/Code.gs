@@ -15,6 +15,7 @@
 var ABA_LEADS   = 'Leads';
 var ABA_PAINEL  = 'Painel';
 var ABA_VISITAS = 'Visitas';
+var ABA_CLIQUES = 'Cliques';   // topo de funil: cliques na bio/catálogo (NÃO entra na conversão)
 
 var COLUNAS = ['Data/Hora','Nome','WhatsApp','Interesse','Página','Origem','Status','Observações','IA Perfil','IA Score','IA Sugestão'];
 // 4 etapas + Perdido
@@ -98,6 +99,14 @@ function doPost(e){
       return ContentService.createTextOutput(JSON.stringify({ok:true,tipo:'visita'})).setMimeType(ContentService.MimeType.JSON);
     }
 
+    // PING de clique (topo de funil: botão da bio, imóvel do catálogo…) → aba Cliques e encerra.
+    // NÃO é visita nem lead — fica num balde separado pra não distorcer a taxa de conversão.
+    if (dados.tipo === 'clique') {
+      var shc = ss.getSheetByName(ABA_CLIQUES) || criaAbaCliques(ss);
+      shc.appendRow([ new Date(), (dados.alvo||'').toString().substring(0,40), (dados.pagina||'').toString().substring(0,30), (dados.origem||'direto').toString().substring(0,120) ]);
+      return ContentService.createTextOutput(JSON.stringify({ok:true,tipo:'clique'})).setMimeType(ContentService.MimeType.JSON);
+    }
+
     var sh = ss.getSheetByName(ABA_LEADS) || criaAbaLeads(ss);
     var agora = new Date();
     sh.appendRow([
@@ -168,8 +177,20 @@ function lerVisitas(){
   return out;
 }
 
+function lerCliques(){
+  var sh = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(ABA_CLIQUES);
+  if (!sh) return [];
+  var vals = sh.getDataRange().getValues();
+  var out = [];
+  for (var i=1; i<vals.length; i++){
+    if (!vals[i][0]) continue;
+    out.push({ data: new Date(vals[i][0]).getTime(), alvo:(vals[i][1]||'outro').toString(), pagina:(vals[i][2]||'').toString(), origem:(vals[i][3]||'direto').toString() });
+  }
+  return out;
+}
+
 /* ====================== BI DA PÁGINA (automático) ====================== */
-function calcularBI(leads, visitas){
+function calcularBI(leads, visitas, cliques){
   var tz = Session.getScriptTimeZone();
   function dia(ms){ return Utilities.formatDate(new Date(ms), tz, 'dd/MM'); }
   var totalV = visitas.length, totalL = leads.length;
@@ -191,7 +212,13 @@ function calcularBI(leads, visitas){
   leads.forEach(function(x){ var o=x.origem||'direto'; (porOrigem[o]=porOrigem[o]||{v:0,l:0}).l++; });
   leads.forEach(function(x){ var i=x.interesse||'—'; porInteresse[i]=(porInteresse[i]||0)+1; });
 
-  return { totalV:totalV, totalL:totalL, conv:conv, serie:serie, porOrigem:porOrigem, porInteresse:porInteresse };
+  // CLIQUES (topo de funil) — contagem por alvo. Métrica de engajamento, à parte da conversão.
+  cliques = cliques || [];
+  var porClique = {};
+  cliques.forEach(function(x){ var a=x.alvo||'outro'; porClique[a]=(porClique[a]||0)+1; });
+
+  return { totalV:totalV, totalL:totalL, conv:conv, totalC:cliques.length,
+           serie:serie, porOrigem:porOrigem, porInteresse:porInteresse, porClique:porClique };
 }
 
 function limpaZap(s){
@@ -284,7 +311,8 @@ function analisarEGravar(linha){
 function doGet(e){
   var leads = lerLeads();
   var visitas = lerVisitas();
-  var bi = calcularBI(leads, visitas);
+  var cliques = lerCliques();
+  var bi = calcularBI(leads, visitas, cliques);
   var html = APP_HTML()
     .replace('__DADOS__', function(){ return JSON.stringify(leads); })
     .replace('__BI__', function(){ return JSON.stringify(bi); })
@@ -483,6 +511,8 @@ function renderDesempenho(){
     '<div class="secao"><h3>Visitas e leads · últimos 14 dias</h3>'+
       '<div class="chart">'+bars+'</div><div class="chart-x">'+xs+'</div>'+
       '<div class="legenda"><span><i style="background:#242424"></i>visitas</span><span><i style="background:#25D366"></i>viraram lead</span></div></div>'+
+    '<div class="secao"><h3>De onde clicam · topo de funil ('+(BI.totalC||0)+' cliques)</h3>'+barrasMapa(BI.porClique||{},false)+
+      '<div class="ctx-hint" style="text-align:left;margin-top:8px">Engajamento na bio e no catálogo. Não entra na taxa de conversão — só a página de captura conta.</div></div>'+
     '<div class="secao"><h3>Por origem (de onde vêm)</h3>'+barrasMapa(BI.porOrigem,true)+'</div>'+
     '<div class="secao"><h3>Leads por interesse</h3>'+barrasMapa(BI.porInteresse,false)+'</div>';
 }
@@ -1004,16 +1034,29 @@ function popularTeste(){
       shv.appendRow([ quando(hora), 'investir', origens[(dd+k) % origens.length] ]);
     }
   }
-  SpreadsheetApp.getUi().alert('✅ 13 leads + ~118 visitas fictícias adicionados!\nAbra o painel (/exec) → aba Desempenho pra ver o BI. Pra limpar: rode limparTeste().');
+  // cliques fictícios (topo de funil) — alimenta o bloco "De onde clicam"
+  var shc = ss.getSheetByName(ABA_CLIQUES) || criaAbaCliques(ss);
+  var cliquesFake = [
+    ['bio-investir', 'bio', 'instagram', 60],
+    ['bio-imoveis',  'bio', 'instagram', 40],
+    ['bio-whatsapp', 'bio', 'instagram', 33],
+    ['bio-instagram','bio', 'direto',    12],
+    ['imovel:Essence du Parc','imoveis','instagram', 9],
+    ['imovel:Urban Terraço',  'imoveis','instagram', 7]
+  ];
+  cliquesFake.forEach(function(c){
+    for (var k=0;k<c[3];k++){ shc.appendRow([ quando((k*2.3) % (14*24)), c[0], c[1], c[2] ]); }
+  });
+  SpreadsheetApp.getUi().alert('✅ 13 leads + ~118 visitas + cliques fictícios adicionados!\nAbra o painel (/exec) → aba Desempenho pra ver o BI. Pra limpar: rode limparTeste().');
 }
 
 /** Apaga TODOS os leads E visitas (mantém os cabeçalhos). Use pra limpar os fictícios. */
 function limparTeste(){
-  [ABA_LEADS, ABA_VISITAS].forEach(function(nome){
+  [ABA_LEADS, ABA_VISITAS, ABA_CLIQUES].forEach(function(nome){
     var sh = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(nome);
     if (sh){ var n = sh.getLastRow(); if (n > 1) sh.getRange(2,1,n-1,sh.getLastColumn()).clearContent(); }
   });
-  SpreadsheetApp.getUi().alert('🧹 Leads e visitas limpos. Pronto pros dados reais.');
+  SpreadsheetApp.getUi().alert('🧹 Leads, visitas e cliques limpos. Pronto pros dados reais.');
 }
 
 /* ============================ SETUP (rodar 1x) ============================ */
@@ -1021,6 +1064,7 @@ function setup(){
   var ss=SpreadsheetApp.getActiveSpreadsheet();
   var leads=ss.getSheetByName(ABA_LEADS)||criaAbaLeads(ss);
   criaAbaVisitas(ss);
+  criaAbaCliques(ss);
   montaPainel(ss, leads);
   SpreadsheetApp.getUi().alert('✅ CRM configurado!\n\nAbas "Leads" e "Painel" prontas.\n\nPróximo: Implantar → App da Web. A gestão é toda no painel web (não na planilha).');
 }
@@ -1033,6 +1077,18 @@ function criaAbaVisitas(ss){
       .setBackground('#0c0c0c').setFontColor('#fff').setFontWeight('bold').setFontSize(11);
     sh.setFrozenRows(1);
     sh.setColumnWidth(1,140); sh.setColumnWidth(2,120); sh.setColumnWidth(3,160);
+  }
+  return sh;
+}
+
+function criaAbaCliques(ss){
+  var sh = ss.getSheetByName(ABA_CLIQUES);
+  if (!sh) sh = ss.insertSheet(ABA_CLIQUES);
+  if (sh.getLastRow() === 0){
+    sh.getRange(1,1,1,4).setValues([['Data/Hora','Alvo','Página','Origem']])
+      .setBackground('#0c0c0c').setFontColor('#fff').setFontWeight('bold').setFontSize(11);
+    sh.setFrozenRows(1);
+    sh.setColumnWidth(1,140); sh.setColumnWidth(2,170); sh.setColumnWidth(3,120); sh.setColumnWidth(4,160);
   }
   return sh;
 }
