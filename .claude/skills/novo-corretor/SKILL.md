@@ -10,8 +10,26 @@ description: >
 # /novo-corretor — Fábrica do produto de captação
 
 Esta skill transforma a entrega de ~2h num processo guiado. O resultado é uma pasta
-`clientes/<slug>/` pronta pra subir no Netlify + o CRM do cliente. Mantém o padrão
+`clientes/<slug>/` pronta pra subir no **Cloudflare Pages** + o CRM do cliente. Mantém o padrão
 **P&B premium** (não negociável — é a assinatura da marca) com **uma cor de acento** opcional.
+
+## A oferta (plano único — molde da Ju)
+
+Um plano só, sem cardápio. É o que se vende na `marketing/produto-corretores/vendas.html`.
+
+- **Implantação:** R$ 297,90 (única, Pix ou cartão)
+- **Mensalidade:** R$ 297/mês — compromisso de **3 meses**, depois mês a mês (cancela quando quiser)
+- **Escopo (recorrente):** bio premium + página de captura + catálogo + CRM 1 toque +
+  avisos + painel (visitas/cliques/leads/conversão) + **relatórios por IA** (recomendação
+  semanal + fechamento mensal). Hospedagem, manutenção e suporte no WhatsApp inclusos.
+- **Condição de fundador:** apenas **5 vagas**, preço travado por 12 meses, suporte prioritário.
+- **Brindes de fundador (one-time, NÃO viram trabalho recorrente):**
+  1. **Pacote de conteúdo de estreia** — rodar `/copy-imobiliaria` 1x (8 stories + 4 reels + 4 posts)
+  2. **Carrossel de lançamento da bio** — rodar `/carrossel` 1x, pra ativar e puxar a 1ª leva de leads
+- **A base é sempre do cliente** (CRM na conta Google dele) — é o que sustenta o "a base é sua".
+
+> Os brindes são entregues **uma vez**, na estreia. O escopo recorrente é Base + relatórios IA
+> (automáticos, saem do próprio CRM). Não prometer pacote de conteúdo mensal nesse plano.
 
 ## Pré-requisitos
 - Templates em `templates/produto-corretor/` (ver estrutura abaixo)
@@ -55,7 +73,8 @@ Validar contraste (não usar cor clara demais sobre preto sem ajuste).
 
 ## Fase 5 — CRM do cliente
 
-1. Copiar `templates/produto-corretor/crm/Code.gs`, trocar `Juliana Alves` → `{{NOME}}`
+1. Copiar o `Code.gs` validado da Ju (`marketing/crm/Code.gs` — já com rastreio de **Cliques**,
+   painel "De onde clicam" e **relatórios por IA** semanal/mensal), trocar `Juliana Alves` → `{{NOME}}`
 2. Guiar o cliente (ou fazer com acesso temporário) a:
    criar planilha na conta Google DELE → colar Code.gs → rodar `setup` → `testarNotificacao` →
    publicar Web App ("Qualquer pessoa") → copiar URL `/exec`
@@ -66,15 +85,22 @@ Validar contraste (não usar cor clara demais sobre preto sem ajuste).
 
 ## Fase 6 — Deploy + entrega
 
-1. Deploy `clientes/<slug>/site/` no Netlify (conta do cliente ou da agência) → nome `<slug>`
-2. Colar o link na bio do Instagram do cliente
-3. Chamada de entrega (15 min): instalar painel no celular, testar lead real, ensinar os 4 toques
-4. Agendar follow-up D+7 (chegou lead?) e D+30 (primeiro relatório → vira depoimento)
+1. Deploy `clientes/<slug>/site/` no **Cloudflare Pages** (conta da agência) → projeto `<slug>`,
+   conectado ao GitHub, deploy automático a cada push na `main` (~1 min). No ar em `<slug>.pages.dev`.
+   (Netlify foi descartado em 13/06/2026 — conta travou por créditos; Cloudflare é grátis e comercial-OK.)
+2. **Instalar o app do CRM:** salvar a página-lançador `<slug>.pages.dev/crm.html` na tela inicial
+   (NUNCA o link `script.google.com` direto — ele expira e dá "Não foi possível abrir o arquivo").
+3. Colar o link `<slug>.pages.dev` na bio do Instagram do cliente
+4. Entregar os **brindes de fundador**: rodar `/copy-imobiliaria` (pacote de estreia) e `/carrossel`
+   (carrossel de lançamento) — entrega única de ativação
+5. Chamada de entrega (15 min): instalar painel no celular, testar lead real, ensinar os 4 toques
+6. Agendar follow-up D+7 (chegou lead?) e D+30 (primeiro relatório → vira depoimento)
 
 ## Fase 7 — Registrar o cliente
 
-Anotar em `clientes/<slug>/ficha.md`: plano contratado, valores, data, URLs (site + CRM), status.
-Atualizar um `clientes/_carteira.md` (lista de todos os clientes, MRR somado).
+Anotar em `clientes/<slug>/ficha.md`: data, implantação (R$ 297,90), mensalidade (R$ 297/mês),
+nº da vaga de fundador (1–5), fim do compromisso de 3 meses, brindes entregues, URLs (site + CRM), status.
+Atualizar um `clientes/_carteira.md` (lista de todos os clientes, MRR somado, vagas de fundador restantes).
 
 ---
 

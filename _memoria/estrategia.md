@@ -36,6 +36,21 @@ oficialmente e rodar 1 semana de validação. Depois disso: produtizar o sistema
 6. **Trocar link da bio do Instagram** → `juliana-alves.pages.dev`
 7. **Rodar 1 semana** → validar funil, analisar conversão no painel
 
+## Cadência e mix de conteúdo (Instagram @juu_alves8)
+
+Régua sustentável (consistência > volume), calibrada pro perfil da Ju (mistura pessoal+trabalho):
+- **Semana:** 3 Reels + 1–2 carrosséis + 0–1 post estático + **stories diários** (4–10 frames).
+- **Papéis:** Reels = alcance/descoberta · carrossel = captação/saves (CTA pro link) ·
+  stories = canal nº1 de conversão (link/WhatsApp) · estático = autoridade/recado.
+- **Mix:** ~30% bastidor · 25% técnico/educativo · 20% imóvel/oferta · 15% pessoal · 10% prova social.
+  Pessoal é o ativo da Ju, mas toda peça pessoal reforça trabalho/Palmas/confiança.
+- **Algoritmo 2026:** compartilhamento em DM pesa 3–5x mais que like; palavra-chave na legenda
+  vale mais que hashtag (usar 3–6); gancho nos 2 primeiros segundos do Reel.
+- **Dias/horários (validar no Insights do perfil):** ter–qui, fim de manhã/almoço e 18h–21h; evitar domingo.
+- **Padrão visual dos carrosséis:** ver "Padrão de carrossel" em `identidade/design-guide.md`.
+- Dados de Palmas pra embasar conteúdo: `marketing/dados-mercado-palmas.md`.
+Pesquisa: Buffer, Sprout, SERHANT/BAM, Social Realtr (jun/2026).
+
 ## Fase seguinte: produtizar para outros corretores
 
 - Página de vendas pronta: `marketing/produto-corretores/vendas.html`

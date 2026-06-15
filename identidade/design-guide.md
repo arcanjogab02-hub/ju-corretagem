@@ -79,4 +79,41 @@ estética minimalista.
 - Estética de referência: o próprio feed @juu_alves8 (neutro, elegante) e a
   identidade da @urbscerrado.
 - Quando gerar carrossel/post de imóvel: foto grande, dado-chave em destaque
-  (preço, localização, dormitórios/suítes/vagas), CTA discreto em dourado.
+  (preço, localização, dormitórios/suítes/vagas), CTA discreto (branco — nunca dourado).
+
+---
+
+## Padrão de carrossel (REGRA FIXA — todo carrossel obedece)
+
+> Carrossel com tamanho/visual consistente engaja ~3x mais e faz o feed "ter cara da Ju".
+> Implementação de referência (copiar como base): a `style.css` de
+> `marketing/conteudo/carrossel-aluguel-vs-financiamento-2026-06-15/`.
+
+- **Tamanho:** 1080 × 1350 px (4:5 retrato). **Todos os slides no mesmo tamanho** — recortar
+  antes de subir, nunca deixar o Instagram cortar.
+- **Nº de slides:** 6 a 10 (sweet spot). Capa + miolo + CTA.
+- **Capa (slide 1):** gancho forte que vale o swipe (erro comum, número, mito×verdade, promessa
+  concreta). Título serifado grande, pouco texto.
+- **Rótulo / eyebrow:** etiqueta no topo-esquerdo, **sempre mesma posição/fonte/caixa**
+  (mono, UPPERCASE, letter-spacing aberto, cinza). Identifica o tema do slide.
+- **Numeração:** indicador discreto no topo-direito, formato fixo **"NN / NN"** (ex.: 02 / 06).
+- **Paleta:** fundo preto/grafite ou off-white alternando (nunca 2 iguais seguidos); texto
+  branco/preto. **Sem dourado, sem cor saturada.** Cor só da foto.
+- **Tipografia:** título serifado (Playfair/Cormorant); corpo sans (Inter); muito respiro.
+- **Fonte do dado:** quando usar número, citar a fonte pequena embaixo (ex.: "IBGE · 2023").
+  Só dado real (ver `marketing/dados-mercado-palmas.md`).
+- **@ e assinatura:** rodapé, **sempre mesma posição** — "@juu_alves8" à esquerda,
+  "Juliana Alves · CRECI 5377" à direita. Logo URBS só quando o imóvel for da imobiliária.
+- **Slide final = CTA:** ação clara (link na bio / me chama no direct). Fundo claro, contraste alto.
+- **Legenda (estrutura fixa):** (1) 1ª linha = gancho; (2) corpo curto, 1ª pessoa, **máx 1 emoji**;
+  (3) palavras-chave naturais no texto ("apartamento em Palmas", "investir em Palmas-TO") —
+  substituem hashtag como busca; (4) CTA + incentivo a compartilhar ("manda pra quem procura em
+  Palmas"); (5) **3 a 6 hashtags** locais/nicho no fim — nunca 30.
+
+## Cadência e mix (resumo — detalhe em `_memoria/estrategia.md`)
+
+- **Ritmo sustentável:** 3 Reels + 1–2 carrosséis + (0–1 post) por semana + **stories diários**.
+  Consistência > volume. Reels = alcance/descoberta; carrossel = captação/saves; stories = o
+  canal nº1 de conversão (link/WhatsApp).
+- **Mix:** ~30% bastidor · 25% técnico/educativo · 20% imóvel/oferta · 15% pessoal · 10% prova social.
+  Pessoal forte é o ativo da Ju — mas toda peça pessoal reforça trabalho/Palmas/confiança.
