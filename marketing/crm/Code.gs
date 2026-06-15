@@ -110,7 +110,7 @@ function doPost(e){
       'Novo',
       ''
     ]);
-    try { notificar(dados, agora); } catch(errN){}
+    // notificação de novo lead desativada (Ju pediu sem aviso por enquanto)
     // IA embarcada: analisa o lead recém-criado (perfil/score/sugestão) já na entrada.
     // Em try próprio — se a IA falhar, o lead já está salvo e notificado.
     try { analisarEGravar(sh.getLastRow()); } catch(errA){}
@@ -691,18 +691,7 @@ function notificar(dados, quando){
   var nome=(dados.nome||'(sem nome)').toString(), inter=(dados.interesse||'—').toString(), pag=(dados.pagina||'—').toString();
   var zapRaw=(dados.whatsapp||'').toString(), zap=limpaZap(zapRaw), waLink=zap?'https://wa.me/'+zap:'';
   var quandoTxt=Utilities.formatDate(quando, Session.getScriptTimeZone(), 'dd/MM/yyyy HH:mm');
-  var dest=EMAIL_NOTIFICACAO||Session.getEffectiveUser().getEmail();
-  // E-mail só como backup: com o WhatsApp (CallMeBot) ligado, notifica só por lá. (Ju pediu só WhatsApp.)
-  if(dest && !(CALLMEBOT_PHONE&&CALLMEBOT_APIKEY)){
-    MailApp.sendEmail({to:dest, subject:'🔔 Novo lead: '+nome+' — '+inter, htmlBody:
-      '<div style="font-family:Arial,sans-serif;max-width:480px;border:1px solid #eee;border-radius:12px;overflow:hidden">'+
-      '<div style="background:#0c0c0c;color:#fff;padding:18px 22px"><h2 style="margin:0;font-size:18px">Novo lead da Juliana 🎯</h2><p style="margin:4px 0 0;color:#aaa;font-size:12px">'+quandoTxt+'</p></div>'+
-      '<table style="width:100%;font-size:15px;line-height:1.9;padding:18px 22px"><tr><td style="color:#888;width:90px">Nome</td><td><b>'+nome+'</b></td></tr>'+
-      '<tr><td style="color:#888">WhatsApp</td><td>'+zapRaw+'</td></tr><tr><td style="color:#888">Procura</td><td>'+inter+'</td></tr>'+
-      '<tr><td style="color:#888">Página</td><td>'+pag+'</td></tr></table>'+
-      (waLink?'<div style="padding:0 22px 22px"><a href="'+waLink+'" style="display:inline-block;background:#25D366;color:#06310f;padding:13px 26px;border-radius:8px;text-decoration:none;font-weight:bold">Responder no WhatsApp →</a></div>':'')+
-      '</div>'});
-  }
+  // aviso de novo lead: só WhatsApp (sem e-mail). Desativado até CallMeBot configurado.
   if(CALLMEBOT_PHONE&&CALLMEBOT_APIKEY){
     var msg='🔔 Novo lead\n'+nome+'\n'+inter+'\nWhats: '+zapRaw+'\nPágina: '+pag;
     UrlFetchApp.fetch('https://api.callmebot.com/whatsapp.php?phone='+CALLMEBOT_PHONE+'&text='+encodeURIComponent(msg)+'&apikey='+CALLMEBOT_APIKEY, {muteHttpExceptions:true});
@@ -727,8 +716,6 @@ function resumoDiario(){
   var msg='☀️ '+texto+(url?'\n\nAbrir painel: '+url:'');
   if(CALLMEBOT_PHONE&&CALLMEBOT_APIKEY){
     UrlFetchApp.fetch('https://api.callmebot.com/whatsapp.php?phone='+CALLMEBOT_PHONE+'&text='+encodeURIComponent(msg)+'&apikey='+CALLMEBOT_APIKEY, {muteHttpExceptions:true});
-  } else {
-    MailApp.sendEmail(Session.getEffectiveUser().getEmail(), '☀️ Briefing do dia — CRM Juliana', msg);
   }
 }
 
@@ -770,7 +757,7 @@ function briefingIA(c){
 /** Rode pra ver o briefing agora, sem esperar as 8h. */
 function testarBriefing(){
   resumoDiario();
-  SpreadsheetApp.getUi().alert('✅ Briefing de teste enviado!\nConfira o e-mail'+(CALLMEBOT_APIKEY?' e o WhatsApp':'')+'.');
+  SpreadsheetApp.getUi().alert('✅ Briefing de teste enviado!'+(CALLMEBOT_APIKEY?'\nConfira o WhatsApp.':'\nCallMeBot não configurado — nada foi enviado.'));
 }
 
 /** Rode 1x pra ligar o lembrete diário (8h). */
@@ -863,26 +850,9 @@ function relatorioMensal(){
   var leitura = leituraIA(a, b) || leituraHeuristica(a, b);
   var viaIA = !!_anthropicKey();
 
-  // ---- E-MAIL (HTML) ----
-  var dest = EMAIL_NOTIFICACAO || Session.getEffectiveUser().getEmail();
   var url=''; try{url=ScriptApp.getService().getUrl()||'';}catch(e){}
-  if (dest){
-    function kpi(v,l){ return '<td style="padding:10px 6px;text-align:center;border:1px solid #eee;border-radius:8px"><div style="font-size:24px;font-weight:bold">'+v+'</div><div style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:.5px">'+l+'</div></td>'; }
-    var html =
-      '<div style="font-family:Arial,sans-serif;max-width:520px;border:1px solid #eee;border-radius:12px;overflow:hidden">'+
-      '<div style="background:#0c0c0c;color:#fff;padding:20px 24px"><div style="font-size:11px;letter-spacing:2px;color:#aaa;text-transform:uppercase">Relatório mensal</div><h2 style="margin:4px 0 0;font-size:22px;text-transform:capitalize">'+a.rotulo+'</h2></div>'+
-      '<table style="width:100%;border-collapse:separate;border-spacing:8px;padding:14px 16px 4px">'+
-        '<tr>'+kpi(a.totalV,'Visitas')+kpi(a.totalL,'Leads')+kpi(a.conv+'%','Conversão')+'</tr>'+
-        '<tr>'+kpi(a.visitasAgendadas,'Visitas agend.')+kpi(a.fechados,'Fechados')+kpi(a.melhorCanal,'Melhor canal')+'</tr>'+
-      '</table>'+
-      '<div style="padding:8px 24px 4px"><div style="font-size:11px;letter-spacing:1.5px;color:#888;text-transform:uppercase;margin-bottom:8px">Leitura do mês '+(viaIA?'(por IA)':'')+'</div>'+
-        '<div style="font-size:14px;line-height:1.7;color:#333;white-space:pre-line">'+leitura+'</div></div>'+
-      (url?'<div style="padding:18px 24px 24px"><a href="'+url+'" style="display:inline-block;background:#0c0c0c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:bold">Abrir o painel completo →</a></div>':'<div style="height:16px"></div>')+
-      '</div>';
-    MailApp.sendEmail({ to:dest, subject:'📊 Relatório de '+a.rotulo+' — '+a.totalL+' leads', htmlBody:html });
-  }
 
-  // ---- WHATSAPP (resumo curto) ----
+  // ---- WHATSAPP (sem e-mail) ----
   if (CALLMEBOT_PHONE && CALLMEBOT_APIKEY){
     var msg='📊 Relatório de '+a.rotulo+'\n\n'+
       a.totalV+' visitas · '+a.totalL+' leads · '+a.conv+'% conversão\n'+
@@ -901,7 +871,7 @@ function ativarRelatorioMensal(){
 /** Rode pra ver o relatório agora (do mês anterior), sem esperar o dia 1. */
 function testarRelatorioMensal(){
   relatorioMensal();
-  SpreadsheetApp.getUi().alert('✅ Relatório de teste enviado!\nConfira o e-mail'+(CALLMEBOT_APIKEY?' e o WhatsApp':'')+'.');
+  SpreadsheetApp.getUi().alert('✅ Relatório de teste enviado!'+(CALLMEBOT_APIKEY?'\nConfira o WhatsApp.':'\nCallMeBot não configurado — nada foi enviado.'));
 }
 
 /* ================== RECOMENDAÇÕES SEMANAIS (entregável toda segunda) ==================
@@ -967,24 +937,7 @@ function recomendacoesSemanais(){
   var viaIA = !!_anthropicKey();
   var url=''; try{url=ScriptApp.getService().getUrl()||'';}catch(e){}
 
-  // ---- E-MAIL (HTML) ----
-  var dest = EMAIL_NOTIFICACAO || Session.getEffectiveUser().getEmail();
-  if (dest){
-    function kpi(v,l){ return '<td style="padding:10px 6px;text-align:center;border:1px solid #eee;border-radius:8px"><div style="font-size:24px;font-weight:bold">'+v+'</div><div style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:.5px">'+l+'</div></td>'; }
-    var html =
-      '<div style="font-family:Arial,sans-serif;max-width:520px;border:1px solid #eee;border-radius:12px;overflow:hidden">'+
-      '<div style="background:#0c0c0c;color:#fff;padding:20px 24px"><div style="font-size:11px;letter-spacing:2px;color:#aaa;text-transform:uppercase">Foco da semana</div><h2 style="margin:4px 0 0;font-size:22px">Suas recomendações</h2></div>'+
-      '<table style="width:100%;border-collapse:separate;border-spacing:8px;padding:14px 16px 4px">'+
-        '<tr>'+kpi(s.totalL,'Leads (7d)')+kpi(s.abertos,'Em aberto')+kpi(s.esfriando,'Esfriando')+'</tr>'+
-      '</table>'+
-      '<div style="padding:8px 24px 4px"><div style="font-size:11px;letter-spacing:1.5px;color:#888;text-transform:uppercase;margin-bottom:8px">O que fazer essa semana '+(viaIA?'(por IA)':'')+'</div>'+
-        '<div style="font-size:14px;line-height:1.7;color:#333;white-space:pre-line">'+texto+'</div></div>'+
-      (url?'<div style="padding:18px 24px 24px"><a href="'+url+'" style="display:inline-block;background:#0c0c0c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:bold">Abrir o painel →</a></div>':'<div style="height:16px"></div>')+
-      '</div>';
-    MailApp.sendEmail({ to:dest, subject:'🎯 Foco da semana — '+s.abertos+' leads pra trabalhar', htmlBody:html });
-  }
-
-  // ---- WHATSAPP (resumo curto) ----
+  // ---- WHATSAPP (sem e-mail) ----
   if (CALLMEBOT_PHONE && CALLMEBOT_APIKEY){
     var msg='🎯 Foco da semana\n\n'+
       s.totalL+' leads (7d) · '+s.abertos+' em aberto · '+s.esfriando+' esfriando\n\n'+texto+(url?'\n\nPainel: '+url:'');
@@ -1002,13 +955,13 @@ function ativarRecomendacoesSemanais(){
 /** Rode pra ver as recomendações da semana agora, sem esperar segunda. */
 function testarRecomendacoesSemanais(){
   recomendacoesSemanais();
-  SpreadsheetApp.getUi().alert('✅ Recomendações de teste enviadas!\nConfira o e-mail'+(CALLMEBOT_APIKEY?' e o WhatsApp':'')+'.');
+  SpreadsheetApp.getUi().alert('✅ Recomendações de teste enviadas!'+(CALLMEBOT_APIKEY?'\nConfira o WhatsApp.':'\nCallMeBot não configurado — nada foi enviado.'));
 }
 
 /** Rode 1x pra testar a notificação (e autorizar o e-mail). */
 function testarNotificacao(){
   notificar({nome:'Lead de Teste', whatsapp:'63 99222-6998', interesse:'Imóvel para investir / renda', pagina:'teste'}, new Date());
-  SpreadsheetApp.getUi().alert('✅ Notificação de teste enviada!\nConfira o e-mail (e o WhatsApp, se configurou o CallMeBot).');
+  SpreadsheetApp.getUi().alert('✅ Notificação de teste enviada!'+(CALLMEBOT_APIKEY?'\nConfira o WhatsApp.':'\nCallMeBot não configurado — nada foi enviado.'));
 }
 
 /**
