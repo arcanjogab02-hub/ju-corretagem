@@ -21,6 +21,8 @@ html,body{width:1080px;height:1350px;overflow:hidden}
 .cmp.win{box-shadow:0 14px 34px rgba(192,57,43,.28)}
 .cmp.win .lab{color:#C0392B}
 .src{font-family:'Inter';font-size:22px;color:#8f8f8f;font-weight:600;letter-spacing:.04em;text-transform:uppercase;text-align:center}
+.closer{text-align:center;font-family:'Playfair Display',serif;font-size:34px;color:#F5F5F5;font-weight:500;margin-top:6px}
+.closer .hl{color:#C0392B}
 
 /* rodapé */
 .foot{display:flex;justify-content:space-between;align-items:flex-end}
