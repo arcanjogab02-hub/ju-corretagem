@@ -5,7 +5,7 @@ Data: 15/06/2026 · Capa B · 6 slides · P&B editorial · captação pro link d
 1. **(capa)** O aluguel que você paga já dá pra financiar o seu.
 2. **45%** de Palmas mora de aluguel — o maior índice entre as capitais do Brasil, a única acima de 40%. Quase metade pagando a casa de outra pessoa e achando que comprar é impossível. *(IBGE · 2024)*
 3. Esse aluguel de R$ 2 a 2,5 mil é quase a parcela de um financiamento do mesmo apê. A diferença? O aluguel é a prestação de um imóvel que nunca vai ser seu.
-4. **+6,5%** foi quanto o imóvel valorizou em 2025 — acima da inflação. No aluguel, quem leva essa valorização é o dono. Não você. *(FipeZAP 2025)*
+4. **9–14%** foi quanto bairros de Palmas valorizaram em 2024. No aluguel, quem leva essa valorização é o dono. Não você. *(mercado local · reportagem, Diário Tocantinense 2025)*
 5. Alugar não é vilão: faz sentido se você ainda vai mudar de cidade, não tem entrada, ou a parcela não cabe com folga. E pra investir, a temporada é forte: Palmas tem 600+ imóveis no Airbnb e procura o ano todo. *(Ademi-TO 2025)*
 6. **(CTA)** Vê se a parcela já cabe no que você paga de aluguel hoje. Toca no link da bio e me conta seu caso. Faço essa conta com você — com apê de verdade, em Palmas.
 
