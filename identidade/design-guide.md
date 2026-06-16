@@ -91,6 +91,10 @@ estética minimalista.
 
 - **Tamanho:** 1080 × 1350 px (4:5 retrato). **Todos os slides no mesmo tamanho** — recortar
   antes de subir, nunca deixar o Instagram cortar.
+- **Mobile / grade do perfil:** 4:5 é o que ocupa mais tela no celular (postar nesse formato).
+  Atenção: no **grid do perfil a capa é recortada em 1:1** (quadrado central) — manter o título/elemento
+  principal no **centro** (zona segura), nada essencial nos ~135px de cima/baixo. Salvar os PNGs
+  nomeados em ordem (`slide-01…06`) numa pasta só, pra subir na sequência certa pelo celular.
 - **Nº de slides:** 6 a 10 (sweet spot). Capa + miolo + CTA.
 - **Capa (slide 1):** gancho forte que vale o swipe (erro comum, número, mito×verdade, promessa
   concreta). Título serifado grande, pouco texto.
