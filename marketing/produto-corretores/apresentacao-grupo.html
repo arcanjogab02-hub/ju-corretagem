@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Captação 360 · Grupo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--preto:#0c0c0c;--card:#141414;--linha:#262626;--branco:#f5f5f5;--cinza:#7a7a7a;--acento:#fff}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow:hidden;background:var(--preto);color:var(--branco);font-family:'Inter',sans-serif}
+
+/* ---- SLIDES ---- */
+.deck{position:relative;width:100%;height:100%}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:60px 80px;opacity:0;pointer-events:none;transition:opacity .35s ease}
+.slide.active{opacity:1;pointer-events:all}
+.inner{max-width:900px;width:100%}
+
+/* tipografia base */
+.serif{font-family:'Cormorant Garamond',serif}
+.eyebrow{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--cinza);margin-bottom:18px}
+h1{font-family:'Cormorant Garamond',serif;font-weight:600;line-height:1.04}
+h2{font-family:'Cormorant Garamond',serif;font-size:clamp(2.2rem,5vw,3.4rem);font-weight:600;line-height:1.06;margin-bottom:20px}
+h2 em{font-style:italic;color:transparent;-webkit-text-stroke:1px #fff}
+p.lead{font-size:clamp(15px,1.8vw,18px);color:#cfcfcf;font-weight:300;max-width:640px}
+.destaque{color:#fff;font-weight:500}
+
+/* número do slide */
+.num{position:fixed;bottom:28px;right:34px;font-size:11px;color:#333;letter-spacing:2px;z-index:20}
+
+/* progress bar */
+.progress{position:fixed;bottom:0;left:0;height:2px;background:#fff;transition:width .35s ease;z-index:20}
+
+/* setas */
+.nav{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);display:flex;gap:16px;z-index:20}
+.nav button{background:none;border:1px solid #2a2a2a;color:#555;width:38px;height:38px;border-radius:50%;cursor:pointer;font-size:16px;transition:border-color .2s,color .2s;line-height:1}
+.nav button:hover{border-color:#555;color:#fff}
+
+/* notas de facilitador */
+.fac{display:none;position:fixed;bottom:72px;left:50%;transform:translateX(-50%);max-width:760px;width:90%;background:#111;border:1px solid #222;border-radius:10px;padding:14px 20px;font-size:13px;color:#888;z-index:30;line-height:1.6}
+.fac strong{color:#aaa}
+body.show-fac .fac{display:block}
+
+/* ===== SLIDE 00 — CAPA ===== */
+.capa{background:radial-gradient(circle at 20% 20%,#181818,#080808 65%);text-align:center}
+.capa h1{font-size:clamp(2.8rem,7vw,5.2rem)}
+.capa h1 em{font-style:italic;color:transparent;-webkit-text-stroke:1.5px #fff}
+.capa .sub{margin-top:22px;font-size:clamp(15px,2vw,19px);color:#b0b0b0;font-weight:300;max-width:560px;margin-left:auto;margin-right:auto}
+.capa .por{margin-top:40px;font-size:10px;letter-spacing:3px;color:#444;text-transform:uppercase}
+.capa .hint{margin-top:60px;font-size:10px;letter-spacing:2px;color:#333;text-transform:uppercase;animation:bob 2s infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
+
+/* ===== SLIDE 01 — SITUAÇÃO ===== */
+.mao-list{margin-top:30px;display:flex;flex-direction:column;gap:0}
+.mao-item{display:flex;gap:18px;align-items:flex-start;padding:20px 0;border-top:1px solid var(--linha)}
+.mao-num{font-family:'Cormorant Garamond',serif;font-size:22px;color:#333;flex-shrink:0;width:28px;padding-top:2px}
+.mao-item p{font-size:16px;color:#cfcfcf;font-weight:300;line-height:1.5}
+.mao-item .tag{display:inline-block;margin-top:8px;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#555;border:1px solid #2a2a2a;border-radius:20px;padding:3px 10px}
+.silencio{margin-top:30px;font-family:'Cormorant Garamond',serif;font-size:22px;font-style:italic;color:#555}
+
+/* ===== SLIDE 02 — PROBLEMA ===== */
+.dores{margin-top:24px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.dor{background:var(--card);border:1px solid var(--linha);border-radius:14px;padding:20px 22px;display:flex;gap:12px;align-items:flex-start}
+.dor .x{color:#6b2f2b;font-size:18px;flex-shrink:0;line-height:1.4}
+.dor p{font-size:14px;color:#cfcfcf;font-weight:300;line-height:1.5}
+.dor b{color:#fff;font-weight:500}
+
+/* ===== SLIDE 03 — IMPLICAÇÃO ===== */
+.conta{margin-top:32px;display:flex;flex-direction:column;gap:16px}
+.linha-conta{display:flex;align-items:center;gap:20px;padding:18px 22px;background:var(--card);border:1px solid var(--linha);border-radius:12px}
+.lc-n{font-family:'Cormorant Garamond',serif;font-size:36px;color:#333;flex-shrink:0;width:48px;text-align:center}
+.lc-t{flex:1}
+.lc-t b{font-size:15px;display:block;margin-bottom:4px}
+.lc-t span{font-size:13px;color:var(--cinza)}
+.lc-v{font-family:'Cormorant Garamond',serif;font-size:26px;color:#fff;flex-shrink:0}
+.conta-total{margin-top:20px;text-align:right;font-family:'Cormorant Garamond',serif;font-size:32px;color:#fff;border-top:1px solid var(--linha);padding-top:16px}
+.conta-total small{font-size:13px;color:var(--cinza);font-family:'Inter',sans-serif;display:block;margin-top:4px}
+
+/* ===== SLIDE 04 — NECESSIDADE ===== */
+.nec-list{margin-top:28px;display:flex;flex-direction:column;gap:0}
+.nec{padding:20px 0;border-top:1px solid var(--linha);display:flex;gap:16px;align-items:flex-start}
+.nec-q{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:21px;color:#e0e0e0;flex:1;line-height:1.3}
+.nec .seta{color:#333;font-size:18px;flex-shrink:0;padding-top:4px}
+
+/* ===== SLIDE 05 — ORIGEM ===== */
+.origem-quote{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(20px,3vw,28px);color:#e8e8e8;border-left:2px solid #303030;padding-left:26px;margin-top:28px;max-width:640px;line-height:1.4}
+.origem-quem{margin-top:18px;font-size:12px;color:var(--cinza);letter-spacing:1px}
+
+/* ===== SLIDE 06 — PEÇAS ===== */
+.pecas{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:28px}
+.peca{background:var(--card);border:1px solid var(--linha);border-radius:14px;padding:20px}
+.peca .pn{font-family:'Cormorant Garamond',serif;font-size:14px;color:#555;margin-bottom:6px}
+.peca h4{font-family:'Cormorant Garamond',serif;font-size:20px;margin-bottom:6px}
+.peca p{font-size:13px;color:var(--cinza)}
+
+/* ===== SLIDE 07 — FLUXO ===== */
+.fluxo{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:32px}
+.fbox{flex:1;min-width:130px;background:var(--card);border:1px solid var(--linha);border-radius:12px;padding:18px 14px;text-align:center}
+.fbox .fi{font-size:26px;margin-bottom:10px}
+.fbox b{font-size:13.5px;display:block;margin-bottom:4px}
+.fbox span{font-size:11px;color:var(--cinza)}
+.fseta{color:#333;font-size:20px}
+.ao-vivo{margin-top:28px;font-size:13px;color:var(--cinza);font-style:italic;border-top:1px solid var(--linha);padding-top:18px}
+.ao-vivo strong{color:#fff}
+
+/* ===== SLIDE 08 — CORRETOR ATUANTE ===== */
+.bal{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:28px}
+.balc{background:var(--card);border:1px solid var(--linha);border-radius:14px;padding:24px}
+.balc .t{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--cinza);margin-bottom:14px}
+.balc h4{font-family:'Cormorant Garamond',serif;font-size:21px;margin-bottom:10px;line-height:1.15}
+.balc p{font-size:13.5px;color:#cfcfcf;font-weight:300;line-height:1.6}
+
+/* ===== SLIDE 09 — COMPLEMENTAR ===== */
+.comp{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:28px}
+.colc{background:var(--card);border:1px solid var(--linha);border-radius:14px;padding:24px}
+.colc .tag-c{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--cinza);margin-bottom:12px}
+.colc h4{font-family:'Cormorant Garamond',serif;font-size:22px;margin-bottom:14px}
+.colc ul{list-style:none}
+.colc li{font-size:13.5px;color:#cfcfcf;font-weight:300;padding:7px 0;padding-left:18px;position:relative;border-top:1px solid #1e1e1e}
+.colc li::before{content:'—';position:absolute;left:0;color:#444}
+.frase-mae{margin-top:22px;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:16px;color:#888;border-left:2px solid #2a2a2a;padding-left:18px;max-width:680px;line-height:1.6}
+
+/* ===== SLIDE 10 — BI ===== */
+.bi-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:28px}
+.bi-card{background:var(--card);border:1px solid var(--linha);border-radius:14px;padding:22px}
+.bi-card .bi-n{font-family:'Cormorant Garamond',serif;font-size:13px;color:#555;margin-bottom:10px;letter-spacing:1px;text-transform:uppercase}
+.bi-card h4{font-family:'Cormorant Garamond',serif;font-size:20px;margin-bottom:8px}
+.bi-card p{font-size:13px;color:var(--cinza)}
+.bi-ex{margin-top:22px;font-size:13.5px;color:#888;font-style:italic;border-left:2px solid #222;padding-left:18px;line-height:1.7}
+.bi-ex strong{color:#ccc}
+
+/* ===== SLIDE 11 — PROVA ===== */
+.prova-links{display:flex;flex-direction:column;gap:12px;margin-top:28px}
+.pl{display:flex;align-items:center;gap:18px;background:var(--card);border:1px solid var(--linha);border-radius:12px;padding:18px 22px}
+.pl-icon{font-size:24px;flex-shrink:0}
+.pl-info b{display:block;font-size:15px;margin-bottom:4px}
+.pl-info span{font-size:13px;color:var(--cinza);font-weight:300}
+.pl-link{margin-left:auto;font-size:12px;color:#555;letter-spacing:1px;text-transform:uppercase;border:1px solid #2a2a2a;padding:6px 14px;border-radius:6px;white-space:nowrap}
+.qr-hint{margin-top:24px;font-size:13px;color:#444;text-align:center;letter-spacing:1px;text-transform:uppercase}
+
+/* ===== SLIDE 12 — OFERTA ===== */
+.oferta-box{margin-top:28px;background:var(--card);border:1px solid var(--linha);border-radius:18px;padding:32px;max-width:640px}
+.oferta-box .of-tag{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--cinza);margin-bottom:18px}
+.preco-cheio{font-size:14px;color:#444;text-decoration:line-through;margin-bottom:10px}
+.preco-fundador{font-family:'Cormorant Garamond',serif;font-size:42px;color:#fff;line-height:1.1;margin-bottom:6px}
+.preco-mensal{font-size:15px;color:#888;margin-bottom:22px}
+.oferta-itens{display:flex;flex-direction:column;gap:0;border-top:1px solid var(--linha);padding-top:18px}
+.oi{padding:9px 0;font-size:14px;color:#cfcfcf;display:flex;gap:10px;border-bottom:1px solid #1a1a1a}
+.oi::before{content:'✓';color:#444;flex-shrink:0}
+.vagas{margin-top:22px;font-size:13px;color:#888;font-style:italic}
+.vagas strong{color:#fff}
+.fechamento{margin-top:32px;font-family:'Cormorant Garamond',serif;font-size:22px;color:#e0e0e0;font-style:italic}
+</style>
+</head>
+<body>
+
+<div class="deck">
+
+  <!-- ===== SLIDE 00 — CAPA ===== -->
+  <section class="slide capa active" id="s0">
+    <div class="inner" style="text-align:center">
+      <p class="eyebrow">Captação 360</p>
+      <h1>O sistema que<br>transforma <em>audiência</em><br>em lead.</h1>
+      <p class="sub">Bio premium · Captura · CRM · BI · Relatório com IA</p>
+      <p class="por">ga business insights · Palmas/TO</p>
+      <p class="hint">↓ seta ou clique pra avançar</p>
+    </div>
+    <div class="fac"><strong>Antes de abrir o deck:</strong> pergunte como cada um está captando lead hoje (30 seg por pessoa). Não fale nada — só ouça e anote o canal principal de cada um.</div>
+  </section>
+
+  <!-- ===== SLIDE 01 — SITUAÇÃO ===== -->
+  <section class="slide" id="s1">
+    <div class="inner">
+      <p class="eyebrow">Situação</p>
+      <h2>Antes de tudo —<br><em>três perguntas</em> rápidas.</h2>
+      <div class="mao-list">
+        <div class="mao-item">
+          <div class="mao-num">01</div>
+          <div>
+            <p>Quem aqui posta no Instagram com regularidade — pelo menos 3 vezes por semana?<span class="tag">levanta a mão</span></p>
+          </div>
+        </div>
+        <div class="mao-item">
+          <div class="mao-num">02</div>
+          <div>
+            <p>Quem tem mais de 1 mil seguidores?<span class="tag">levanta a mão</span></p>
+          </div>
+        </div>
+        <div class="mao-item">
+          <div class="mao-num">03</div>
+          <div>
+            <p>Quem consegue dizer, agora, <b>quantos leads a sua bio gerou nos últimos 30 dias?</b><span class="tag">levanta a mão</span></p>
+          </div>
+        </div>
+      </div>
+      <p class="silencio">— Esse silêncio é o problema.</p>
+    </div>
+    <div class="fac"><strong>Técnica:</strong> depois da terceira pergunta, pause e deixe o silêncio do grupo trabalhar por você. Não preencha. Olhe as pessoas. Só então diga "Esse silêncio é o problema."</div>
+  </section>
+
+  <!-- ===== SLIDE 02 — PROBLEMA ===== -->
+  <section class="slide" id="s2">
+    <div class="inner">
+      <p class="eyebrow">Problema</p>
+      <h2>O que está <em>saindo pela porta</em><br>toda semana.</h2>
+      <div class="dores">
+        <div class="dor"><div class="x">✕</div><p><b>Lead sem destino</b> — chegou pelo direct, você respondeu, ficou por isso mesmo. Onde está agora?</p></div>
+        <div class="dor"><div class="x">✕</div><p><b>Sem número próprio</b> — você posta, aparece, trabalha — mas não sabe quanto disso virou lead de verdade.</p></div>
+        <div class="dor"><div class="x">✕</div><p><b>Contato esquecido</b> — a pessoa não estava no momento certo, você não acompanhou, ela fechou com outro.</p></div>
+        <div class="dor"><div class="x">✕</div><p><b>Base presa na imobiliária</b> — se você sair, o histórico fica. Os contatos que você gerou, somem.</p></div>
+      </div>
+    </div>
+    <div class="fac"><strong>Facilite:</strong> "Dessas quatro, qual é a que mais acontece com vocês?" — deixe UMA pessoa responder, depois pergunte "mais alguém?" Não pule pra solução ainda.</div>
+  </section>
+
+  <!-- ===== SLIDE 03 — IMPLICAÇÃO ===== -->
+  <section class="slide" id="s3">
+    <div class="inner">
+      <p class="eyebrow">Implicação</p>
+      <h2>Quanto isso <em>custa</em><br>no ano?</h2>
+      <div class="conta">
+        <div class="linha-conta">
+          <div class="lc-n">2</div>
+          <div class="lc-t"><b>contatos perdidos por mês</b><span>por falta de acompanhamento — número conservador</span></div>
+          <div class="lc-v">× 12</div>
+        </div>
+        <div class="linha-conta">
+          <div class="lc-n">24</div>
+          <div class="lc-t"><b>contatos no ano sem acompanhamento</b><span>1 em cada 4 poderia virar venda</span></div>
+          <div class="lc-v">= 6</div>
+        </div>
+        <div class="linha-conta">
+          <div class="lc-n">6</div>
+          <div class="lc-t"><b>vendas que poderiam ter acontecido</b><span>comissão média em lançamento Palmas: R$ 5–8 mil</span></div>
+          <div class="lc-v">R$ 30–48k</div>
+        </div>
+      </div>
+      <div class="conta-total">R$ 30.000 a R$ 48.000 / ano<small>saindo pela porta por falta de processo — baseado nos seus próprios números.</small></div>
+    </div>
+    <div class="fac"><strong>Técnica:</strong> antes de mostrar esse slide, peça o número deles: "2 por mês é conservador pra vocês, ou mais?" Deixe ELE ajustar a conta. A conta feita com os números dele vale 10x mais.</div>
+  </section>
+
+  <!-- ===== SLIDE 04 — NECESSIDADE ===== -->
+  <section class="slide" id="s4">
+    <div class="inner">
+      <p class="eyebrow">Necessidade</p>
+      <h2>Se isso <em>resolvesse</em> —<br>o que mudava?</h2>
+      <div class="nec-list">
+        <div class="nec">
+          <div class="nec-q">"Se cada pessoa que te chama ficasse salva automaticamente com nome, número e de onde veio — o que isso mudava no seu mês?"</div>
+          <div class="seta">→</div>
+        </div>
+        <div class="nec">
+          <div class="nec-q">"E se todo dia 1º você recebesse um número dizendo exatamente quanto a sua bio gerou de lead — você mudaria onde coloca energia?"</div>
+          <div class="seta">→</div>
+        </div>
+        <div class="nec">
+          <div class="nec-q">"Faz sentido ter uma base de leads que é SUA — que vai com você pra qualquer imobiliária?"</div>
+          <div class="seta">→</div>
+        </div>
+      </div>
+    </div>
+    <div class="fac"><strong>Não responda por eles.</strong> Faça a pergunta e espere. Quando alguém disser "ajudaria muito" ou "com certeza" — essa é a deixa pra passar pro próximo slide.</div>
+  </section>
+
+  <!-- ===== SLIDE 05 — ORIGEM ===== -->
+  <section class="slide" id="s5">
+    <div class="inner">
+      <p class="eyebrow">Por que existe</p>
+      <h2>Não veio de uma agência.<br>Veio de <em>uma corretora.</em></h2>
+      <div class="origem-quote">
+        "Eu tinha 18 mil seguidores e não sabia de onde vinha meu lead. Postava todo dia e não conseguia medir o que funcionava."
+      </div>
+      <p class="origem-quem">— Juliana Alves · CRECI 5377 · Palmas/TO · @juu_alves8</p>
+      <p class="lead" style="margin-top:28px">
+        O sistema nasceu pra resolver <span class="destaque">o problema dela</span>. Funcionou. Virou produto.
+        Quem entra agora entra como <span class="destaque">fundador</span> — antes de qualquer fila.
+      </p>
+    </div>
+    <div class="fac"><strong>Se puder:</strong> abra o Instagram da Ju num celular e mostre o perfil ao grupo. Prova visual — não é promessa.</div>
+  </section>
+
+  <!-- ===== SLIDE 06 — AS 5 PEÇAS ===== -->
+  <section class="slide" id="s6">
+    <div class="inner">
+      <p class="eyebrow">O que está incluído</p>
+      <h2>Cinco peças que fecham<br>o <em>ciclo completo.</em></h2>
+      <div class="pecas">
+        <div class="peca"><div class="pn">01 / Bio</div><h4>Presença premium</h4><p>Página profissional com foto, logo, imóveis e botão direto pro WhatsApp</p></div>
+        <div class="peca"><div class="pn">02 / Captura</div><h4>Captação real</h4><p>Form rastreado que salva nome, número e de onde veio o lead</p></div>
+        <div class="peca"><div class="pn">03 / Catálogo</div><h4>Seus imóveis em destaque</h4><p>3 imóveis editáveis por você — sem depender de portal</p></div>
+        <div class="peca"><div class="pn">04 / CRM</div><h4>1 toque de gestão</h4><p>Lead entra, você acompanha, painel mostra onde está cada contato</p></div>
+        <div class="peca" style="grid-column:1/-1"><div class="pn">05 / BI + IA</div><h4>O número do seu esforço — todo dia 1º</h4><p>Relatório automático com recomendação: onde está convertendo, onde está perdendo, o que fazer a seguir</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SLIDE 07 — FLUXO 3 TOQUES ===== -->
+  <section class="slide" id="s7">
+    <div class="inner">
+      <p class="eyebrow">No dia a dia</p>
+      <h2>3 toques.<br>Sem <em>planilha aberta.</em></h2>
+      <div class="fluxo">
+        <div class="fbox"><div class="fi">📲</div><b>Lead chega</b><span>Salvo com nome, número e origem</span></div>
+        <div class="fseta">→</div>
+        <div class="fbox"><div class="fi">✅</div><b>1 toque</b><span>Atualiza status no painel</span></div>
+        <div class="fseta">→</div>
+        <div class="fbox"><div class="fi">📊</div><b>Dia 1º</b><span>IA lê os dados e recomenda</span></div>
+      </div>
+      <div class="ao-vivo">
+        <strong>Ao vivo agora —</strong> abra o link no celular e cadastre um lead de teste. Aparece no painel em segundos.
+      </div>
+    </div>
+    <div class="fac"><strong>Demonstração:</strong> abra o painel da Ju (link salvo no celular). Cadastre um lead de teste na frente do grupo. Se der, passe o celular pra alguém do grupo tocar. Demonstração mata promessa.</div>
+  </section>
+
+  <!-- ===== SLIDE 08 — CORRETOR ATUANTE ===== -->
+  <section class="slide" id="s8">
+    <div class="inner">
+      <p class="eyebrow">Honestidade antes do preço</p>
+      <h2>Isso <em>não inventa</em> cliente.<br>Multiplica o que você já faz.</h2>
+      <div class="bal">
+        <div class="balc">
+          <div class="t">Sem aparecer</div>
+          <h4>Corretor parado + sistema = pouco resultado</h4>
+          <p>Nenhum CRM gera audiência do nada. Se você não posta, não aparece, não existe no digital — o sistema vai ficar vazio.</p>
+        </div>
+        <div class="balc">
+          <div class="t">Aparecendo</div>
+          <h4>Corretor que aparece + sistema = cada story virando contato</h4>
+          <p>Se você já posta, já aparece, já tem audiência — agora cada interação vira dado. Cada story vira lead rastreado. Cada visita vira contato salvo.</p>
+        </div>
+      </div>
+    </div>
+    <div class="fac"><strong>Por que mostrar esse slide:</strong> protege a venda — evita o cliente frustrado que "não viu resultado". E vende o esforço do corretor como parte da máquina (ninguém discorda de si mesmo).</div>
+  </section>
+
+  <!-- ===== SLIDE 09 — COMPLEMENTAR ===== -->
+  <section class="slide" id="s9">
+    <div class="inner">
+      <p class="eyebrow">A pergunta que vem aí</p>
+      <h2>E o CRM<br>da <em>imobiliária?</em></h2>
+      <div class="comp">
+        <div class="colc">
+          <div class="tag-c">CRM da imob (ex: URBS)</div>
+          <h4>Gerencia a venda</h4>
+          <ul>
+            <li>Carteira da imobiliária</li>
+            <li>Documentação e repasse</li>
+            <li>Processo de comissão</li>
+            <li>Obrigatório — não muda</li>
+          </ul>
+        </div>
+        <div class="colc">
+          <div class="tag-c">Captação 360</div>
+          <h4>Mede o que é SEU</h4>
+          <ul>
+            <li>Leads que sua bio gerou</li>
+            <li>De onde veio cada contato</li>
+            <li>Vai com você se trocar de imob</li>
+            <li>Você vira o corretor que leva lead à mesa</li>
+          </ul>
+        </div>
+      </div>
+      <p class="frase-mae">Não substitui o CRM da sua imobiliária — ele mede o que é SEU. A imob gerencia a venda; aqui você prova quantos leads sua bio, seus stories e suas indicações trouxeram.</p>
+    </div>
+  </section>
+
+  <!-- ===== SLIDE 10 — BI ===== -->
+  <section class="slide" id="s10">
+    <div class="inner">
+      <p class="eyebrow">O ponto alto</p>
+      <h2>O número do seu esforço —<br>que <em>ninguém te mostra.</em></h2>
+      <div class="bi-grid">
+        <div class="bi-card"><div class="bi-n">Visitas</div><h4>Quantas pessoas viram sua bio</h4><p>Por origem, por dia, por semana</p></div>
+        <div class="bi-card"><div class="bi-n">Conversão</div><h4>Visita → Lead</h4><p>Percentual real. Onde está convertendo, onde está perdendo</p></div>
+        <div class="bi-card"><div class="bi-n">Por canal</div><h4>Onde vem o lead</h4><p>Story vs. feed vs. ads vs. indicação — por número, não por achismo</p></div>
+        <div class="bi-card"><div class="bi-n">Recomendação IA</div><h4>O que fazer agora</h4><p>Todo dia 1º — automático, sem precisar pedir</p></div>
+      </div>
+      <div class="bi-ex">
+        <strong>"Seus stories trazem 4× mais lead que o feed nos últimos 14 dias — coloque mais esforço ali e reduza posts estáticos."</strong>
+        <br>— exemplo de recomendação real do painel
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SLIDE 11 — PROVA ===== -->
+  <section class="slide" id="s11">
+    <div class="inner">
+      <p class="eyebrow">Não é promessa</p>
+      <h2>Está no ar.<br><em>Agora.</em></h2>
+      <div class="prova-links">
+        <div class="pl">
+          <div class="pl-icon">🌐</div>
+          <div class="pl-info"><b>Bio + Captura + Catálogo</b><span>Abre no celular de vocês agora — preenche um lead de teste</span></div>
+          <div class="pl-link">juliana-alves.pages.dev</div>
+        </div>
+        <div class="pl">
+          <div class="pl-icon">📊</div>
+          <div class="pl-info"><b>Painel CRM + BI</b><span>Onde o lead cai, onde você acompanha</span></div>
+          <div class="pl-link">link no whatsapp</div>
+        </div>
+      </div>
+      <p class="qr-hint">↑ abra no celular · o lead que vocês cadastrarem aparece em tempo real</p>
+    </div>
+    <div class="fac"><strong>Ação:</strong> mande os links agora pelo WhatsApp pra todo o grupo de uma vez. Deixe eles abrirem e testarem por 1–2 min. Não fale — deixe o produto falar.</div>
+  </section>
+
+  <!-- ===== SLIDE 12 — OFERTA ===== -->
+  <section class="slide" id="s12">
+    <div class="inner" style="display:flex;gap:40px;align-items:flex-start;flex-wrap:wrap">
+      <div style="flex:1;min-width:280px">
+        <p class="eyebrow">Condição de fundador</p>
+        <h2>Entrar agora<br>ou <em>entrar depois.</em></h2>
+        <p class="lead" style="margin-top:16px">São <strong style="color:#fff">3 vagas</strong> com esse preço.
+        Vocês são <strong style="color:#fff">[N] aqui</strong>. As vagas não dão pra todo mundo — e isso não é discurso.</p>
+        <p class="fechamento" style="margin-top:28px">"Vou conversar 5 min com cada um agora. Quem topar, a gente fecha na hora."</p>
+      </div>
+      <div class="oferta-box">
+        <div class="of-tag">Condição fundador · Apenas 3 vagas</div>
+        <div class="preco-cheio">R$ 497,90 implementação + R$ 297,90/mês</div>
+        <div class="preco-fundador">R$ 297,90</div>
+        <div class="preco-mensal">implementação · + R$ 197/mês travado</div>
+        <div class="oferta-itens">
+          <div class="oi">Bio premium personalizada</div>
+          <div class="oi">Página de captura rastreada</div>
+          <div class="oi">Catálogo com 3 imóveis editáveis</div>
+          <div class="oi">CRM 1 toque (painel + mobile)</div>
+          <div class="oi">BI + Relatório mensal com IA</div>
+          <div class="oi">Sistema no ar em até 3 dias</div>
+          <div class="oi" style="color:#888">Brinde: pacote de conteúdo de estreia</div>
+        </div>
+        <div class="vagas">Compromisso de <strong>90 dias</strong> · depois mês a mês · cancela quando quiser</div>
+      </div>
+    </div>
+    <div class="fac"><strong>Fechamento:</strong> anuncie as rodadas individuais. "Vou chamar cada um numa cadeirinha aqui ao lado. 5 min. Quem quiser entrar fecha na hora. Quem precisar de mais tempo, tudo bem — mas a condição vai conforme as vagas saem." Comece pelo mais animado.</div>
+  </section>
+
+</div><!-- /deck -->
+
+<!-- UI fixo -->
+<div class="progress" id="progress"></div>
+<div class="num" id="num">01 / 13</div>
+<div class="nav">
+  <button id="prev" onclick="go(-1)">←</button>
+  <button id="next" onclick="go(1)">→</button>
+</div>
+
+<script>
+const slides = document.querySelectorAll('.slide');
+const total = slides.length;
+let cur = 0;
+
+function show(n) {
+  slides[cur].classList.remove('active');
+  cur = Math.max(0, Math.min(n, total - 1));
+  slides[cur].classList.add('active');
+  document.getElementById('num').textContent =
+    String(cur + 1).padStart(2,'0') + ' / ' + String(total).padStart(2,'0');
+  document.getElementById('progress').style.width =
+    ((cur + 1) / total * 100) + '%';
+}
+
+function go(d) { show(cur + d); }
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); go(1); }
+  if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')                    { e.preventDefault(); go(-1); }
+  if (e.key === 'p' || e.key === 'P')  document.body.classList.toggle('show-fac');
+  if (e.key === 'f' || e.key === 'F') {
+    if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+    else document.exitFullscreen();
+  }
+});
+
+// click direito avança, click esquerdo volta (exceto botões de nav)
+document.querySelector('.deck').addEventListener('click', e => {
+  if (e.target.closest('button')) return;
+  go(e.clientX > window.innerWidth / 2 ? 1 : -1);
+});
+
+show(0);
+</script>
+</body>
+</html>
