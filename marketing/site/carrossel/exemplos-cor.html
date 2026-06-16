@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>5 cores de destaque — carrossel Ju</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#070707;color:#f5f5f5;font-family:'Inter',sans-serif;padding:30px 16px 70px;text-align:center}
+  h1{font-size:21px;font-weight:700;margin-bottom:4px}
+  .sub{color:#8f8f8f;font-size:13px;margin-bottom:28px}
+  .grid{display:flex;flex-wrap:wrap;gap:26px;justify-content:center;align-items:flex-start}
+  .card{width:324px}
+  .frame{width:324px;height:405px;overflow:hidden;border-radius:12px;border:1px solid #262626;box-shadow:0 14px 40px rgba(0,0,0,.5)}
+  .scale{transform:scale(.3);transform-origin:top left}
+  .label{margin-top:12px;font-size:14px;font-weight:600}
+  .hex{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;color:#8f8f8f;margin-top:2px}
+
+  /* === slide real (1080x1350) === */
+  .slide{width:1080px;height:1350px;padding:92px 84px;display:flex;flex-direction:column;justify-content:space-between;position:relative;background:#0D0D0D;color:#F5F5F5}
+  .counter{position:absolute;top:92px;right:84px;font-size:22px;letter-spacing:.22em;color:#8f8f8f;font-weight:600}
+  .eyebrow{font-size:25px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:#9a9a9a}
+  .main{flex:1;display:flex;flex-direction:column;justify-content:center}
+  .rule{width:76px;height:4px;background:currentColor;opacity:.85;margin:34px 0;border:none}
+  .body{font-size:50px;font-weight:400;line-height:1.34;color:#cfcfcf}
+  .lead{font-family:'Playfair Display',serif;font-weight:600;font-size:60px;line-height:1.12;margin-top:8px}
+  .foot{display:flex;justify-content:space-between;align-items:flex-end}
+  .handle{font-size:27px;font-weight:600}
+  .sig{font-size:19px;letter-spacing:.14em;color:#8f8f8f;text-transform:uppercase}
+  .hl{color:var(--ac);font-weight:700}
+</style>
+</head>
+<body>
+  <h1>5 cores de destaque — escolha uma</h1>
+  <div class="sub">Mesmo slide, só muda a cor das palavras em destaque. (no celular: pinça pra dar zoom)</div>
+  <div class="grid" id="grid"></div>
+
+  <script>
+    var opcoes = [
+      ['Vermelho tijolo', '#C0392B'],
+      ['Dourado champagne', '#C9A24B'],
+      ['Verde da marca', '#25D366'],
+      ['Terracota / cobre', '#C77B4B'],
+      ['Bordô', '#8E3B46']
+    ];
+    function slideHTML(ac){
+      return '<div class="frame"><div class="scale"><div class="slide" style="--ac:'+ac+'">'+
+        '<div class="counter">03 / 06</div>'+
+        '<div class="eyebrow">A virada de chave</div>'+
+        '<div class="main">'+
+          '<p class="body"><span class="hl">Esse aluguel de R$ 2 a 2,5 mil</span> é quase a parcela de um financiamento do mesmo apê.</p>'+
+          '<hr class="rule">'+
+          '<p class="lead">A diferença? O aluguel é a prestação de um imóvel que <span class="hl" style="font-style:italic">nunca</span> vai ser seu.</p>'+
+        '</div>'+
+        '<div class="foot"><span class="handle">@juu_alves8</span><span class="sig">Juliana Alves · CRECI 5377</span></div>'+
+      '</div></div></div>';
+    }
+    var g = document.getElementById('grid'), html = '';
+    for (var i=0;i<opcoes.length;i++){
+      html += '<div class="card">'+slideHTML(opcoes[i][1])+
+        '<div class="label"><span style="color:'+opcoes[i][1]+'">●</span> '+(i+1)+'. '+opcoes[i][0]+'</div>'+
+        '<div class="hex">'+opcoes[i][1]+'</div></div>';
+    }
+    g.innerHTML = html;
+  </script>
+</body>
+</html>
