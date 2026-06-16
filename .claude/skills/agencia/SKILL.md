@@ -110,15 +110,17 @@ carrossel = captação · stories = conversão (link).**
 - Escalar só o criativo/público com melhor CPL. Pausar o resto.
 - Criativo de anúncio = o melhor conteúdo orgânico (que já provou prender).
 
-**Liga com as skills** `/anuncio-google` (search) e `/relatorio-ads` (leitura de resultado).
-Quando for rodar Meta Ads de fato, montar passo a passo guiado (a conta conhece pouco de tráfego).
+**Liga com as skills** `/trafego` (Meta/Instagram + Click-to-WhatsApp — o jogo principal em Palmas),
+`/anuncio-google` (search) e `/relatorio-ads` (leitura de resultado).
+Quando for rodar Meta Ads de fato, chamar `/trafego` (monta funil, criativos persona-fit, CTWA medido e metas de CPL).
 
 ---
 
 ## Skills que a agência orquestra
 - `/carrossel` — vira a copy em PNG no padrão visual
 - `/copy-imobiliaria` — pacote mensal de copy (8 stories + 4 reels + 4 posts)
-- `/anuncio-google` · `/relatorio-ads` — tráfego e leitura
+- `/trafego` — campanha Meta/Instagram (CTWA + funil + criativos + BI de CPL)
+- `/anuncio-google` · `/relatorio-ads` — tráfego (search) e leitura de resultado
 - `/aprovar-post` — publica o conteúdo aprovado
 
 ## Onde salvar
