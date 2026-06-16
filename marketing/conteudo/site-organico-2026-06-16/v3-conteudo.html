@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Corretora de Imóveis em Palmas-TO | Juliana Alves · Guia, Bairros e Imóveis</title>
+<meta name="description" content="Quer comprar ou investir em imóvel em Palmas-TO? Juliana Alves (CRECI 5377), parceira URBS Cerrado, te ajuda a escolher o bairro certo, entender preços e achar o imóvel ideal. Guia gratuito + atendimento no WhatsApp.">
+<link rel="canonical" href="https://juliana-alves.pages.dev/">
+<meta property="og:title" content="Corretora de Imóveis em Palmas-TO · Juliana Alves">
+<meta property="og:description" content="Guia de quem compra e investe em Palmas. Bairros, preços e o imóvel certo pro seu perfil.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--preto:#0c0c0c;--card:#141414;--linha:#262626;--branco:#f5f5f5;--cinza:#8f8f8f;--wa:#25D366}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Inter',sans-serif;background:var(--preto);color:var(--branco);line-height:1.6;-webkit-font-smoothing:antialiased}
+  a{text-decoration:none;color:inherit}
+  .wrap{max-width:1000px;margin:0 auto;padding:0 22px}
+
+  header{position:sticky;top:0;z-index:50;background:rgba(12,12,12,.85);backdrop-filter:blur(10px);border-bottom:1px solid var(--linha)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:58px}
+  .brand{font-family:'Playfair Display',serif;font-size:18px}
+  .brand small{display:block;font-size:7.5px;letter-spacing:3px;color:var(--cinza);text-transform:uppercase;margin-top:-2px;font-family:'Inter'}
+  .wa-pill{display:inline-flex;align-items:center;gap:7px;background:#fff;color:#0a0a0a;font-weight:600;font-size:12px;padding:8px 14px;border-radius:50px}
+  .wa-pill svg{width:14px;height:14px;fill:#0a0a0a}
+
+  /* HERO compacto */
+  .hero{padding:40px 0 26px}
+  .eyebrow{font-size:10px;letter-spacing:3.5px;text-transform:uppercase;color:var(--cinza);margin-bottom:14px}
+  h1{font-family:'Playfair Display',serif;font-size:33px;line-height:1.14;font-weight:600}
+  h1 em{font-style:italic;color:#cfcfcf}
+  .hero p{color:#c4c4c4;font-size:14.5px;font-weight:300;max-width:520px;margin:14px 0 0}
+
+  /* LEAD MAGNET / GUIA */
+  .guia{display:grid;gap:14px;background:var(--card);border:1px solid var(--linha);border-radius:18px;padding:24px;margin:26px 0}
+  .guia .tag{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#0a0a0a;background:#fff;display:inline-block;padding:4px 10px;border-radius:50px;font-weight:700;width:fit-content}
+  .guia h2{font-family:'Playfair Display',serif;font-size:22px;font-weight:600}
+  .guia p{font-size:13.5px;color:#bcbcbc;font-weight:300}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:14px 20px;border-radius:12px;font-weight:600;font-size:14px;transition:.2s}
+  .btn-primary{background:#fff;color:#0a0a0a}
+  .btn-primary:hover{background:#e2e2e2}
+  .btn-wa{background:#1a1a1a;border:1px solid var(--linha);color:#fff}
+  .btn-wa svg{width:16px;height:16px;fill:var(--wa)}
+
+  section{padding:26px 0}
+  .sec-head{margin-bottom:18px}
+  .sec-head h2{font-family:'Playfair Display',serif;font-size:24px;font-weight:600}
+  .sec-head p{font-size:13px;color:var(--cinza);margin-top:5px}
+
+  /* BAIRROS (futuras landing pages SEO) */
+  .bairros{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+  .bairro{background:var(--card);border:1px solid var(--linha);border-radius:14px;padding:16px;transition:.2s}
+  .bairro:hover{border-color:#3e3e3e;background:#171717}
+  .bairro b{font-family:'Playfair Display',serif;font-size:16px;display:block;margin-bottom:3px}
+  .bairro span{font-size:11.5px;color:var(--cinza)}
+  .bairro .seta{float:right;color:#5a5a5a}
+
+  /* FAQ — bom pra featured snippet do Google */
+  .faq details{border:1px solid var(--linha);border-radius:13px;padding:0 18px;margin-bottom:10px;background:var(--card)}
+  .faq summary{list-style:none;cursor:pointer;padding:16px 0;font-weight:500;font-size:14.5px;display:flex;justify-content:space-between;align-items:center;gap:14px}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary::after{content:"+";font-size:20px;color:var(--cinza);font-weight:300}
+  .faq details[open] summary::after{content:"–"}
+  .faq p{font-size:13.5px;color:#bcbcbc;font-weight:300;padding:0 0 18px}
+
+  .final{text-align:center;border:1px solid var(--linha);border-radius:20px;padding:38px 24px;margin:26px 0;background:radial-gradient(circle at 50% 0%,#171717,#0e0e0e)}
+  .final h2{font-family:'Playfair Display',serif;font-size:26px;margin-bottom:9px}
+  .final p{color:#bcbcbc;font-size:13.5px;margin-bottom:20px;font-weight:300}
+
+  footer{border-top:1px solid var(--linha);padding:28px 0;text-align:center;color:var(--cinza);font-size:11.5px;line-height:2}
+  footer .urbs{display:inline-flex;align-items:center;gap:8px;margin-top:8px;font-size:9px;letter-spacing:2px;text-transform:uppercase}
+  footer img{height:30px;mix-blend-mode:screen;opacity:.9}
+
+  @media(min-width:720px){
+    h1{font-size:46px}
+    .guia{grid-template-columns:1.4fr .9fr;align-items:center}
+    .guia .acao{text-align:right}
+    .bairros{grid-template-columns:repeat(4,1fr)}
+  }
+</style>
+</head>
+<body>
+  <header><div class="wrap nav">
+    <a class="brand" href="/">Juliana Alves<small>Corretora · Palmas-TO</small></a>
+    <a class="wa-pill" href="https://wa.me/5563992226998?text=Oi%20Juliana!%20Vim%20pelo%20site." onclick="track('header-whatsapp','site')">
+      <svg viewBox="0 0 24 24"><path d="M17.4 14.4c-.3-.1-1.8-.9-2-1-.3-.1-.5-.1-.7.1l-.9 1.2c-.2.2-.3.2-.6.1-1.2-.6-2-1.1-2.9-2.4-.2-.4 0-.5.1-.6l.4-.5c.1-.2.1-.3 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.1.2 2.1 3.2 5.1 4.5 2.4 1 2.4.7 2.9.7.5-.1 1.8-.7 2-1.4.2-.7.2-1.3.2-1.4-.1-.1-.3-.2-.6-.3z"/></svg>
+      WhatsApp
+    </a>
+  </div></header>
+
+  <main class="wrap">
+    <section class="hero">
+      <div class="eyebrow">Corretora de Imóveis · Palmas — Tocantins</div>
+      <h1>Comprar ou investir em Palmas <em>sem dar tiro no escuro</em>.</h1>
+      <p>Sou a Juliana, corretora parceira da URBS Cerrado. Aqui eu te ajudo a entender os bairros, os preços e o momento certo — antes de você visitar qualquer imóvel.</p>
+    </section>
+
+    <div class="guia">
+      <div>
+        <span class="tag">Grátis</span>
+        <h2 style="margin-top:10px">Seleção de imóveis pro seu perfil</h2>
+        <p>Me conta o que você procura — pra morar ou investir — e eu te mando uma seleção garimpada, sem custo e sem compromisso.</p>
+      </div>
+      <div class="acao">
+        <a class="btn btn-primary" href="investir.html?origem=site" onclick="track('guia-captura','site')">Quero minha seleção →</a>
+      </div>
+    </div>
+
+    <section>
+      <div class="sec-head">
+        <h2>Onde morar e investir em Palmas</h2>
+        <p>As regiões que mais saem no meu dia a dia — toque pra falar comigo sobre cada uma.</p>
+      </div>
+      <div class="bairros">
+        <a class="bairro" href="https://wa.me/5563992226998?text=Oi%20Juliana!%20Quero%20saber%20de%20im%C3%B3veis%20no%20Plano%20Diretor%20Sul." onclick="track('bairro-pds','site')"><span class="seta">→</span><b>Plano Diretor Sul</b><span>Lançamentos e alto padrão</span></a>
+        <a class="bairro" href="https://wa.me/5563992226998?text=Oi%20Juliana!%20Quero%20saber%20de%20im%C3%B3veis%20no%20Plano%20Diretor%20Norte." onclick="track('bairro-pdn','site')"><span class="seta">→</span><b>Plano Diretor Norte</b><span>Revenda valorizada</span></a>
+        <a class="bairro" href="https://wa.me/5563992226998?text=Oi%20Juliana!%20Quero%20saber%20de%20im%C3%B3veis%20em%20condom%C3%ADnio%20em%20Palmas." onclick="track('bairro-cond','site')"><span class="seta">→</span><b>Condomínios</b><span>Casas e horizontais</span></a>
+        <a class="bairro" href="https://wa.me/5563992226998?text=Oi%20Juliana!%20Quero%20saber%20de%20im%C3%B3veis%20na%20planta%20em%20Palmas." onclick="track('bairro-planta','site')"><span class="seta">→</span><b>Na planta</b><span>Entrada facilitada</span></a>
+      </div>
+    </section>
+
+    <section class="faq">
+      <div class="sec-head">
+        <h2>Perguntas que todo mundo me faz</h2>
+        <p>O básico que ajuda você a decidir com a cabeça no lugar.</p>
+      </div>
+      <details open><summary>Vale a pena investir em imóvel na planta em Palmas?</summary><p>Na maioria dos casos sim, porque você entra num preço menor e acompanha a valorização até a entrega — mas depende do empreendimento e da sua entrada. Eu te mostro o número real antes de você decidir.</p></details>
+      <details><summary>Qual o melhor bairro pra comprar em Palmas?</summary><p>Depende do seu objetivo: o Plano Diretor Sul puxa os lançamentos e o alto padrão; o Norte tem revenda já valorizada. Pra renda, o que importa é liquidez e perfil de locação — a gente alinha isso no atendimento.</p></details>
+      <details><summary>Você atende quem está comprando o primeiro imóvel?</summary><p>Atendo, e gosto. Primeiro imóvel pede mais cuidado com financiamento e entrada — eu explico cada etapa sem pressa e sem juridiquês.</p></details>
+      <details><summary>Como funciona o atendimento?</summary><p>Você me chama no WhatsApp ou preenche a seleção aqui no site. Eu entendo seu momento, garimpo as opções certas e só te levo pra visitar o que faz sentido. Sem custo nenhum pra você.</p></details>
+    </section>
+
+    <div class="final">
+      <h2>Bora começar?</h2>
+      <p>Dois cliques: me chama no WhatsApp ou pede sua seleção.</p>
+      <div style="display:flex;gap:11px;justify-content:center;flex-wrap:wrap">
+        <a class="btn btn-primary" href="investir.html?origem=site" onclick="track('final-captura','site')">Quero minha seleção →</a>
+        <a class="btn btn-wa" href="https://wa.me/5563992226998?text=Oi%20Juliana!%20Vim%20pelo%20site." onclick="track('final-whatsapp','site')">
+          <svg viewBox="0 0 24 24"><path d="M17.4 14.4c-.3-.1-1.8-.9-2-1-.3-.1-.5-.1-.7.1l-.9 1.2c-.2.2-.3.2-.6.1-1.2-.6-2-1.1-2.9-2.4-.2-.4 0-.5.1-.6l.4-.5c.1-.2.1-.3 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.1.2 2.1 3.2 5.1 4.5 2.4 1 2.4.7 2.9.7.5-.1 1.8-.7 2-1.4.2-.7.2-1.3.2-1.4-.1-.1-.3-.2-.6-.3z"/></svg>
+          WhatsApp
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <strong style="color:#f5f5f5">Juliana Alves</strong> · Corretora de Imóveis · CRECI 5377 · Palmas — TO<br>
+    <a href="https://instagram.com/juu_alves8">@juu_alves8</a>
+    <span class="urbs">Corretora parceira <img src="logo-urbs.png" alt="URBS Cerrado" onerror="this.outerHTML='URBS Cerrado'"></span>
+  </footer>
+
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"RealEstateAgent","name":"Juliana Alves — Corretora de Imóveis","image":"https://juliana-alves.pages.dev/juliana.jpg","url":"https://juliana-alves.pages.dev/","telephone":"+5563992226998","priceRange":"$$","areaServed":{"@type":"City","name":"Palmas"},"address":{"@type":"PostalAddress","addressLocality":"Palmas","addressRegion":"TO","addressCountry":"BR"},"sameAs":["https://instagram.com/juu_alves8"],"memberOf":{"@type":"Organization","name":"URBS Cerrado"}}
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Vale a pena investir em imóvel na planta em Palmas?","acceptedAnswer":{"@type":"Answer","text":"Na maioria dos casos sim, porque você entra num preço menor e acompanha a valorização até a entrega, mas depende do empreendimento e da sua entrada."}},{"@type":"Question","name":"Qual o melhor bairro pra comprar em Palmas?","acceptedAnswer":{"@type":"Answer","text":"Depende do objetivo: o Plano Diretor Sul concentra lançamentos e alto padrão; o Norte tem revenda valorizada. Para renda, o que importa é liquidez e perfil de locação."}},{"@type":"Question","name":"Você atende quem está comprando o primeiro imóvel?","acceptedAnswer":{"@type":"Answer","text":"Sim. Primeiro imóvel pede mais cuidado com financiamento e entrada, e cada etapa é explicada sem pressa."}}]}
+  </script>
+  <script>
+    var CRM_ENDPOINT="https://script.google.com/macros/s/AKfycbxPjat7C66mU5GDRjHTMBuymxNilBvQ1pv0Jn31LXtdxwHlnI7pyPuuSqYjkS5EJwZg/exec";
+    function paramURL(n){var m=location.search.match(new RegExp('[?&]'+n+'=([^&]+)'));return m?decodeURIComponent(m[1].replace(/\+/g,' ')):''}
+    function getOrigem(){var o=paramURL('origem')||paramURL('utm_source');if(o)return o.toLowerCase();var r=(document.referrer||'').toLowerCase();if(r.indexOf('instagram')>-1)return'instagram';if(r.indexOf('google')>-1)return'google';if(r.indexOf('facebook')>-1)return'facebook';return'direto'}
+    function track(alvo,pagina){if(!CRM_ENDPOINT)return;try{var p=JSON.stringify({tipo:'clique',alvo:alvo,pagina:pagina,origem:getOrigem()});if(navigator.sendBeacon){navigator.sendBeacon(CRM_ENDPOINT,new Blob([p],{type:'text/plain;charset=UTF-8'}))}else{fetch(CRM_ENDPOINT,{method:'POST',mode:'no-cors',keepalive:true,headers:{'Content-Type':'text/plain;charset=utf-8'},body:p}).catch(function(){})}}catch(e){}}
+  </script>
+</body>
+</html>

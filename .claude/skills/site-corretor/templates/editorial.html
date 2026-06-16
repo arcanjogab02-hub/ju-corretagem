@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Juliana Alves · Corretora de Imóveis em Palmas-TO | Lançamentos e Revenda</title>
+<meta name="description" content="Juliana Alves, corretora de imóveis em Palmas-TO (CRECI 5377), parceira URBS Cerrado. Apartamentos, lançamentos na planta e revenda — pra morar ou investir. Atendimento direto no WhatsApp.">
+<link rel="canonical" href="https://juliana-alves.pages.dev/">
+<meta property="og:title" content="Juliana Alves · Corretora de Imóveis em Palmas-TO">
+<meta property="og:description" content="Imóvel em Palmas com quem mostra o processo de verdade. Pra morar ou investir.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--preto:#0c0c0c;--card:#141414;--linha:#262626;--branco:#f5f5f5;--cinza:#8f8f8f;--wa:#25D366}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Inter',sans-serif;background:var(--preto);color:var(--branco);line-height:1.6;-webkit-font-smoothing:antialiased}
+  a{text-decoration:none;color:inherit}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 22px}
+  .serif{font-family:'Playfair Display',serif}
+
+  /* HEADER */
+  header{position:sticky;top:0;z-index:50;background:rgba(12,12,12,.82);backdrop-filter:blur(10px);border-bottom:1px solid var(--linha)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:60px}
+  .brand{font-family:'Playfair Display',serif;font-size:19px;letter-spacing:.5px}
+  .brand small{display:block;font-family:'Inter';font-size:7.5px;letter-spacing:3px;color:var(--cinza);text-transform:uppercase;margin-top:-2px}
+  .wa-pill{display:inline-flex;align-items:center;gap:7px;background:#fff;color:#0a0a0a;font-weight:600;font-size:12.5px;padding:9px 15px;border-radius:50px}
+  .wa-pill svg{width:15px;height:15px;fill:#0a0a0a}
+
+  /* HERO */
+  .hero{padding:54px 0 30px;text-align:center}
+  .eyebrow{font-size:10px;letter-spacing:3.5px;text-transform:uppercase;color:var(--cinza);margin-bottom:18px}
+  h1{font-family:'Playfair Display',serif;font-size:38px;line-height:1.12;font-weight:600;letter-spacing:.3px}
+  h1 em{font-style:italic;color:#cfcfcf}
+  .hero p{color:#cfcfcf;font-size:15px;font-weight:300;max-width:430px;margin:18px auto 26px}
+  .cta-row{display:flex;flex-direction:column;gap:11px;max-width:330px;margin:0 auto}
+  .btn{display:flex;align-items:center;justify-content:center;gap:10px;padding:15px;border-radius:13px;font-weight:600;font-size:14.5px;transition:.2s}
+  .btn-primary{background:#fff;color:#0a0a0a}
+  .btn-primary:hover{background:#e2e2e2}
+  .btn-ghost{background:#1a1a1a;border:1px solid var(--linha);color:#fff}
+  .btn-ghost:hover{border-color:#444}
+  .btn-ghost svg{width:17px;height:17px;fill:var(--wa)}
+  .ju-tag{display:flex;align-items:center;justify-content:center;gap:11px;margin-top:30px}
+  .ju-tag img{width:46px;height:46px;border-radius:50%;object-fit:cover;object-position:center 15%;border:1px solid #333}
+  .ju-tag b{font-size:13px;display:block}
+  .ju-tag span{font-size:10.5px;color:var(--cinza);letter-spacing:.5px}
+
+  /* STATS */
+  .stats{display:flex;border:1px solid var(--linha);border-radius:16px;overflow:hidden;margin:40px 0}
+  .stat{flex:1;padding:18px 6px;text-align:center;background:#121212}
+  .stat+.stat{border-left:1px solid var(--linha)}
+  .stat b{font-family:'Playfair Display',serif;font-size:26px;display:block;line-height:1}
+  .stat span{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--cinza);display:block;margin-top:7px}
+
+  /* SECTION */
+  section{padding:30px 0}
+  .sec-head{text-align:center;margin-bottom:26px}
+  .sec-head .eyebrow{margin-bottom:10px}
+  .sec-head h2{font-family:'Playfair Display',serif;font-size:27px;font-weight:600}
+  .cards{display:grid;gap:14px}
+  .ic{background:var(--card);border:1px solid var(--linha);border-radius:16px;padding:22px}
+  .ic .n{font-family:'Playfair Display',serif;font-size:15px;color:var(--cinza);margin-bottom:8px}
+  .ic h3{font-family:'Playfair Display',serif;font-size:19px;font-weight:600;margin-bottom:7px}
+  .ic p{font-size:13.5px;color:#bcbcbc;font-weight:300}
+
+  /* SEO TEXT */
+  .seo{background:var(--card);border:1px solid var(--linha);border-radius:18px;padding:30px 24px;margin:10px 0}
+  .seo h2{font-family:'Playfair Display',serif;font-size:23px;margin-bottom:14px}
+  .seo p{font-size:14px;color:#c4c4c4;font-weight:300;margin-bottom:14px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+  .chip{font-size:11.5px;color:#cfcfcf;border:1px solid var(--linha);border-radius:50px;padding:6px 13px}
+
+  /* DEPOIMENTO */
+  .dep{text-align:center;padding:46px 10px}
+  .dep .stars{letter-spacing:3px;font-size:13px;margin-bottom:14px}
+  .dep p{font-family:'Playfair Display',serif;font-style:italic;font-size:22px;line-height:1.4;color:#e6e6e6;max-width:560px;margin:0 auto 14px}
+  .dep .who{font-size:12px;color:var(--cinza);letter-spacing:.5px}
+  .dep .who b{color:#fff}
+
+  /* CTA FINAL */
+  .final{text-align:center;border:1px solid var(--linha);border-radius:20px;padding:40px 24px;margin:20px 0;background:radial-gradient(circle at 50% 0%,#171717,#0e0e0e)}
+  .final h2{font-family:'Playfair Display',serif;font-size:28px;margin-bottom:10px}
+  .final p{color:#bcbcbc;font-size:14px;margin-bottom:22px;font-weight:300}
+
+  /* FOOTER */
+  footer{border-top:1px solid var(--linha);padding:30px 0;text-align:center;color:var(--cinza);font-size:11.5px;line-height:2}
+  footer .urbs{display:inline-flex;align-items:center;gap:8px;margin-top:8px;font-size:9px;letter-spacing:2px;text-transform:uppercase}
+  footer img{height:30px;mix-blend-mode:screen;opacity:.9}
+
+  @media(min-width:720px){
+    h1{font-size:52px}
+    .hero p{font-size:17px}
+    .cards{grid-template-columns:repeat(3,1fr)}
+    .cta-row{flex-direction:row;max-width:none;justify-content:center}
+    .btn{padding:15px 26px}
+  }
+</style>
+</head>
+<body>
+  <header><div class="wrap nav">
+    <a class="brand" href="/">Juliana Alves<small>Corretora · Palmas-TO</small></a>
+    <a class="wa-pill" href="https://wa.me/5563992226998?text=Oi%20Juliana!%20Vim%20pelo%20site." onclick="track('header-whatsapp','site')">
+      <svg viewBox="0 0 24 24"><path d="M17.4 14.4c-.3-.1-1.8-.9-2-1-.3-.1-.5-.1-.7.1l-.9 1.2c-.2.2-.3.2-.6.1-1.2-.6-2-1.1-2.9-2.4-.2-.4 0-.5.1-.6l.4-.5c.1-.2.1-.3 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.1.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.8-.7 2-1.4.2-.7.2-1.3.2-1.4-.1-.1-.3-.2-.6-.3z"/><path d="M12 0C5.5 0 .2 5.3.2 11.9c0 2.1.5 4.1 1.6 5.9L0 24l6.3-1.7c1.7 1 3.7 1.4 5.7 1.4 6.6 0 11.9-5.3 11.9-11.9C23.9 5.3 18.6 0 12 0zm0 21.8c-1.8 0-3.5-.5-5-1.4l-.4-.2-3.7 1 1-3.6-.2-.4c-1-1.6-1.5-3.4-1.5-5.3C2.7 6.5 6.9 2.4 12 2.4c2.6 0 5.1 1 6.9 2.9 1.9 1.8 2.9 4.3 2.9 6.9 0 5.4-4.4 9.6-9.7 9.6z"/></svg>
+      WhatsApp
+    </a>
+  </div></header>
+
+  <main class="wrap">
+    <section class="hero">
+      <div class="eyebrow">Corretora de Imóveis · Palmas — Tocantins</div>
+      <h1>O imóvel certo em Palmas, com quem mostra <em>o processo de verdade</em>.</h1>
+      <p>Lançamentos na planta e revenda selecionados pro seu momento — pra morar ou pra investir. Sem empurrar, sem enrolação.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="investir.html?origem=site" onclick="track('hero-captura','site')">Encontrar meu imóvel →</a>
+        <a class="btn btn-ghost" href="https://wa.me/5563992226998?text=Oi%20Juliana!%20Vim%20pelo%20site%20e%20quero%20conversar." onclick="track('hero-whatsapp','site')">
+          <svg viewBox="0 0 24 24"><path d="M17.4 14.4c-.3-.1-1.8-.9-2-1-.3-.1-.5-.1-.7.1l-.9 1.2c-.2.2-.3.2-.6.1-1.2-.6-2-1.1-2.9-2.4-.2-.4 0-.5.1-.6l.4-.5c.1-.2.1-.3 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.1.2 2.1 3.2 5.1 4.5 2.4 1 2.4.7 2.9.7.5-.1 1.8-.7 2-1.4.2-.7.2-1.3.2-1.4-.1-.1-.3-.2-.6-.3z"/></svg>
+          Falar agora
+        </a>
+      </div>
+      <div class="ju-tag">
+        <img src="juliana.jpg" alt="Juliana Alves" onerror="this.style.display='none'">
+        <div style="text-align:left"><b>Juliana Alves</b><span>CRECI 5377 · Parceira URBS Cerrado</span></div>
+      </div>
+    </section>
+
+    <div class="stats">
+      <div class="stat"><b>+50</b><span>imóveis negociados</span></div>
+      <div class="stat"><b>18,9k</b><span>seguidores</span></div>
+      <div class="stat"><b>100%</b><span>Palmas-TO</span></div>
+    </div>
+
+    <section>
+      <div class="sec-head">
+        <div class="eyebrow">Como eu trabalho</div>
+        <h2>Três jeitos de eu te ajudar</h2>
+      </div>
+      <div class="cards">
+        <div class="ic"><div class="n serif">01</div><h3>Pra morar</h3><p>Apartamento, casa ou condomínio que encaixa na sua rotina e no seu orçamento, no bairro certo de Palmas.</p></div>
+        <div class="ic"><div class="n serif">02</div><h3>Pra investir</h3><p>Imóvel com olhar de valorização e renda — eu mostro o número antes de você decidir, não depois.</p></div>
+        <div class="ic"><div class="n serif">03</div><h3>Na planta</h3><p>Lançamentos da URBS Cerrado e do mercado de Palmas, com condição de entrada que cabe no seu plano.</p></div>
+      </div>
+    </section>
+
+    <section class="seo">
+      <h2>Comprar imóvel em Palmas — Tocantins</h2>
+      <p>Palmas é uma das capitais que mais cresce no Brasil, e isso aparece no mercado imobiliário: lançamentos no Plano Diretor Sul, revenda valorizada no Plano Diretor Norte e procura forte por apartamentos pra morar e pra investir. Como corretora parceira da URBS Cerrado, eu acompanho o estoque de perto e te mostro o que realmente faz sentido — não o que sobrou.</p>
+      <p>Seja seu primeiro apartamento ou mais um imóvel pra renda, o caminho é o mesmo: entender seu momento, garimpar as opções certas e te levar pra dentro só do que vale a visita.</p>
+      <div class="chips">
+        <span class="chip">Plano Diretor Sul</span><span class="chip">Plano Diretor Norte</span>
+        <span class="chip">Apartamento na planta</span><span class="chip">Imóvel pra investir</span>
+        <span class="chip">Revenda</span><span class="chip">Casa em condomínio</span>
+      </div>
+    </section>
+
+    <div class="dep">
+      <div class="stars">★★★★★</div>
+      <p>"A Juliana entendeu o que eu queria em 5 minutos e me mostrou exatamente o imóvel certo. Comprei sem stress."</p>
+      <div class="who"><b>Marina C.</b> · Investidora · Palmas</div>
+    </div>
+
+    <div class="final">
+      <h2>Vamos achar o seu?</h2>
+      <p>Me conta seu momento. Eu garimpo uma seleção pro seu perfil, sem custo e sem compromisso.</p>
+      <a class="btn btn-primary" style="display:inline-flex" href="investir.html?origem=site" onclick="track('final-captura','site')">Quero minha seleção →</a>
+    </div>
+  </main>
+
+  <footer>
+    <strong style="color:#f5f5f5">Juliana Alves</strong> · Corretora de Imóveis · CRECI 5377 · Palmas — TO<br>
+    <a href="https://instagram.com/juu_alves8">@juu_alves8</a>
+    <span class="urbs">Corretora parceira <img src="logo-urbs.png" alt="URBS Cerrado" onerror="this.outerHTML='URBS Cerrado'"></span>
+  </footer>
+
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"RealEstateAgent","name":"Juliana Alves — Corretora de Imóveis","image":"https://juliana-alves.pages.dev/juliana.jpg","url":"https://juliana-alves.pages.dev/","telephone":"+5563992226998","priceRange":"$$","areaServed":{"@type":"City","name":"Palmas"},"address":{"@type":"PostalAddress","addressLocality":"Palmas","addressRegion":"TO","addressCountry":"BR"},"sameAs":["https://instagram.com/juu_alves8"],"memberOf":{"@type":"Organization","name":"URBS Cerrado"},"knowsAbout":["lançamentos imobiliários","apartamentos em Palmas","investimento imobiliário","revenda de imóveis"]}
+  </script>
+  <script>
+    var CRM_ENDPOINT="https://script.google.com/macros/s/AKfycbxPjat7C66mU5GDRjHTMBuymxNilBvQ1pv0Jn31LXtdxwHlnI7pyPuuSqYjkS5EJwZg/exec";
+    function paramURL(n){var m=location.search.match(new RegExp('[?&]'+n+'=([^&]+)'));return m?decodeURIComponent(m[1].replace(/\+/g,' ')):''}
+    function getOrigem(){var o=paramURL('origem')||paramURL('utm_source');if(o)return o.toLowerCase();var r=(document.referrer||'').toLowerCase();if(r.indexOf('instagram')>-1)return'instagram';if(r.indexOf('google')>-1)return'google';if(r.indexOf('facebook')>-1)return'facebook';return'direto'}
+    function track(alvo,pagina){if(!CRM_ENDPOINT)return;try{var p=JSON.stringify({tipo:'clique',alvo:alvo,pagina:pagina,origem:getOrigem()});if(navigator.sendBeacon){navigator.sendBeacon(CRM_ENDPOINT,new Blob([p],{type:'text/plain;charset=UTF-8'}))}else{fetch(CRM_ENDPOINT,{method:'POST',mode:'no-cors',keepalive:true,headers:{'Content-Type':'text/plain;charset=utf-8'},body:p}).catch(function(){})}}catch(e){}}
+  </script>
+</body>
+</html>
