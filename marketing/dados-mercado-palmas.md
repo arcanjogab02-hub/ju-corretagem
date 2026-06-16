@@ -17,6 +17,14 @@
   2024 foi +7,73%. **[forte]**
 - **Palmas valorizou acima da média nacional** — bairros como Plano Diretor Sul e Taquaralto
   entre 9% e 14% em 2024 (reportagem). **[fraco — usar "segundo o mercado local"]**
+- **Comprar na planta valoriza de 15% a 50% até a entrega** (INCC + valorização de mercado durante a
+  obra). **[médio — guia de mercado, benchmark nacional]** Caso real documentado (Goiânia): Katedral Sky
+  **R$ 483 mil no lançamento (2021) → R$ 720 mil na entrega (2024) = +48,9% / +R$ 237 mil** (myside).
+  → âncora pra conteúdo de planta/investidor. ⚠️ Palmas ano a ano em R$ **não tem fonte neutra**; o
+  "+30%/ano" que circula é marketing de construtora local (Luman) — **não usar como dado**.
+- **R$/m² em Palmas varia MUITO por fonte/tipo:** ~R$ 10.983 em lançamento/oferta na planta (agenteimovel)
+  × ~R$ 3.747 de proprietário direto no Plano Diretor Sul (proprietariodireto, jun/2026). **[fraco]** —
+  não cravar um m² único; lançamento é bem mais caro que revenda direta.
 - **m² médio em Palmas ~R$ 10.983** (oferta, não fechamento; puxado por lançamento). **[fraco]**
   → faixa R$ 300–500 mil = apês menores (1–2 quartos) ou usados/fora do Plano Diretor Sul.
 - **Palmas tem 600+ imóveis no Airbnb e procura o ano todo** (sem alta temporada concentrada).
@@ -48,3 +56,5 @@
 - m² Palmas: https://www.agenteimovel.com.br/mercado-imobiliario/a-venda/to/palmas/
 - Airbnb/Ademi-TO: https://clebertoledo.com.br/negocios/palmas-tem-1213-mil-domicilios-e-622-unidades-disponiveis-no-airbnb-mostra-estudo-da-ademi/
 - Juros 2026: https://www.spimovel.com.br/blog/qual-a-taxa-de-juros-para-financiamento-imobiliario-da-caixa-em-2026/2877/
+- Valorização na planta (15–50% + caso Katedral): https://myside.com.br/guia-imoveis/valorizacao-apartamento-na-planta
+- R$/m² Plano Diretor Sul (proprietário direto): https://www.proprietariodireto.com.br/preco-m2/plano_diretor_sul-palmas
