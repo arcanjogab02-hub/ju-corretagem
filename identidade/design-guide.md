@@ -1,5 +1,6 @@
 # Identidade visual
 
+> **Conteúdo (copy/formato/curiosidade): ver `identidade/guia-conteudo.md`.** Este arquivo cuida do VISUAL.
 > Como a marca aparece em tudo que o MazyOS gera.
 > As skills de conteúdo, carrossel e post leem esse arquivo antes de criar qualquer visual.
 > Edite quando a marca evoluir.
