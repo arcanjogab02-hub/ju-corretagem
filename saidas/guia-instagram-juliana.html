@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guia de Conteúdo · @juu_alves8</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Georgia', serif;
+    background: #fafaf8;
+    color: #1a1a1a;
+    line-height: 1.7;
+    font-size: 16px;
+  }
+
+  .wrap {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+  }
+
+  /* Header */
+  .header {
+    border-bottom: 2px solid #1a1a1a;
+    padding-bottom: 24px;
+    margin-bottom: 48px;
+  }
+  .label {
+    font-family: 'Arial', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #888;
+    margin-bottom: 8px;
+  }
+  h1 {
+    font-size: 28px;
+    font-weight: normal;
+    line-height: 1.3;
+  }
+  .subtitle {
+    font-family: 'Arial', sans-serif;
+    font-size: 13px;
+    color: #666;
+    margin-top: 8px;
+  }
+
+  /* Sections */
+  .section {
+    margin-bottom: 56px;
+  }
+
+  h2 {
+    font-size: 13px;
+    font-family: 'Arial', sans-serif;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #888;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  h3 {
+    font-size: 17px;
+    font-weight: normal;
+    margin: 24px 0 10px;
+  }
+
+  p {
+    margin-bottom: 14px;
+    color: #2a2a2a;
+  }
+
+  /* Cards de formato */
+  .format-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 20px 0;
+  }
+  @media (max-width: 500px) {
+    .format-grid { grid-template-columns: 1fr; }
+  }
+
+  .format-card {
+    border: 1px solid #ddd;
+    padding: 20px;
+    background: #fff;
+  }
+  .format-card .tag {
+    font-family: 'Arial', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #888;
+    display: block;
+    margin-bottom: 6px;
+  }
+  .format-card .title {
+    font-size: 18px;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 6px;
+  }
+  .format-card .role {
+    font-family: 'Arial', sans-serif;
+    font-size: 12px;
+    color: #555;
+    font-style: italic;
+  }
+  .format-card .freq {
+    font-family: 'Arial', sans-serif;
+    font-size: 12px;
+    color: #1a1a1a;
+    font-weight: bold;
+    margin-top: 10px;
+    display: block;
+  }
+
+  /* Highlight boxes */
+  .box {
+    background: #1a1a1a;
+    color: #fff;
+    padding: 20px 24px;
+    margin: 20px 0;
+  }
+  .box p { color: #ddd; margin-bottom: 0; }
+  .box strong { color: #fff; }
+
+  .box-light {
+    background: #f2f2f0;
+    padding: 20px 24px;
+    margin: 20px 0;
+    border-left: 3px solid #1a1a1a;
+  }
+  .box-light p { margin-bottom: 0; }
+
+  /* Lista */
+  ul, ol {
+    padding-left: 20px;
+    margin: 12px 0;
+  }
+  li {
+    margin-bottom: 8px;
+    color: #2a2a2a;
+  }
+  li strong { color: #1a1a1a; }
+
+  /* Calendário */
+  .cal {
+    border: 1px solid #ddd;
+    background: #fff;
+    margin: 20px 0;
+  }
+  .cal-header {
+    background: #1a1a1a;
+    color: #fff;
+    padding: 10px 16px;
+    font-family: 'Arial', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .cal-row {
+    display: flex;
+    align-items: flex-start;
+    border-bottom: 1px solid #eee;
+    padding: 12px 16px;
+    gap: 12px;
+  }
+  .cal-row:last-child { border-bottom: none; }
+  .cal-sem {
+    font-family: 'Arial', sans-serif;
+    font-size: 11px;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    min-width: 70px;
+    padding-top: 2px;
+  }
+  .cal-content {
+    flex: 1;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .badge {
+    display: inline-block;
+    font-family: 'Arial', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 2px;
+    margin-right: 4px;
+    vertical-align: middle;
+  }
+  .b-reel { background: #1a1a1a; color: #fff; }
+  .b-car  { background: #e0e0e0; color: #333; }
+  .b-post { background: #f2f2f0; color: #555; border: 1px solid #ddd; }
+  .b-story{ background: transparent; color: #888; border: 1px solid #ccc; font-style: italic; }
+
+  /* Framework do Reel */
+  .steps {
+    counter-reset: step;
+    margin: 20px 0;
+  }
+  .step {
+    counter-increment: step;
+    display: flex;
+    gap: 16px;
+    margin-bottom: 18px;
+    align-items: flex-start;
+  }
+  .step-num {
+    width: 32px;
+    height: 32px;
+    background: #1a1a1a;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Arial', sans-serif;
+    font-size: 13px;
+    font-weight: bold;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .step-body strong {
+    display: block;
+    font-size: 15px;
+    margin-bottom: 3px;
+  }
+  .step-body span {
+    font-size: 13px;
+    color: #555;
+    font-family: 'Arial', sans-serif;
+  }
+
+  /* Checklist */
+  .checklist {
+    list-style: none;
+    padding: 0;
+  }
+  .checklist li {
+    display: flex;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+    align-items: flex-start;
+  }
+  .checklist li:last-child { border-bottom: none; }
+  .check-box {
+    width: 18px;
+    height: 18px;
+    border: 1.5px solid #ccc;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  /* Tipos de Reel */
+  .reel-types {
+    margin: 16px 0;
+  }
+  .reel-type {
+    display: flex;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+    align-items: flex-start;
+  }
+  .reel-type:last-child { border-bottom: none; }
+  .reel-num {
+    font-family: 'Arial', sans-serif;
+    font-size: 11px;
+    color: #888;
+    min-width: 24px;
+    font-weight: bold;
+    padding-top: 2px;
+  }
+  .reel-info strong { display: block; font-size: 14px; margin-bottom: 2px; }
+  .reel-info span { font-family: 'Arial', sans-serif; font-size: 12px; color: #666; }
+
+  /* Footer */
+  .footer {
+    margin-top: 64px;
+    padding-top: 24px;
+    border-top: 1px solid #e0e0e0;
+    font-family: 'Arial', sans-serif;
+    font-size: 11px;
+    color: #aaa;
+    text-align: center;
+    letter-spacing: 0.08em;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="label">Guia de conteúdo · junho 2026</div>
+    <h1>Como postar no Instagram<br>sem enlouquecer</h1>
+    <div class="subtitle">@juu_alves8 — Cadência mínima, máxima qualidade</div>
+  </div>
+
+  <!-- Filosofia -->
+  <div class="section">
+    <h2>Antes de tudo</h2>
+    <p>O Instagram da Juliana não é uma vitrine de imóveis. É um canal de relacionamento onde <strong>pessoas compram confiança antes de comprar imóvel</strong>. A venda não acontece no feed — acontece no direct e no WhatsApp depois de semanas de stories.</p>
+    <div class="box">
+      <p><strong>A regra de ouro:</strong> consistência sem esforço insustentável. Melhor postar todo santo sábado do que intenso durante 3 semanas e sumir. O algoritmo penaliza desaparecimento. O seguidor também.</p>
+    </div>
+    <p>Menos posts, mais intencionais. Cada peça tem uma função clara — alcance, captação ou conversão. Nada por "estar presente".</p>
+  </div>
+
+  <!-- Os 4 formatos -->
+  <div class="section">
+    <h2>Os 4 formatos e o papel de cada um</h2>
+
+    <div class="format-grid">
+      <div class="format-card">
+        <span class="tag">Alcance</span>
+        <span class="title">Reels</span>
+        <span class="role">Chegar em gente nova que ainda não te conhece</span>
+        <span class="freq">2x por mês (planejado)</span>
+      </div>
+      <div class="format-card">
+        <span class="tag">Captação</span>
+        <span class="title">Carrossel</span>
+        <span class="role">Salves, visitas ao perfil e cliques no link da bio</span>
+        <span class="freq">1x por semana</span>
+      </div>
+      <div class="format-card">
+        <span class="tag">Conversão</span>
+        <span class="title">Stories</span>
+        <span class="role">Onde a venda de fato acontece — relação diária</span>
+        <span class="freq">Todo dia (4–8 frames)</span>
+      </div>
+      <div class="format-card">
+        <span class="tag">Autoridade</span>
+        <span class="title">Post estático</span>
+        <span class="role">Quando tem motivo real: resultado, marco, notícia</span>
+        <span class="freq">~2x por mês (opcional)</span>
+      </div>
+    </div>
+
+    <div class="box-light">
+      <p><strong>Resumo da semana:</strong> 1 carrossel (quinta ou sexta) + stories todo dia + 1 Reel a cada duas semanas. Post estático só quando tiver razão real pra postar.</p>
+    </div>
+  </div>
+
+  <!-- Stories -->
+  <div class="section">
+    <h2>Stories — seu canal de vendas</h2>
+    <p>Stories aparecem primeiro na barra, desaparecem em 24h e têm o link direto. É onde a audiência fala com você e onde o lead clica pra entrar em contato. <strong>Não tem substituto.</strong></p>
+
+    <h3>O que postar nos stories</h3>
+    <ul>
+      <li><strong>Bastidor de trabalho</strong> — visita rolando, chave na mão, imóvel entrando no estoque. Sem roteiro, natural.</li>
+      <li><strong>Número ou notícia de Palmas</strong> — "aluguel subiu X% em Palmas no último ano" + sua opinião em 2 frases.</li>
+      <li><strong>Caixa de perguntas</strong> — "me manda a sua maior dúvida sobre financiamento" (gera DMs, alimenta pauta de conteúdo).</li>
+      <li><strong>Link direto</strong> — "quer simular quanto cabe no seu bolso? Link na bio." Rastreado por origem=story.</li>
+      <li><strong>Pessoal real</strong> — almoço, rotina, Palmas de noite. O que reforça que ela é gente de verdade, não robô.</li>
+    </ul>
+
+    <div class="box-light">
+      <p><strong>Dica prática:</strong> não precisa fazer story elaborado. Um vídeo de 15s andando pra uma visita com "indo ver um imóvel que acabou de entrar no estoque, mostro depois" já cumpre o papel.</p>
+    </div>
+  </div>
+
+  <!-- Carrossel -->
+  <div class="section">
+    <h2>Carrossel — o formato de captação</h2>
+    <p>Carrossel gera save (a métrica mais valiosa do feed em 2026) e puxa visita ao perfil. O CTA do último slide sempre leva pro link da bio.</p>
+
+    <h3>Estrutura que funciona</h3>
+    <ul>
+      <li><strong>Capa:</strong> gancho de no máximo 8 palavras. A capa decide se a pessoa vai deslizar ou não.</li>
+      <li><strong>Slides 2–5:</strong> 1 ideia por slide. Frase curta. Sem parágrafos.</li>
+      <li><strong>Penúltimo slide:</strong> resumo ou insight principal.</li>
+      <li><strong>Último slide:</strong> CTA — "Quer simular? Link na bio" ou "Me chama no WhatsApp".</li>
+    </ul>
+
+    <h3>Temas que funcionam no perfil da Juliana</h3>
+    <ul>
+      <li>Comparação real: parcela vs. aluguel em Palmas (com número)</li>
+      <li>Processo explicado: "Como comprar na planta em 5 passos"</li>
+      <li>Dado surpreendente de Palmas (valorização, Airbnb, mercado)</li>
+      <li>Dúvida comum respondida com clareza</li>
+      <li>Bastidor de visita com foto real + análise do imóvel</li>
+    </ul>
+
+    <p><strong>Melhor dia:</strong> quinta ou sexta à tarde — quando as pessoas saem do trabalho pensando em vida.</p>
+  </div>
+
+  <!-- Reels -->
+  <div class="section">
+    <h2>Reels — alcance cirúrgico</h2>
+
+    <div class="box">
+      <p>Reels aqui têm uma só função: chegar em pessoas que ainda não conhecem a Juliana. Por isso são <strong>planejados com antecedência</strong>, nunca improvisados. Cada Reel tem tema, hook e CTA definidos antes de gravar.</p>
+    </div>
+
+    <p>A frequência é <strong>2 por mês</strong> — um a cada duas semanas, preferencialmente na sexta. Postar menos com mais intenção gera mais alcance do que postar frequente sem estratégia.</p>
+
+    <h3>Os 5 tipos de Reel que funcionam para imóvel</h3>
+    <div class="reel-types">
+      <div class="reel-type">
+        <span class="reel-num">01</span>
+        <div class="reel-info">
+          <strong>Tour de imóvel</strong>
+          <span>30–45s andando pelo espaço com locução natural. "Esse imóvel no setor X tem X m², entrada de R$Y..."</span>
+        </div>
+      </div>
+      <div class="reel-type">
+        <span class="reel-num">02</span>
+        <div class="reel-info">
+          <strong>Número que para o scroll</strong>
+          <span>"R$ 1.800 de aluguel ou R$ 1.600 de parcela — e no fim do contrato um é seu." Dado real, fonte real.</span>
+        </div>
+      </div>
+      <div class="reel-type">
+        <span class="reel-num">03</span>
+        <div class="reel-info">
+          <strong>Bastidor de visita</strong>
+          <span>"Acompanhei uma família hoje na visita ao primeiro imóvel deles." Emoção real, processo real.</span>
+        </div>
+      </div>
+      <div class="reel-type">
+        <span class="reel-num">04</span>
+        <div class="reel-info">
+          <strong>Dúvida respondida em 45s</strong>
+          <span>"Posso comprar imóvel sem entrada?" — pergunta na capa (texto) + resposta falada direta.</span>
+        </div>
+      </div>
+      <div class="reel-type">
+        <span class="reel-num">05</span>
+        <div class="reel-info">
+          <strong>Antes / depois</strong>
+          <span>Obra → entrega de chave. Imóvel parado → ocupação. Comparativo visual em corte.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Framework do Reel -->
+  <div class="section">
+    <h2>Como planejar cada Reel (antes de gravar)</h2>
+    <p>Preencha isso antes de gravar qualquer Reel. Se não conseguir responder, o Reel ainda não está pronto pra ser gravado.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <strong>Para quem é?</strong>
+          <span>Persona A (quer morar, paga aluguel) ou Persona B (investidor, tem capital parado)?</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <strong>Qual dor/dúvida esse Reel resolve?</strong>
+          <span>Uma frase. "Quem acha que não tem entrada suficiente pra comprar."</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <strong>Hook — o que aparece nos primeiros 2 segundos?</strong>
+          <span>Frase falada ou texto na tela que para o scroll. Sem apresentação, sem "Oi gente". Direto no assunto.</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <strong>Desenvolvimento — o que vai no meio (3–45s)?</strong>
+          <span>Resposta direta, simples. 1 ideia central. Se precisar de mais de 60s, são 2 Reels diferentes.</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-body">
+          <strong>CTA — o que a pessoa faz depois?</strong>
+          <span>"Me chama no direct", "link na bio pra simular", "salva pra compartilhar com alguém que precisa ver isso".</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">6</div>
+        <div class="step-body">
+          <strong>Legenda + palavra-chave</strong>
+          <span>1–2 frases. A palavra-chave na legenda (ex: "comprar imóvel Palmas") vale mais que hashtag em 2026. Usar 3–6 hashtags no máximo.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Calendário mensal -->
+  <div class="section">
+    <h2>Calendário — modelo de mês</h2>
+    <p>Adaptar os temas conforme o que estiver em estoque e o que estiver acontecendo no mercado de Palmas.</p>
+
+    <div class="cal">
+      <div class="cal-header">Mês modelo — 4 semanas</div>
+
+      <div class="cal-row">
+        <div class="cal-sem">Sem. 1</div>
+        <div class="cal-content">
+          <span class="badge b-car">Carrossel</span> qui ou sex<br>
+          <span style="font-size:13px;color:#555;">Tema educativo — processo de compra, financiamento, dúvida comum</span><br>
+          <span class="badge b-story" style="margin-top:6px;">Stories</span> <span style="font-size:13px;color:#888;">todo dia — bastidor da semana</span>
+        </div>
+      </div>
+
+      <div class="cal-row">
+        <div class="cal-sem">Sem. 2</div>
+        <div class="cal-content">
+          <span class="badge b-reel">Reel</span> sex — <span style="font-size:13px;">planejado com antecedência (framework preenchido)</span><br>
+          <span class="badge b-car" style="margin-top:6px;">Carrossel</span> ter ou qua<br>
+          <span style="font-size:13px;color:#555;">Tema dado/comparação — número real de Palmas</span><br>
+          <span class="badge b-story" style="margin-top:6px;">Stories</span> <span style="font-size:13px;color:#888;">todo dia</span>
+        </div>
+      </div>
+
+      <div class="cal-row">
+        <div class="cal-sem">Sem. 3</div>
+        <div class="cal-content">
+          <span class="badge b-car">Carrossel</span> qui ou sex<br>
+          <span style="font-size:13px;color:#555;">Tema imóvel/oferta — curadoria com foto real + análise</span><br>
+          <span class="badge b-post" style="margin-top:6px;">Post estático</span> <span style="font-size:13px;color:#888;">se tiver motivo (resultado, marco, notícia)</span><br>
+          <span class="badge b-story" style="margin-top:6px;">Stories</span> <span style="font-size:13px;color:#888;">todo dia</span>
+        </div>
+      </div>
+
+      <div class="cal-row">
+        <div class="cal-sem">Sem. 4</div>
+        <div class="cal-content">
+          <span class="badge b-reel">Reel</span> sex — <span style="font-size:13px;">2º Reel do mês (tipo diferente do primeiro)</span><br>
+          <span class="badge b-car" style="margin-top:6px;">Carrossel</span> ter ou qua<br>
+          <span style="font-size:13px;color:#555;">Tema pessoal/bastidor — foto real da Ju + reflexão curta</span><br>
+          <span class="badge b-story" style="margin-top:6px;">Stories</span> <span style="font-size:13px;color:#888;">todo dia</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="box-light" style="margin-top:16px;">
+      <p><strong>Resultado no mês:</strong> 4 carrosséis + 2 Reels + 0–2 posts estáticos + stories diários. Feed limpo, intencional. Nada postado por obrigação.</p>
+    </div>
+  </div>
+
+  <!-- Mix de temas -->
+  <div class="section">
+    <h2>Mix de temas (pra não repetir)</h2>
+    <ul>
+      <li><strong>30% bastidor real</strong> — visita, chave, plantão, imóvel chegando. Foto ou vídeo real da Ju.</li>
+      <li><strong>25% educativo</strong> — processo de compra, financiamento, o que avaliar num imóvel.</li>
+      <li><strong>20% imóvel / oferta</strong> — com dado real de Palmas, nunca "oportunidade imperdível".</li>
+      <li><strong>15% pessoal</strong> — o que reforça confiança no trabalho dela, não só "a vida".</li>
+      <li><strong>10% prova social</strong> — resultado, cliente feliz, entrega de chave.</li>
+    </ul>
+  </div>
+
+  <!-- Checklist -->
+  <div class="section">
+    <h2>Checklist antes de publicar qualquer peça</h2>
+    <ul class="checklist">
+      <li><span class="check-box"></span>Fala com persona A (morar) ou persona B (investir)? — não as duas ao mesmo tempo</li>
+      <li><span class="check-box"></span>A capa / hook nos primeiros 2s para o scroll?</li>
+      <li><span class="check-box"></span>Termina em captação? (link na bio, "me chama no direct", WhatsApp)</li>
+      <li><span class="check-box"></span>Máximo 1 emoji na peça toda?</li>
+      <li><span class="check-box"></span>Tem algum dado? É real, com fonte? (nunca número inventado)</li>
+      <li><span class="check-box"></span>Legenda tem palavra-chave escrita (não só hashtag)?</li>
+      <li><span class="check-box"></span>Para Reels: framework dos 6 passos foi preenchido antes de gravar?</li>
+    </ul>
+  </div>
+
+  <!-- O que NÃO fazer -->
+  <div class="section">
+    <h2>O que evitar sempre</h2>
+    <ul>
+      <li><strong>Postar "pra cumprir meta"</strong> — conteúdo sem intenção não serve pra nada. Melhor não postar.</li>
+      <li><strong>"Realize o sonho da casa própria"</strong> — clichê que ninguém acredita mais.</li>
+      <li><strong>Emoji demais</strong> — máximo 1 por peça, com propósito.</li>
+      <li><strong>Legenda longa</strong> — o público lê pouco. Se precisar de 3 parágrafos, é carrossel, não legenda.</li>
+      <li><strong>Reel improvisado</strong> — gravar sem saber o hook e o CTA de antemão é desperdício de alcance.</li>
+      <li><strong>Número inventado</strong> — qualquer dado de Palmas precisa de fonte. Dados errados destroem credibilidade.</li>
+      <li><strong>Foco só em investimento</strong> — a maior fatia da audiência quer morar, não só investir. Equilibrar.</li>
+    </ul>
+  </div>
+
+  <div class="footer">
+    @juu_alves8 · Palmas/TO · Sistema MazyOS · jun/2026
+  </div>
+
+</div>
+</body>
+</html>
