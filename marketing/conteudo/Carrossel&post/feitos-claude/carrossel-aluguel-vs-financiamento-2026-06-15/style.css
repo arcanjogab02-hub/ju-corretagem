@@ -1,0 +1,28 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1350px;overflow:hidden}
+.slide{width:1080px;height:1350px;padding:92px 84px;display:flex;flex-direction:column;justify-content:space-between;position:relative;font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased}
+.dark{background:#0D0D0D;color:#F5F5F5}
+.graf{background:#0D0D0D;color:#F5F5F5}
+.light{background:#F5F5F5;color:#141414}
+.counter{position:absolute;top:92px;right:84px;font-size:22px;letter-spacing:.22em;color:#8f8f8f;font-weight:600}
+.eyebrow{font-size:25px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:#9a9a9a}
+.light .eyebrow{color:#6f6f6f}
+.main{flex:1;display:flex;flex-direction:column;justify-content:center}
+.rule{width:76px;height:4px;background:currentColor;opacity:.85;margin:34px 0;border:none}
+.title{font-family:'Playfair Display',serif;font-weight:700;line-height:1.06;letter-spacing:-.01em;font-size:86px}
+.title.sm{font-size:68px;line-height:1.12}
+.big{font-family:'Playfair Display',serif;font-weight:800;line-height:1;letter-spacing:-.02em;margin-bottom:28px}
+.lead{font-family:'Playfair Display',serif;font-weight:600;font-size:60px;line-height:1.12;margin-top:8px}
+.body{font-size:41px;font-weight:400;line-height:1.42;color:#cfcfcf}
+.light .body{color:#3a3a3a}
+.body.lg{font-size:50px;line-height:1.34}
+.hl{color:#C0392B;font-weight:700}
+.light .hl{color:#C0392B;font-weight:700}
+.src{font-size:22px;color:#8f8f8f;font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-top:28px}
+.foot{display:flex;justify-content:space-between;align-items:flex-end}
+.handle{font-size:27px;font-weight:600}
+.sig{font-size:19px;letter-spacing:.14em;color:#8f8f8f;text-transform:uppercase;text-align:right}
+.light .sig{color:#777}
+.swipe{font-size:24px;color:#8f8f8f;font-weight:500}
+.wa{color:#25D366;font-weight:700}
