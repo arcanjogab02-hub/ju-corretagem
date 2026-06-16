@@ -126,7 +126,7 @@ estética minimalista.
 
 ## Cadência e mix (resumo — detalhe em `_memoria/estrategia.md`)
 
-- **Ritmo sustentável:** 3 Reels + 1–2 carrosséis + (0–1 post) por semana + **stories diários**.
+- **Ritmo (decisão jun/2026 — mínima/qualidade, NÃO inflar o feed):** 1 Reel + 1 carrossel por semana + **stories diários**; post estático só pontual.
   Consistência > volume. Reels = alcance/descoberta; carrossel = captação/saves; stories = o
   canal nº1 de conversão (link/WhatsApp).
 - **Mix:** ~30% bastidor · 25% técnico/educativo · 20% imóvel/oferta · 15% pessoal · 10% prova social.

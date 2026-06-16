@@ -38,8 +38,9 @@ oficialmente e rodar 1 semana de validação. Depois disso: produtizar o sistema
 
 ## Cadência e mix de conteúdo (Instagram @juu_alves8)
 
-Régua sustentável (consistência > volume), calibrada pro perfil da Ju (mistura pessoal+trabalho):
-- **Semana:** 3 Reels + 1–2 carrosséis + 0–1 post estático + **stories diários** (4–10 frames).
+Régua sustentável (consistência > volume), calibrada pro perfil da Ju (mistura pessoal+trabalho).
+**Decisão jun/2026 (Gabriel): cadência MÍNIMA / máx. qualidade — não inflar o feed. Estratégia + qualidade > volume.**
+- **Semana:** 1 Reel + 1 carrossel + **stories diários** (4–10 frames). Post estático só pontual (~2x/mês, quando tiver motivo real).
 - **Papéis:** Reels = alcance/descoberta · carrossel = captação/saves (CTA pro link) ·
   stories = canal nº1 de conversão (link/WhatsApp) · estático = autoridade/recado.
 - **Mix:** ~30% bastidor · 25% técnico/educativo · 20% imóvel/oferta · 15% pessoal · 10% prova social.
@@ -59,6 +60,10 @@ Pesquisa: Buffer, Sprout, SERHANT/BAM, Social Realtr (jun/2026).
   parametrizável por corretor. Entra como brinde de estreia / entregável de conteúdo.
 - Material de estudos (consultor de captação): `marketing/produto-corretores/estudos/manual-consultor.html`
 - Bônus de fechamento prontos: `marketing/produto-corretores/bonus/`
+- **Apresentação pro corretor (deck SPIN):** `marketing/produto-corretores/apresentacao-captacao360.html` —
+  scroll-deck P&B, 11 telas (dores → por que surgiu → parte prática → corretor atuante → complementar à imob → BI → prova → oferta).
+- **Script de venda SPIN (roteiro de leitura):** `marketing/produto-corretores/script-venda-spin.md` —
+  sincronizado slide a slide com o deck. S-P-I-N + apresentação + objeções + fechamento (âncora cheia → fundador → 3 vagas).
 
 ### Modelo de oferta — Captação 360 (atual)
 

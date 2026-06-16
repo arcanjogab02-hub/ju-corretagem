@@ -80,7 +80,8 @@ Checkpoint: mostrar a copy antes do visual. Texto enxuto — público lê pouco:
 frases curtas, capa de no máximo ~8 palavras.
 
 ## Cadência (do `estrategia.md`)
-3 Reels + 1–2 carrosséis + (0–1 post) por semana + **stories diários**. Mix: ~30% bastidor · 25%
+**Mínima / máx. qualidade (decisão jun/2026 — não inflar o feed):** 1 Reel + 1 carrossel por semana
++ **stories diários**; post estático só pontual (~2x/mês, quando tiver motivo real). Mix: ~30% bastidor · 25%
 técnico/educativo · 20% imóvel/oferta · 15% pessoal · 10% prova social. **Reels = alcance ·
 carrossel = captação · stories = conversão (link).**
 
