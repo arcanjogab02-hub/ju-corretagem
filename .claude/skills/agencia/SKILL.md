@@ -21,6 +21,12 @@ com tráfego pago, em cima de uma estrutura de captação **já pronta**: bio pr
 - `identidade/design-guide.md` (visual: P&B, tons exatos, destaque `#C0392B`, padrão de carrossel)
 - `marketing/dados-mercado-palmas.md` (números REAIS com fonte — nunca inventar)
 - `_memoria/estrategia.md` (cadência, funil, links rastreáveis `?origem=`)
+- `marketing/produto-corretores/posicionamento.md` (oferta **Captação 360** + escada — quando o assunto for vender pro corretor)
+
+## Oferta atual — Captação 360 (resumo)
+Plano único, 2 preços conforme a porta: **venda crua** (público/orgânico) R$ 497,90 implementação + R$ 297,90/mês ·
+**indicação da Ju** (fundador) R$ 297,90 + R$ 197/mês, 3 vagas, no direto. Entrega em **3 dias**. Método = os 5 passos
+"Captação 360" (atrair → capturar → converter → medir → melhorar). Detalhe: `posicionamento.md`.
 
 ---
 
