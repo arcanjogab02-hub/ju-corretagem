@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Captação 360 · Apresentação para corretores</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--preto:#0c0c0c;--card:#141414;--linha:#262626;--branco:#f5f5f5;--cinza:#8f8f8f;--wa:#25D366}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-snap-type:y mandatory;scroll-behavior:smooth}
+  body{font-family:'Inter',sans-serif;background:var(--preto);color:var(--branco);line-height:1.6}
+  .serif{font-family:'Cormorant Garamond',serif}
+  section{min-height:100vh;min-height:100dvh;scroll-snap-align:start;display:flex;flex-direction:column;justify-content:center;padding:60px 26px;position:relative;border-bottom:1px solid #1a1a1a}
+  .inner{max-width:820px;margin:0 auto;width:100%}
+  .eyebrow{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--cinza);margin-bottom:18px}
+  h1{font-family:'Cormorant Garamond',serif;font-weight:600;line-height:1.04}
+  .num-slide{position:absolute;top:24px;right:28px;font-size:12px;color:#3a3a3a;letter-spacing:2px}
+  .scroll-tip{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);font-size:10px;letter-spacing:2px;color:#555;text-transform:uppercase;animation:bob 2s infinite}
+  @keyframes bob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(5px)}}
+
+  /* CAPA */
+  .capa{background:radial-gradient(circle at 25% 15%,#1c1c1c,#0a0a0a 60%);text-align:center}
+  .capa .brand{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:#7a7a7a;margin-bottom:30px}
+  .capa h1{font-size:clamp(2.4rem,8vw,4.6rem)}
+  .capa h1 em{font-style:italic;color:transparent;-webkit-text-stroke:1.5px #fff}
+  .capa .sub{margin-top:22px;font-size:clamp(15px,2.2vw,19px);color:#cfcfcf;font-weight:300;max-width:540px;margin-left:auto;margin-right:auto}
+  .capa .por{margin-top:36px;font-size:11px;letter-spacing:2px;color:#6a6a6a;text-transform:uppercase}
+
+  h2{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,5.5vw,3.2rem);font-weight:600;line-height:1.08;margin-bottom:20px}
+  h2 em{font-style:italic;color:transparent;-webkit-text-stroke:1px #fff}
+  p.lead{font-size:clamp(15px,2.2vw,18px);color:#cfcfcf;font-weight:300;max-width:640px}
+  .destaque{color:#fff;font-weight:500}
+
+  /* lista de dores */
+  .dores{margin-top:26px;display:flex;flex-direction:column;gap:0}
+  .dor{display:flex;gap:14px;align-items:flex-start;padding:15px 0;border-top:1px solid var(--linha)}
+  .dor .x{color:#7a3b35;font-size:18px;flex-shrink:0;line-height:1.4}
+  .dor p{font-size:15px;color:#cfcfcf;font-weight:300}
+  .dor b{color:#fff;font-weight:500}
+
+  /* origem */
+  .origem{background:linear-gradient(180deg,#0c0c0c,#121212)}
+  .origem .quote{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(18px,3vw,24px);color:#e8e8e8;border-left:2px solid #333;padding-left:22px;margin-top:24px;max-width:620px}
+  .origem .quem{margin-top:18px;font-size:13px;color:var(--cinza);letter-spacing:1px}
+
+  /* peças / método */
+  .pecas{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:30px}
+  .peca{background:var(--card);border:1px solid var(--linha);border-radius:14px;padding:22px}
+  .peca .pn{font-family:'Cormorant Garamond',serif;font-size:15px;color:#666;margin-bottom:8px}
+  .peca h4{font-family:'Cormorant Garamond',serif;font-size:21px;margin-bottom:6px}
+  .peca p{font-size:13px;color:var(--cinza);font-weight:300}
+
+  /* fluxo */
+  .fluxo{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:28px}
+  .fbox{flex:1;min-width:130px;background:var(--card);border:1px solid var(--linha);border-radius:12px;padding:16px;text-align:center}
+  .fbox .fi{font-size:22px;margin-bottom:8px}
+  .fbox b{font-size:13.5px;display:block}
+  .fbox span{font-size:11px;color:var(--cinza);font-weight:300}
+  .fseta{color:#444;font-size:18px}
+
+  /* alavanca / corretor atuante */
+  .bal{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:28px}
+  .balc{background:var(--card);border:1px solid var(--linha);border-radius:14px;padding:22px}
+  .balc .t{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--cinza);margin-bottom:12px}
+  .balc h4{font-family:'Cormorant Garamond',serif;font-size:20px;margin-bottom:8px;line-height:1.15}
+  .balc p{font-size:13.5px;color:#cfcfcf;font-weight:300}
+  .balc.sis{border-color:#3a3a3a}
+
+  /* comparação CRM */
+  .comp{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:28px}
+  .colc{background:var(--card);border:1px solid var(--linha);border-radius:14px;padding:24px}
+  .colc .tag{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--cinza);margin-bottom:14px}
+  .colc h4{font-family:'Cormorant Garamond',serif;font-size:22px;margin-bottom:14px}
+  .colc ul{list-style:none}
+  .colc li{font-size:13.5px;color:#cfcfcf;font-weight:300;padding:7px 0;padding-left:20px;position:relative}
+  .colc li::before{content:'—';position:absolute;left:0;color:#555}
+  .colc.nosso{border-color:#3a3a3a}
+  .frasemae{margin-top:26px;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(16px,2.6vw,21px);color:#e8e8e8;text-align:center;max-width:640px;margin-left:auto;margin-right:auto}
+
+  /* BI painel mock */
+  .painel{margin-top:28px;background:#0f0f0f;border:1px solid var(--linha);border-radius:16px;padding:22px}
+  .painel .ph{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;border-bottom:1px solid var(--linha);padding-bottom:14px}
+  .painel .ph b{font-size:13px;font-weight:600}
+  .painel .ph span{font-size:11px;color:var(--cinza)}
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .kpi{text-align:center}
+  .kpi .v{font-family:'Cormorant Garamond',serif;font-size:clamp(26px,5vw,34px);line-height:1;color:#fff}
+  .kpi .l{font-size:10.5px;letter-spacing:1px;text-transform:uppercase;color:var(--cinza);margin-top:8px}
+  .ia{margin-top:18px;background:#141414;border:1px solid var(--linha);border-left:2px solid #888;border-radius:0 10px 10px 0;padding:14px 16px}
+  .ia .il{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--cinza);margin-bottom:6px}
+  .ia p{font-size:13.5px;color:#e0e0e0;font-weight:300;font-style:italic}
+  .biex{margin-top:14px;font-size:12px;color:#5a5a5a;text-align:center}
+
+  /* prova / links */
+  .links{display:flex;flex-direction:column;gap:12px;margin-top:28px;max-width:440px}
+  .lk{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--linha);border-radius:13px;padding:16px 18px;text-decoration:none;color:var(--branco);transition:.2s}
+  .lk:hover{border-color:#fff}
+  .lk .ico{font-size:20px}
+  .lk b{font-size:14.5px;display:block}
+  .lk span{font-size:12px;color:var(--cinza)}
+  .lk .arw{margin-left:auto;color:#5a5a5a}
+
+  /* oferta */
+  .oferta{background:linear-gradient(180deg,#0c0c0c,#121212)}
+  .escopo{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
+  .chip{background:var(--card);border:1px solid var(--linha);border-radius:50px;padding:9px 16px;font-size:13px;color:#cfcfcf}
+  .preco{margin-top:30px;display:flex;flex-wrap:wrap;gap:14px;align-items:stretch}
+  .pcard{flex:1;min-width:240px;background:var(--card);border:1px solid var(--linha);border-radius:16px;padding:24px}
+  .pcard .pt{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--cinza);margin-bottom:12px}
+  .pcard .pv{font-family:'Cormorant Garamond',serif;font-size:clamp(24px,4vw,32px);color:#fff;line-height:1.1}
+  .pcard .pv small{font-size:14px;color:var(--cinza);font-weight:300}
+  .pcard .pd{font-size:12.5px;color:var(--cinza);margin-top:10px;font-weight:300}
+  .pcard.fund{border-color:#3a3a3a;position:relative}
+  .pcard.fund .selo{position:absolute;top:-11px;left:24px;background:#f5f5f5;color:#0c0c0c;font-size:10px;letter-spacing:1px;text-transform:uppercase;font-weight:600;padding:4px 12px;border-radius:50px}
+  .garantias{margin-top:22px;display:flex;flex-wrap:wrap;gap:18px}
+  .gar{font-size:12.5px;color:var(--cinza);font-weight:300}
+  .gar b{color:#fff;font-weight:500}
+
+  /* CTA final */
+  .fim{background:radial-gradient(circle at 50% 100%,#1a1a1a,#0a0a0a 60%);text-align:center}
+  .fim h2{margin-bottom:16px}
+  .fim .cta{display:inline-flex;align-items:center;gap:10px;background:var(--wa);color:#06310f;font-weight:600;font-size:16px;padding:17px 36px;border-radius:50px;text-decoration:none;margin-top:14px}
+  .fim .ass{margin-top:30px;font-size:11px;letter-spacing:2px;color:#6a6a6a;text-transform:uppercase}
+
+  @media(max-width:640px){
+    .pecas,.bal,.comp{grid-template-columns:1fr}
+    .kpis{grid-template-columns:1fr 1fr;gap:18px}
+    .fluxo .fseta{display:none}.fbox{min-width:100%}
+  }
+</style>
+</head>
+<body>
+
+  <!-- 1. CAPA -->
+  <section class="capa">
+    <div class="inner">
+      <div class="brand">GA Business Insights · Palmas — TO</div>
+      <h1>Captação <em>360</em></h1>
+      <p class="sub">A máquina de captação completa do corretor — com a sua cara, e uma base de leads que é sempre <span class="destaque">sua</span>.</p>
+      <div class="por">Apresentação · como funciona e pra quem é</div>
+    </div>
+    <div class="scroll-tip">↓ role para ver</div>
+  </section>
+
+  <!-- 2. O PROBLEMA (Situação → Problema) -->
+  <section>
+    <span class="num-slide">01</span>
+    <div class="inner">
+      <div class="eyebrow">A verdade que ninguém fala</div>
+      <h2>Você posta, aparece.<br>Mas quantos viram <em>cliente</em>?</h2>
+      <p class="lead">O movimento existe. O que falta é o que acontece <span class="destaque">depois</span> do like.</p>
+      <div class="dores">
+        <div class="dor"><span class="x">✕</span><p><b>Like não vira comissão.</b> O conteúdo engaja, mas ninguém é capturado.</p></div>
+        <div class="dor"><span class="x">✕</span><p><b>Lead some no direct.</b> Sem onde anotar, sem lembrete — o contato esfria e você nem percebe.</p></div>
+        <div class="dor"><span class="x">✕</span><p><b>Você não sabe quanto a sua presença trouxe.</b> Nenhum número do seu próprio esforço.</p></div>
+        <div class="dor"><span class="x">✕</span><p><b>Refém do lead da imobiliária.</b> Se um dia trocar de imob, começa do zero.</p></div>
+      </div>
+    </div>
+    <div class="scroll-tip">↓</div>
+  </section>
+
+  <!-- 3. O QUE É / POR QUE SURGIU -->
+  <section class="origem">
+    <span class="num-slide">02</span>
+    <div class="inner">
+      <div class="eyebrow">Por que isso existe</div>
+      <h2>Não nasceu numa agência.<br>Nasceu de uma corretora <em>real</em>.</h2>
+      <p class="lead">A Juliana tinha 18 mil seguidores e o mesmo problema: audiência grande, lead que escapava. Montamos pra ela um sistema que captura, organiza e mede tudo que o Instagram já traz. Funcionou. Hoje ele virou produto — <span class="destaque">o Captação 360</span>.</p>
+      <p class="quote">"Não é um site bonito. É o sistema que transforma a sua audiência em lead — e prova, em número, quanto a sua presença vale."</p>
+      <p class="quem">@juu_alves8 · Corretora · Palmas — TO · o primeiro caso</p>
+    </div>
+    <div class="scroll-tip">↓</div>
+  </section>
+
+  <!-- 4. PARTE PRÁTICA — AS PEÇAS / O MÉTODO 360 -->
+  <section>
+    <span class="num-slide">03</span>
+    <div class="inner">
+      <div class="eyebrow">Como funciona, na prática</div>
+      <h2>Cinco peças que fecham<br>o ciclo <em>360</em>.</h2>
+      <p class="lead">Do clique no seu link até saber o que ajustar no mês. Atrair → capturar → converter → medir → melhorar.</p>
+      <div class="pecas">
+        <div class="peca"><div class="pn">01 · Base</div><h4>Bio + Página + Catálogo</h4><p>O link da sua bio vira uma página premium com a sua cara: foto, números, imóveis e botões que convertem.</p></div>
+        <div class="peca"><div class="pn">02 · Captura</div><h4>CRM de 1 toque</h4><p>Cada pessoa que preenche cai numa base sua, com aviso na hora no WhatsApp. Nada some.</p></div>
+        <div class="peca"><div class="pn">03 · Conteúdo</div><h4>Peças que trazem gente</h4><p>Post, story e carrossel feitos pra levar a audiência pro seu link — não só pra curtir.</p></div>
+        <div class="peca"><div class="pn">04 · Tráfego</div><h4>Escala quando validar</h4><p>Quando o orgânico provar que converte, o anúncio entra pra acelerar — com Pixel e público que é seu.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. O DIA A DIA -->
+  <section>
+    <span class="num-slide">04</span>
+    <div class="inner">
+      <div class="eyebrow">Simples assim</div>
+      <h2>O seu dia a dia em <em>3 toques</em></h2>
+      <div class="fluxo">
+        <div class="fbox"><div class="fi">📲</div><b>Chega o lead</b><span>aviso no seu WhatsApp</span></div>
+        <span class="fseta">→</span>
+        <div class="fbox"><div class="fi">💬</div><b>Você toca "Responder"</b><span>abre a conversa pronta</span></div>
+        <span class="fseta">→</span>
+        <div class="fbox"><div class="fi">✓</div><b>Marca a etapa</b><span>conversa · visita · fechou</span></div>
+      </div>
+      <p class="lead" style="margin-top:26px">No celular, parece um app de mensagem. <span class="destaque">Nada de planilha.</span> No computador, você vê o funil inteiro em colunas.</p>
+    </div>
+  </section>
+
+  <!-- 6. CORRETOR ATUANTE — A ALAVANCA -->
+  <section>
+    <span class="num-slide">05</span>
+    <div class="inner">
+      <div class="eyebrow">O combinado honesto</div>
+      <h2>Não é botão mágico.<br>É a <em>alavanca</em> do seu esforço.</h2>
+      <p class="lead">O sistema não inventa cliente do nada. Ele multiplica o que você já faz — e quem aparece, colhe muito mais.</p>
+      <div class="bal">
+        <div class="balc">
+          <div class="t">Você continua sendo</div>
+          <h4>O rosto e a voz</h4>
+          <p>Posta, aparece nos stories, atende com energia. O relacionamento é seu — ninguém terceiriza isso.</p>
+        </div>
+        <div class="balc sis">
+          <div class="t">O sistema vira</div>
+          <h4>A estrutura que captura</h4>
+          <p>Transforma cada aparição sua em lead salvo, organizado e medido. Você posta uma vez; ele trabalha 24h.</p>
+        </div>
+      </div>
+      <p class="lead" style="margin-top:24px"><span class="destaque">Corretor parado + sistema = pouco.</span> Corretor atuante + sistema = cada story virando contato no seu funil.</p>
+    </div>
+  </section>
+
+  <!-- 7. COMPLEMENTAR AO CRM DA IMOB -->
+  <section>
+    <span class="num-slide">06</span>
+    <div class="inner">
+      <div class="eyebrow">E o CRM da imobiliária?</div>
+      <h2>Não concorre.<br><em>Completa.</em></h2>
+      <p class="lead">São coisas diferentes — por isso não brigam. Um cuida da venda; o outro mede o que é seu.</p>
+      <div class="comp">
+        <div class="colc">
+          <div class="tag">CRM da imobiliária</div>
+          <h4>Gere a carteira</h4>
+          <ul>
+            <li>Documentação e repasse</li>
+            <li>Processo da venda e comissão</li>
+            <li>Leads que a imob distribui</li>
+            <li>Fica na imobiliária</li>
+          </ul>
+        </div>
+        <div class="colc nosso">
+          <div class="tag">Captação 360</div>
+          <h4>Mede o que é seu</h4>
+          <ul>
+            <li>Os leads que a SUA bio gerou</li>
+            <li>Stories e indicações rastreados</li>
+            <li>O número do seu esforço de captação</li>
+            <li>Vai com você se trocar de imob</li>
+          </ul>
+        </div>
+      </div>
+      <p class="lead" style="margin-top:22px;max-width:680px">E tem bônus político: o lead que não é o seu perfil você <span class="destaque">repassa pra imobiliária</span> com tudo organizado. O sistema te faz um corretor que <span class="destaque">leva lead pra mesa</span> — não que tira dela.</p>
+      <p class="frasemae">"A imob gerencia a venda. Aqui você prova quantos leads a sua bio, seus stories e suas indicações trouxeram — o número que hoje ninguém te mostra."</p>
+    </div>
+  </section>
+
+  <!-- 8. BI COMO DIFERENCIAL -->
+  <section>
+    <span class="num-slide">07</span>
+    <div class="inner">
+      <div class="eyebrow">O diferencial</div>
+      <h2>Pela primeira vez, você <em>vê</em><br>o número do seu trabalho.</h2>
+      <p class="lead">Não é só guardar lead. É ler o que funcionou — e a IA te dizer o que fazer a seguir.</p>
+      <div class="painel">
+        <div class="ph"><b>Painel de Desempenho</b><span>últimos 14 dias</span></div>
+        <div class="kpis">
+          <div class="kpi"><div class="v">312</div><div class="l">Visitas</div></div>
+          <div class="kpi"><div class="v">41</div><div class="l">Leads</div></div>
+          <div class="kpi"><div class="v">13%</div><div class="l">Conversão</div></div>
+          <div class="kpi"><div class="v">Story</div><div class="l">Top origem</div></div>
+        </div>
+        <div class="ia">
+          <div class="il">Relatório por IA · recomendação da semana</div>
+          <p>"Seus stories trouxeram 3x mais leads que o feed. Faça mais 'imóvel entrando no estoque'. 9 leads sem resposta há 2 dias — priorize hoje."</p>
+        </div>
+      </div>
+      <p class="biex">Exemplo ilustrativo · recomendação semanal + fechamento mensal no seu WhatsApp e e-mail</p>
+    </div>
+  </section>
+
+  <!-- 9. PROVA — ESTÁ NO AR -->
+  <section>
+    <span class="num-slide">08</span>
+    <div class="inner">
+      <div class="eyebrow">Não é maquete — está no ar</div>
+      <h2>Veja rodando, com seus<br>próprios <em>olhos</em></h2>
+      <p class="lead">O sistema da Juliana, no ar agora. Abre no seu celular:</p>
+      <div class="links">
+        <a class="lk" href="https://juliana-alves.pages.dev" target="_blank"><span class="ico">◎</span><div><b>Bio Premium</b><span>juliana-alves.pages.dev</span></div><span class="arw">→</span></a>
+        <a class="lk" href="https://juliana-alves.pages.dev/investir.html" target="_blank"><span class="ico">◈</span><div><b>Página de Captura</b><span>onde o lead preenche e cai no WhatsApp</span></div><span class="arw">→</span></a>
+        <a class="lk" href="https://juliana-alves.pages.dev/imoveis.html" target="_blank"><span class="ico">▦</span><div><b>Catálogo de Imóveis</b><span>a vitrine dos destaques</span></div><span class="arw">→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. A OFERTA -->
+  <section class="oferta">
+    <span class="num-slide">09</span>
+    <div class="inner">
+      <div class="eyebrow">O que entra e como funciona</div>
+      <h2>Pronto na sua mão<br>em <em>3 dias</em>.</h2>
+      <div class="escopo">
+        <span class="chip">Bio premium</span>
+        <span class="chip">Página de captura</span>
+        <span class="chip">Catálogo editável</span>
+        <span class="chip">CRM 1 toque</span>
+        <span class="chip">Painel de desempenho</span>
+        <span class="chip">Relatórios por IA</span>
+        <span class="chip">GA4 + Pixel (seu)</span>
+      </div>
+      <div class="preco">
+        <div class="pcard">
+          <div class="pt">Plano único</div>
+          <div class="pv">R$ 497,90 <small>implementação</small></div>
+          <div class="pv" style="margin-top:8px">R$ 297,90 <small>/mês</small></div>
+          <div class="pd">Tudo incluso. Cancela quando quiser, depois dos 90 dias.</div>
+        </div>
+        <div class="pcard fund">
+          <span class="selo">Condição de fundador</span>
+          <div class="pt">Indicação · vagas limitadas</div>
+          <div class="pv">R$ 297,90 <small>implementação</small></div>
+          <div class="pv" style="margin-top:8px">R$ 197 <small>/mês</small></div>
+          <div class="pd">Preço travado + brindes de estreia. Falo a condição com você na conversa.</div>
+        </div>
+      </div>
+      <div class="garantias">
+        <span class="gar"><b>Entrega:</b> sistema no ar em até 3 dias</span>
+        <span class="gar"><b>Compromisso:</b> 90 dias, depois mês a mês</span>
+        <span class="gar"><b>A base é sua:</b> contas e dados no seu nome</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11. CTA -->
+  <section class="fim">
+    <span class="num-slide">10</span>
+    <div class="inner">
+      <div class="eyebrow">Bora?</div>
+      <h2>A sua audiência já existe.<br>Falta só <em>captar</em> ela.</h2>
+      <p class="lead" style="margin:0 auto">Me chama que eu te mostro como ficaria com a sua cara, seus imóveis e os leads caindo no seu WhatsApp.</p>
+      <a class="cta" href="https://wa.me/5563981493039?text=Gabriel%2C%20quero%20saber%20do%20Capta%C3%A7%C3%A3o%20360" target="_blank">💬 Quero ver com a minha cara</a>
+      <div class="ass">GA Business Insights · Palmas — TO</div>
+    </div>
+  </section>
+
+</body>
+</html>
