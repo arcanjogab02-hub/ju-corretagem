@@ -207,3 +207,14 @@ inteligente em Palmas — não vende sonho genérico, mostra o bom negócio.
   (`identidade/logo-urbs-branca.png` / `-preta.png`).
 - **Regra de encoding:** ao editar HTML via PowerShell, usar `[System.IO.File]::WriteAllText` com
   UTF8 sem BOM — o `Set-Content -Encoding UTF8` do PS 5.1 corrompe acentos (dupla codificação).
+- **Render de carrossel/post (HTML → PNG):** os slides/posts são HTML (`slide-N.html`, `post.html`)
+  rasterizados em PNG 1080×1350 via **Chrome headless**. Não há lib (puppeteer/sharp) instalada —
+  usar o Chrome direto:
+  `"/c/Program Files/Google/Chrome/Application/chrome.exe" --headless=new --disable-gpu --hide-scrollbars`
+  `--force-device-scale-factor=1 --virtual-time-budget=5000 --run-all-compositor-stages-before-draw`
+  `--window-size=1080,1350 --screenshot="SAIDA.png" "file:///CAMINHO/slide-N.html"`.
+  Caminho via `cygpath -w`; o `--virtual-time-budget` garante carregar Google Fonts + imagens.
+  Render é **determinístico** (mesmo HTML → PNG byte-idêntico). Fluxo: render → `instagram/slide-0N.png`
+  (fonte) → copiar pro site (`marketing/site/carrossel/planta/` e `post.png`) → commit/push (deploy).
+  Para **cortar imagem sem ImageMagick/sharp**, usar `<img>` absoluto com `width`/`left`/`top` em px
+  dentro de `.media{overflow:hidden}` (o render é tamanho fixo, então px batem).

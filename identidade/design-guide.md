@@ -29,9 +29,15 @@
 
 ## Tipografia
 
-- **Títulos e destaques:** Serifada elegante (estilo Playfair Display / Cormorant) para dar ar sofisticado
+> **Padrão FIXO (decidido jun/2026): Playfair Display + Inter em todas as peças.**
+> Nada de Cormorant, Georgia, Montserrat ou fonte de sistema (-apple-system) — só esse par.
 
-- **Corpo, subtítulos e botões:** Sans-serif limpa (estilo Montserrat / Inter)
+- **Títulos e destaques:** **Playfair Display** (serifada) — ar sofisticado, com bastante respiro
+
+- **Corpo, subtítulos e botões:** **Inter** (sans-serif limpa)
+
+- **Exceção do carrossel "print de tweet":** por imitar o X/Twitter (que é sans), usa **só Inter**,
+  sem serifa. A Playfair entra apenas nos posts/carrosséis **editoriais** (título serifado + corpo Inter).
 
 - **Peso do título:** Médio a bold, com bastante respiro (espaçamento generoso)
 
