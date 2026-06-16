@@ -1,9 +1,9 @@
-45% de Palmas mora de aluguel — o maior índice entre as capitais do Brasil. Talvez você seja um, e ache que comprar é impossível.
+Palmas é a cidade que mais mora de aluguel no Brasil. Talvez você seja um — e ache que comprar é impossível.
 
-Mas a real é que esse aluguel já é quase a parcela de um apê seu. Fiz a conta honesta aqui no carrossel (inclusive quando alugar é a melhor escolha — eu não escondo isso de você).
+Mas fiz a conta: o que você paga todo mês pra morar já pagaria a parcela de um apê SEU. Deslizei tudo aqui (inclusive quando vale mais continuar onde está — não escondo isso de você).
 
-Arrasta até o fim. 👉
+Quer ver se já cabe no seu caso? Toca no link da bio que eu faço sua simulação, de graça.
 
-Quer ver se fecha no SEU caso? Toca no link da bio e me conta o que você procura. Sou a Juliana, corretora em Palmas (CRECI 5377) — sem enrolação, pra morar ou investir.
+Manda esse pra quem precisa ver. 👉
 
-#imoveispalmas #palmasto #comprarimovel #aluguel #morarempalmas #palmastocantins
+#imoveispalmas #palmasto #comprarimovel #morarempalmas #primeiroimovel #palmastocantins
