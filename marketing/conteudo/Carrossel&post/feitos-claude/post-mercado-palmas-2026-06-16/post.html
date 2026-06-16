@@ -3,41 +3,36 @@
 <style>
   *{margin:0;padding:0;box-sizing:border-box}
   html,body{width:1080px;height:1350px;overflow:hidden}
-  .post{width:1080px;height:1350px;background:#0D0D0D;color:#F5F5F5;padding:96px 84px;display:flex;flex-direction:column;justify-content:space-between;font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased}
-  .kicker{font-size:24px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:#9a9a9a}
-  .searchbar{display:flex;align-items:center;gap:18px;background:#F5F5F5;border-radius:60px;padding:26px 34px;margin-top:26px}
-  .searchbar svg{width:34px;height:34px;flex-shrink:0}
-  .searchbar .q{font-size:30px;font-weight:600;color:#141414;letter-spacing:.01em}
-  .searchbar .cursor{width:3px;height:34px;background:#C0392B;margin-left:auto;border-radius:2px}
-  .mid{flex:1;display:flex;flex-direction:column;justify-content:center}
-  .headline{font-family:'Playfair Display',serif;font-weight:700;font-size:78px;line-height:1.05;letter-spacing:-.01em}
+  .post{width:1080px;height:1350px;background:#0D0D0D;color:#F5F5F5;display:flex;flex-direction:column;font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased}
+  .photo{position:relative;width:100%;height:660px;overflow:hidden;background:#241a16}
+  .photo img{width:100%;height:100%;object-fit:cover;object-position:center 22%}
+  .photo::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 60%,rgba(13,13,13,.95) 100%)}
+  .photo .kicker{position:absolute;top:54px;left:80px;z-index:2;font-size:23px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:#f5f5f5;text-shadow:0 2px 12px rgba(0,0,0,.6)}
+  .info{flex:1;padding:48px 80px 70px;display:flex;flex-direction:column}
+  .headline{font-family:'Playfair Display',serif;font-weight:700;font-size:62px;line-height:1.06;letter-spacing:-.01em}
   .headline .hl{color:#C0392B}
-  .para{font-size:37px;font-weight:400;line-height:1.5;color:#cfcfcf;margin-top:34px}
+  .para{font-size:34px;font-weight:400;line-height:1.5;color:#cfcfcf;margin-top:26px}
   .para b{color:#fff;font-weight:600}
   .para .hl{color:#C0392B;font-weight:600}
-  .src{font-size:21px;color:#8f8f8f;font-weight:600;letter-spacing:.05em;text-transform:uppercase;margin-top:26px}
-  .foot{display:flex;justify-content:space-between;align-items:flex-end}
-  .handle{font-size:27px;font-weight:600}
-  .sig{font-size:19px;letter-spacing:.14em;color:#8f8f8f;text-transform:uppercase;text-align:right}
+  .src{font-size:20px;color:#8f8f8f;font-weight:600;letter-spacing:.05em;text-transform:uppercase;margin-top:20px}
+  .foot{margin-top:auto;display:flex;justify-content:space-between;align-items:flex-end;padding-top:24px}
+  .handle{font-size:26px;font-weight:600}
+  .sig{font-size:18px;letter-spacing:.14em;color:#8f8f8f;text-transform:uppercase}
 </style></head>
 <body>
 <div class="post">
-  <div>
-    <div class="kicker">Mercado · Palmas — TO</div>
-    <div class="searchbar">
-      <svg viewBox="0 0 24 24" fill="none" stroke="#C0392B" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-3.8-3.8"/></svg>
-      <span class="q">imóveis em Palmas pra investir</span>
-      <span class="cursor"></span>
-    </div>
+  <div class="photo">
+    <span class="kicker">Mercado · Palmas — TO</span>
+    <img src="ju.jpg" alt="Juliana Alves">
   </div>
-  <div class="mid">
+  <div class="info">
     <h1 class="headline">Dinheiro parado perde.<br>Imóvel em Palmas, <span class="hl">não</span>.</h1>
-    <p class="para">A capital que mais aluga no Brasil tem demanda sobrando: <b>600+ imóveis no Airbnb</b> com procura o ano todo, e bairros que valorizaram <span class="hl">9–14% em 2024</span>. Quem tem imóvel ganha dos dois lados — valorização e renda.</p>
+    <p class="para">A capital que mais aluga no Brasil tem demanda sobrando: <b>600+ imóveis no Airbnb</b> com procura o ano todo e bairros valorizando <span class="hl">9–14%</span>. Quem tem imóvel ganha dos dois lados — valorização e renda.</p>
     <div class="src">IBGE · Ademi-TO · Mercado local, 2024–25</div>
-  </div>
-  <div class="foot">
-    <span class="handle">@juu_alves8</span>
-    <span class="sig">Juliana Alves · CRECI 5377</span>
+    <div class="foot">
+      <span class="handle">@juu_alves8</span>
+      <span class="sig">Juliana Alves · CRECI 5377</span>
+    </div>
   </div>
 </div>
 </body></html>
