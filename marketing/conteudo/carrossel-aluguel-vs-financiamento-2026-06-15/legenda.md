@@ -1,4 +1,4 @@
-40% de Palmas mora de aluguel. Talvez você seja um — e ache que comprar é impossível.
+45% de Palmas mora de aluguel — o maior índice entre as capitais do Brasil. Talvez você seja um, e ache que comprar é impossível.
 
 Mas a real é que esse aluguel já é quase a parcela de um apê seu. Fiz a conta honesta aqui no carrossel (inclusive quando alugar é a melhor escolha — eu não escondo isso de você).
 

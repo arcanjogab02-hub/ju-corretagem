@@ -6,8 +6,11 @@
 
 ## Os números (o principal primeiro)
 
-- ⭐ **40,2% dos moradores de Palmas vivem de aluguel** — quase empatado com os 40,5% de casa
-  própria quitada. **[forte]** (IBGE · Síntese de Indicadores Sociais 2023) — *o dado-âncora.*
+- ⭐ **44,9% dos moradores de Palmas vivem de aluguel — o MAIOR índice entre as capitais do Brasil**
+  (IBGE, 2024). 2ª colocada é Goiânia (38,9%); Palmas é a **única capital acima de 40%** (desde 2022,
+  8 anos seguidos no topo). **[forte]** (Gazeta do Cerrado, Conexão TO, Jornal do Tocantins — 02/2026)
+  — *o dado-âncora (usar "45%" no carrossel).* Antes citávamos 40,2% (IBGE/SIS 2023); o 44,9% de 2024 é
+  mais recente e mais forte.
 - **Brasil: só 20,9% (1 em 5) mora alugado** (IBGE Censo 2022). **[forte]** → Palmas tem o **dobro**
   da média nacional de gente no aluguel.
 - **Imóvel valorizou +6,52% no Brasil em 2025** (FipeZAP), ganho real ~2% acima da inflação;
