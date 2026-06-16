@@ -101,9 +101,11 @@ estética minimalista.
 - **Rótulo / eyebrow:** etiqueta no topo-esquerdo, **sempre mesma posição/fonte/caixa**
   (mono, UPPERCASE, letter-spacing aberto, cinza). Identifica o tema do slide.
 - **Numeração:** indicador discreto no topo-direito, formato fixo **"NN / NN"** (ex.: 02 / 06).
-- **Paleta:** fundo preto/grafite ou off-white alternando (nunca 2 iguais seguidos); texto
-  branco/preto. **Destaque das palavras-chave em vermelho tijolo `#C0392B`** (1 destaque por slide).
-  Fora isso, cor só da foto. **Sem dourado, sem neon.**
+- **Paleta (tons EXATOS — nunca desviar, senão parece amador):** fundo escuro **`#0D0D0D`** OU claro
+  **`#F5F5F5`**, alternando (nunca 2 iguais seguidos). Texto sobre escuro: branco **`#F5F5F5`** (apoio
+  **`#cfcfcf`**); sobre claro: **`#141414`** (apoio **`#555`**). Rótulo, contador e assinatura em
+  **`#8f8f8f`**. Destaque em **`#C0392B`** (1 por slide). **Nada de tom intermediário (#171717 etc.),
+  dourado ou neon.** Cor "de verdade" só vem da foto.
 - **Tipografia:** título serifado (Playfair/Cormorant); corpo sans (Inter); muito respiro.
 - **Fonte do dado:** quando usar número, citar a fonte pequena embaixo (ex.: "IBGE · 2023").
   Só dado real (ver `marketing/dados-mercado-palmas.md`).

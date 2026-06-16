@@ -3,7 +3,7 @@
 html,body{width:1080px;height:1350px;overflow:hidden}
 .slide{width:1080px;height:1350px;padding:92px 84px;display:flex;flex-direction:column;justify-content:space-between;position:relative;font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased}
 .dark{background:#0D0D0D;color:#F5F5F5}
-.graf{background:#171717;color:#F5F5F5}
+.graf{background:#0D0D0D;color:#F5F5F5}
 .light{background:#F5F5F5;color:#141414}
 .counter{position:absolute;top:92px;right:84px;font-size:22px;letter-spacing:.22em;color:#8f8f8f;font-weight:600}
 .eyebrow{font-size:25px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:#9a9a9a}
